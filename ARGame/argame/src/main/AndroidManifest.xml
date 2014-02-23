@@ -9,36 +9,17 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".LaunchScreenActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="LaunchScreenActivity"
-            android:theme="@style/FullscreenTheme" >
+            android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignupActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="SignupActivity"
-            android:theme="@style/FullscreenTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".SignupActivity">
         </activity>
         <activity
-            android:name=".LoginScreenActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="LoginScreenActivity"
-            android:theme="@style/FullscreenTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".LoginScreenActivity">
         </activity>
     </application>
 

@@ -1,0 +1,151 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="com.cis350.argame.LaunchScreenActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+    <TextView android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true"
+        android:textColor="#33b5e5"
+        android:textStyle="bold"
+        android:textSize="50sp"
+        android:gravity="center"
+        android:text="Register Screen" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal|top">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/passwordInitialText"
+            android:background="@color/black_overlay"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:layout_below="@+id/nameLabel"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text = ""/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/nameField"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="43dp"
+            android:background="@color/black_overlay"
+            android:textColor="#6a6a6a"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textAlignment="center"
+            android:layout_alignRight="@+id/passwordInitialText"
+            android:layout_alignEnd="@+id/passwordInitialText"
+            android:text="" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Username"
+            android:id="@+id/nameLabel"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/nameField"
+            android:layout_alignRight="@+id/passwordLabelInitial"
+            android:layout_alignEnd="@+id/passwordLabelInitial"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Password"
+            android:id="@+id/passwordLabelInitial"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/passwordInitialText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="30dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/passwordConfirmText"
+            android:background="@color/black_overlay"
+            android:layout_below="@+id/passwordLabelInitial"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp"
+            android:text ="" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Confirm Password"
+            android:id="@+id/passwordLabelConfirm"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/passwordConfirmText"
+            android:layout_alignLeft="@+id/passwordLabelInitial"
+            android:layout_alignStart="@+id/passwordLabelInitial"
+            android:textStyle="bold" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/emailText"
+            android:layout_below="@+id/passwordLabelConfirm"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp"
+            android:editable="false"
+            android:background="@color/black_overlay"
+            android:text = "" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Email"
+            android:id="@+id/emailLabel"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/emailText"
+            android:layout_alignLeft="@+id/passwordLabelConfirm"
+            android:layout_alignStart="@+id/passwordLabelConfirm"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:id="@+id/backButton"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/black_overlay"
+            android:onClick="onBackButtonClick"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/registerButton"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="@color/black_overlay" />
+    </RelativeLayout>
+</FrameLayout>

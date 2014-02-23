@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0099cc"
-    tools:context="com.cis350.argame.FullscreenActivity">
+    tools:context="com.cis350.argame.LaunchScreenActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -27,19 +27,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quit"
-            android:id="@+id/button"
+            android:id="@+id/quitButton"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:onClick="onQuitButtonClick"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/button2"
-            android:layout_above="@+id/button"
+            android:text="Launch"
+            android:id="@+id/launchButton"
+            android:layout_above="@+id/quitButton"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
@@ -48,27 +49,23 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Register"
-            android:id="@+id/button3"
-            android:layout_above="@+id/button2"
+            android:text="Sign Up"
+            android:id="@+id/signupButton"
+            android:onClick="onRegisterButtonClick"
+            android:layout_above="@+id/launchButton"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Log In"
-            android:id="@+id/button4"
-            android:layout_above="@+id/button3"
+            android:id="@+id/loginButton"
+            android:layout_above="@+id/signupButton"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
     </RelativeLayout>
-
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
-
 </FrameLayout>

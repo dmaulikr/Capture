@@ -4,6 +4,7 @@ import com.cis350.argame.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,10 +38,12 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.GeolocationPermissions;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -49,6 +52,88 @@ import android.webkit.WebView;
  * @see SystemUiHider
  */
 public class FullscreenActivity extends Activity {
+
+    // Web Interface to bind the javascript file
+    public class WebAppInterface {
+        Context mContext;
+
+        // Create a new HttpClient and Post Header
+        HttpClient httpclient;
+        HttpPost httppost;
+
+        /** Instantiate the interface and set the context */
+        WebAppInterface(Context c) {
+            mContext = c;
+
+            // Create a new HttpClient and Post Header
+            httpclient = new DefaultHttpClient();
+            httppost = new HttpPost("http://overpass-api.de/api/interpreter");
+        }
+
+        /** Show a toast from the web page */
+        @JavascriptInterface
+        public void showToast(String toast) {
+            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
+        }
+
+        public void showBuildings(String bbox) {
+            Toast.makeText(mContext, bbox, Toast.LENGTH_SHORT).show();
+            String bounds[] = bbox.split(","); // w s e n
+
+            // ---------------- OVERPASS API ------------------ //
+            // use XML queries and send them to interpreter as POST methods
+
+            try {
+                // Add your data
+              //  s          w
+              //  39.9531, -75.20255
+              //  n           e
+               // 39.9553128, -75.1969907
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+                String data=
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><osm-script>"+
+                "<query type=\"way\">"+
+                "<has-kv k=\"building\" v=\"yes\"/>"+
+                "<bbox-query s=\""+bounds[1]+"\" w=\""+bounds[0]+"\" n=\""+bounds[3]+"\" e=\""+bounds[2]+"\"/>"+
+
+                "<!--this is auto-completed with the current map view coordinates.-->"+
+                "</query>"+
+                "<print/></osm-script>";
+                nameValuePairs.add(new BasicNameValuePair("form-data", data));
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                // Execute HTTP Post Request
+                HttpResponse response = httpclient.execute(httppost);
+
+                HttpEntity entity = response.getEntity();
+
+                // get the result from query in XML format
+                if (entity != null) {
+                    InputStream instream = entity.getContent();
+
+                    InputStreamReader is = new InputStreamReader(instream);
+                    StringBuilder sb=new StringBuilder();
+                    BufferedReader br = new BufferedReader(is);
+                    String read = br.readLine();
+
+                    while(read != null) {
+                        //System.out.println(read);
+                        sb.append(read);
+                        read =br.readLine();
+
+                    }
+                    String output = sb.toString(); // XML
+                    System.out.println(output);
+                }
+            } catch (ClientProtocolException e) {
+                // TODO Auto-generated catch block
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+            }
+        }
+    }
+    // end Web Interface
 
     // global variables for osmdroid
     //private MapView myOpenMapView;
@@ -164,6 +249,10 @@ public class FullscreenActivity extends Activity {
         //--------- LEAFLET ----------------//
 
         WebView myWebView = (WebView) findViewById(R.id.webview);
+
+        // add web interface
+        myWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
+
         WebSettings webSettings = myWebView.getSettings();
 
         // Permission to get user's geolocation
@@ -183,60 +272,9 @@ public class FullscreenActivity extends Activity {
 
         myWebView.loadUrl("http://poroawards.net/Geolocation/map.html");
 
-        // ---------------- OVERPASS API ------------------ //
-        // use XML queries and send them to interpreter as POST methods
-
-        // Create a new HttpClient and Post Header
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://overpass-api.de/api/interpreter");
-
-        try {
-            // Add your data
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-            String data=
-                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?><osm-script><!--" +
-                            "This is an example Overpass query."+
-                            "Try it out by pressing the Run button above!"+
-                            "You can find more examples with the Load tool."+
-                            "-->"+
-                            "<query type=\"node\">"+
-                            "<has-kv k=\"amenity\" v=\"drinking_water\"/>"+
-                            "<bbox-query s=\"41.88659196260802\" w=\"12.488558292388916\" n=\"41.89248629819397\" e=\"12.51119613647461\"/>" +
-                            "<!--this is auto-completed with the current map view coordinates.-->"+
-                            "</query>"+
-                            "<print/></osm-script>";
-            nameValuePairs.add(new BasicNameValuePair("form-data", data));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-            // Execute HTTP Post Request
-            HttpResponse response = httpclient.execute(httppost);
-
-            HttpEntity entity = response.getEntity();
-
-            // get the result from query in XML format
-            if (entity != null) {
-                InputStream instream = entity.getContent();
-
-                InputStreamReader is = new InputStreamReader(instream);
-                StringBuilder sb=new StringBuilder();
-                BufferedReader br = new BufferedReader(is);
-                String read = br.readLine();
-
-                while(read != null) {
-                    //System.out.println(read);
-                    sb.append(read);
-                    read =br.readLine();
-
-                }
-                String output = sb.toString(); // XML
-                System.out.println(output);
-            }
-        } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-        }
     }
+
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

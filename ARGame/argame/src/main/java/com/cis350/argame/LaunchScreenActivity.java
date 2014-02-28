@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -18,6 +20,7 @@ public class LaunchScreenActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launchscreen_layout);
+        Parse.initialize(this, "tfq8Gi16KZq2L98xOp5cmlgKjM4rBXaiIlo2gBZx", "88zROkFEksIDYF2XPhqWqOumxocCy7hMVmkystCz");
     }
 
     public void onLoginButtonClick(View v) {

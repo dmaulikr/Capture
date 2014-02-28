@@ -9,6 +9,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseException;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by Alan on 2/22/14.
  */
@@ -33,14 +38,18 @@ public class SignupActivity extends Activity {
         CharSequence email = emailFieldView.getText();
 
         // First check if username contains invalid characters
-        if (usernameContainsInvalidCharacters(usernameFieldView.getText())) {
-
+        if (usernameContainsInvalidCharacters(
+                usernameFieldView.getText().toString())) {
+            String message = "Username should be alphanumeric. Please try " +
+                    "again with a valid username.";
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
 
-        // Check if username is taken.
-        else if (usernameTaken(username)) {
-            String message = "The name " + username + " is taken. Please " +
-                    "choose another name and try again.";
+        // Check if password contains invalid characters
+        if (passwordContainsInvalidCharacters(passwordInitialView.getText()
+                .toString())) {
+            String message = "Password cannot contain the following " +
+                    "characters:\n ~#@*+%{}<>[]|_^.,";
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
 
@@ -58,17 +67,29 @@ public class SignupActivity extends Activity {
 
         // If all is well, submit strings in fields to DB.
         else {
-            // TODO: Send to database
-            CharSequence submitMessage = "Successfully submitted! " + username + "," +
-                    passwordInitial + "," + email;
-            Toast.makeText(this, submitMessage, Toast.LENGTH_LONG).show();
+            try {
+                ParseManager.logIn(username.toString(), passwordInitial.toString
+                    (), email.toString());
+            } catch (ParseException pe) {
+                Toast.makeText(this, "Username taken / Other Parse error. " +
+                        "Please try again", Toast.LENGTH_LONG).show();
+            }
+            // TODO: Verify that this does not execute if exception is caught
+            Toast.makeText(this, "Registration succeeded! Please log in.",
+                    Toast.LENGTH_LONG).show();
             finish();
         }
     }
 
-    private boolean usernameContainsInvalidCharacters(CharSequence name) {
-        // TODO: Unimplemented
-        return false;
+    private boolean usernameContainsInvalidCharacters(String name) {
+        String pattern = "^[a-zA-Z0-9]*$";
+        return !name.matches(pattern);
+    }
+
+    private boolean passwordContainsInvalidCharacters(String password) {
+        Pattern pattern = Pattern.compile("[~#@*+%{}<>\\[\\]|\"\\_^.,]");
+        Matcher matcher = pattern.matcher(password);
+        return matcher.find();
     }
 
     private boolean usernameTaken(CharSequence name) {

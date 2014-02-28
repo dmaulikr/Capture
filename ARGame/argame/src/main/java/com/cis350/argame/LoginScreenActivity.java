@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseException;
+
 /**
  * Created by Alan on 2/22/14.
  */
@@ -16,23 +18,18 @@ public class LoginScreenActivity extends Activity {
     }
 
     public void onLoginSubmitButtonClick(View v) {
-        TextView usernameView = (TextView) findViewById(R.id.usernameField);
-        TextView passwordView = (TextView) findViewById(R.id.passwordField);
-        CharSequence username = usernameView.getText();
-        CharSequence password = passwordView.getText();
+        TextView usernameView = (TextView)findViewById(R.id.usernameField);
+        TextView passwordView = (TextView)findViewById(R.id.passwordField);
 
-        if (!credentialsAreValid(username, password)) {
-            Toast.makeText(this, "Credentials were invalid. Please try again.",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            String message = "Login Successful! Submitting " + username + "," + password;
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-            finish();
+        String username = usernameView.getText().toString();
+        String password = passwordView.getText().toString();
+
+        try {
+            ParseManager.logIn(username, password, "");
+        } catch (ParseException pe) {
+            Toast.makeText(this, "Username or password was invalid. Please " +
+                    "try again.", Toast.LENGTH_LONG).show();
         }
     }
 
-    private boolean credentialsAreValid(CharSequence username, CharSequence password) {
-        // TODO : Verify with DB
-        return username.length() > 0 && password.length() > 0;
-    }
 }

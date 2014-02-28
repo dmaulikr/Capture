@@ -23,7 +23,8 @@ public class ParseManager {
      * @param email the email to check
      * @return true if the user existed prior, false otherwise
      */
-    public static boolean logIn(String username, String password, String email) {
+    public static boolean logIn(String username, String password, String email)
+            throws ParseException {
         ParseUser currentUser = null;
         try {
             currentUser = ParseUser.logIn(username, password);

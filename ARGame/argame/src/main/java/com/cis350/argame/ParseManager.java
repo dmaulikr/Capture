@@ -80,4 +80,9 @@ public class ParseManager {
         forID.whereEqualTo("pointID", pointID);
         return (ParseObject) forID.find().get(0);
     }
+    public static ParseObject[] getBuildingsByOwner(ParseUser user) throws ParseException {
+        ParseQuery forUser = ParseQuery.getQuery("CapturePoint");
+        forUser.whereEqualTo("owner", user);
+        return (ParseObject[]) forUser.find().toArray();
+    }
 }

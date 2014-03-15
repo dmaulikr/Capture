@@ -34,8 +34,8 @@ public class LaunchScreenActivity extends Activity {
     }
 
     public void onLaunchButtonClick(View v) {
-        Toast.makeText(this, "Tried to Launch, but Launch is unimplemented!",
-                Toast.LENGTH_LONG).show();
+        Intent i = new Intent(this, FullscreenActivity.class);
+        startActivity(i);
     }
 
     public void onQuitButtonClick(View v) {

@@ -26,7 +26,7 @@ public class ParseManager {
      * @return true if there is a user logged in, false otherwise.
      */
     public static boolean isLoggedIn() {
-        return ParseUser.getCurrentUser() != null;
+        return ParseUser.getCurrentUser() != null && ParseUser.getCurrentUser().isAuthenticated();
     }
 
     /**

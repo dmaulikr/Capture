@@ -163,6 +163,7 @@ public class GameActivity extends Activity {
                         point_data = "";
                     }
                     it.remove(); // avoids a ConcurrentModificationException
+                    
                 }
 
                 return "";

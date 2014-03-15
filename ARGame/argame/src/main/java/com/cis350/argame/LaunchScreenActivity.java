@@ -34,7 +34,7 @@ public class LaunchScreenActivity extends Activity {
     }
 
     public void onLaunchButtonClick(View v) {
-        Intent i = new Intent(this, FullscreenActivity.class);
+        Intent i = new Intent(this, GameActivity.class);
         startActivity(i);
     }
 

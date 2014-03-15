@@ -29,7 +29,7 @@
             android:name=".LoginScreenActivity">
         </activity>
         <activity
-            android:name=".FullscreenActivity">
+            android:name=".GameActivity">
         </activity>
     </application>
 

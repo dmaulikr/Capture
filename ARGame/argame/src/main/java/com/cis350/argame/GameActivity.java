@@ -65,7 +65,7 @@ import javax.xml.parsers.ParserConfigurationException;
  *
  * @see SystemUiHider
  */
-public class FullscreenActivity extends Activity {
+public class GameActivity extends Activity {
 
     WebView myWebView;
     // Web Interface to bind the javascript file
@@ -339,7 +339,7 @@ public class FullscreenActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_fullscreen);
+        setContentView(R.layout.gameactivity_layout);
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);

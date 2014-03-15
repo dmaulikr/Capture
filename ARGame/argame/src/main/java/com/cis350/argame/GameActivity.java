@@ -1,6 +1,7 @@
 package com.cis350.argame;
 
 import com.cis350.argame.util.SystemUiHider;
+import com.cis350.argame.util.XMLQueryHandler;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -23,6 +24,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -97,75 +99,19 @@ public class GameActivity extends Activity {
             protected String doInBackground(String... strs) {
 
                 String bbox = strs[0];
+
                 // --------------- Data Structures ---------------- //
                 // key = way id, value = array of node ids
-                ArrayList<ArrayList<String>> polygons = new ArrayList<ArrayList<String>>();
+                HashMap<String, ArrayList<String>> polygons = new HashMap<String,ArrayList<String>>();
                 // key = node id, value = array of latitude, longitude
                 HashMap<String, ArrayList<Float>> points = new HashMap<String, ArrayList<Float>>();
 
-                String output = "";
-                // ------------------------------------------------ //
-
-                //Toast.makeText(mContext, bbox, Toast.LENGTH_SHORT).show();
                 String bounds[] = bbox.split(","); // w s e n
 
-                // ---------------- OVERPASS API ------------------ //
-                // use XML queries and send them to interpreter as POST methods
+                XMLQueryHandler xmlHandler = new XMLQueryHandler();
+                String output = xmlHandler.getXMLDataFromBBox(bounds,httpclient,httppost);
 
                 try {
-
-                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-
-                    // Find all ways with key "building" and all their member nodes
-                    String data=
-/*
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><osm-script timeout=\"900\" element-limit=\"1073741824\">"+
-                "<query type=\"way\">"+
-                "<has-kv k=\"building\" v=\"yes\"/>"+
-                "<bbox-query s=\""+bounds[1]+"\" w=\""+bounds[0]+"\" n=\""+bounds[3]+"\" e=\""+bounds[2]+"\"/>"+
-                "</query>"+
-                "<union>"+
-                "<item />"+
-                "<recurse type=\"way-node\"/>"+
-                "</union>"+
-                "<print/></osm-script>";
-*/
-                            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><osm-script timeout=\"900\" element-limit=\"1073741824\">"+
-                                    "<query type=\"node\">"+
-                                    "<bbox-query s=\""+bounds[1]+"\" w=\""+bounds[0]+"\" n=\""+bounds[3]+"\" e=\""+bounds[2]+"\"/>"+
-                                    "</query>"+
-                                    "<union>"+
-                                    "<item />"+
-                                    "<recurse type=\"node-way\"/>"+
-                                    "</union>"+
-                                    "<print/></osm-script>";
-
-                    nameValuePairs.add(new BasicNameValuePair("form-data", data));
-                    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                    // Execute HTTP Post Request
-                    HttpResponse response = httpclient.execute(httppost);
-
-                    HttpEntity entity = response.getEntity();
-                    // get the result from query in XML format and convert to string
-                    if (entity != null) {
-                        InputStream instream = entity.getContent();
-
-                        InputStreamReader is = new InputStreamReader(instream);
-                        StringBuilder sb=new StringBuilder();
-                        BufferedReader br = new BufferedReader(is);
-                        String read = br.readLine();
-
-                        while(read != null) {
-                            //System.out.println(read);
-                            sb.append(read);
-                            read =br.readLine();
-
-                        }
-                        output = sb.toString(); // XML
-                        System.out.println(output);
-                    }
-
                     // ------------ Parsing XML -------------- //
                     // Create a DOM element to parse XML
                     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -176,78 +122,10 @@ public class GameActivity extends Activity {
                     Document doc = db.parse(inStream);
 
                     // populate polygons
-                    NodeList ways = doc.getElementsByTagName("way");
-                    for (int i = 0; i < ways.getLength(); i++) {
-                        Node w_item = ways.item(i);
-                        String w_id = "";
-                        if(w_item instanceof Element){
-                            //a child element to process
-                            Element child = (Element) w_item;
-                            String id = child.getAttribute("id");
-                            if(id.compareTo("") != 0) {
-                                w_id = id; // node id
-                            } else continue;
-                        }
-
-                        //int w_id = Integer.parseInt(w_item.getAttributes().item(0).getNodeValue()); // way id
-                        NodeList w_nodes = w_item.getChildNodes();
-                        boolean is_building = false;
-                        ArrayList<String> node_ids = new ArrayList<String>();
-                        for(int j = 0; j < w_nodes.getLength(); j++) {
-                            Node w_child = w_nodes.item(j);
-
-                            if(w_child instanceof Element){
-                                //a child element to process
-                                Element child = (Element) w_child;
-                                String ref = child.getAttribute("ref");
-                                if(ref.compareTo("") != 0) {
-                                    String n_id = ref; // node id
-                                    node_ids.add(n_id);
-                                }
-                                String build = child.getAttribute("k");
-                                if(build.compareTo("building") == 0) {
-                                    is_building = true;
-                                }
-                            }
-                        }
-
-                        if(node_ids.size() > 0 && is_building) {
-                            polygons.add(node_ids);
-                        }
-                    }
+                    polygons = xmlHandler.getPolygonData(doc);
 
                     // populate points
-                    NodeList nodes = doc.getElementsByTagName("node");
-                    for (int i = 0; i < nodes.getLength() ; i++) {
-                        Node n_item = nodes.item(i);
-                        String n_id = "";
-                        float latitude = -1; float longitude = -1;
-                        if(n_item instanceof Element){
-                            //a child element to process
-                            Element child = (Element) n_item;
-
-                            String id = child.getAttribute("id");
-                            if(id.compareTo("") != 0) {
-                                n_id = id; // node id
-                            }
-                            String lat = child.getAttribute("lat");
-                            if(lat.compareTo("") != 0) {
-                                latitude = Float.parseFloat(lat); // lat
-                            }
-                            String lon = child.getAttribute("lon");
-                            if(lat.compareTo("") != 0) {
-                                longitude = Float.parseFloat(lon); // lon
-                            }
-                        }
-                        if(n_id != "" && latitude != -1 && longitude != -1) {
-                            ArrayList<Float> node_coords = new ArrayList<Float>();
-                            node_coords.add(latitude);
-                            node_coords.add(longitude);
-
-                            points.put(n_id, node_coords);
-                            n_id = ""; latitude = -1; longitude = -1;
-                        }
-                    }
+                    points = xmlHandler.getPointData(doc);
 
                 } catch (ClientProtocolException e) {
                     // TODO Auto-generated catch block
@@ -259,12 +137,18 @@ public class GameActivity extends Activity {
                     e.printStackTrace();
                 }
 
+               // polygons = xmlHandler.getPolygonData(doc );
+               // points = xmlHandler.getPointData(doc);
+
                 // --------------- to Leaflet --------------- //
                 // send all polygon data to Leaflet to draw on the map
 
                 String point_data = "";
-                for( int i = 0; i < polygons.size(); i ++) {
-                    ArrayList<String> polygon = polygons.get(i);
+                Iterator it = polygons.entrySet().iterator();
+                while (it.hasNext()) {
+                    HashMap.Entry pairs = (HashMap.Entry)it.next();
+                    String way_id = (String) pairs.getKey();
+                    ArrayList<String> polygon = (ArrayList<String>) pairs.getValue();
                     for( int j = 0; j < polygon.size(); j ++ ) {
                         ArrayList<Float> lat_lon = points.get(polygon.get(j));
                         if( lat_lon != null ) {
@@ -278,10 +162,9 @@ public class GameActivity extends Activity {
                         myWebView.loadUrl("javascript:drawPolygonFromPoints(\""+point_data+"\")");
                         point_data = "";
                     }
+                    it.remove(); // avoids a ConcurrentModificationException
                 }
 
-                //String msg = "Hello from Android";
-                //myWebView.loadUrl("javascript:wave()");
                 return "";
             }
 

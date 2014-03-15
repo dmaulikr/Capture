@@ -4,8 +4,22 @@ import com.parse.*;
 
 /**
  * Created by Sacha on 2/27/14.
+ * Edited by Sacha on 3/15/14.
  */
 public class ParseManager {
+
+    /**
+     * This is the only exception thrown by the ParseManager class. It is only thrown when there is
+     * an issue connecting to the Parse servers.
+     */
+    public static final class ConnectionFailedException extends Exception {
+
+    }
+
+    /**
+     * This enum represents the results of a login or sign up operation.
+     */
+    public enum LoginResult { SUCCESS, USER_TAKEN, EMAIL_TAKEN, INVALID }
 
     /**
      * This method checks if there is a user currently logged in.
@@ -23,39 +37,57 @@ public class ParseManager {
         return ParseUser.getCurrentUser();
     }
     /**
-     * This method tires to log in a user to Parse, and if the user does not exist, it will sign up a new
-     * user with the given information. This method assumes the Strings for username and password have been
+     * This method tires to log in a user to Parse and assumes the Strings for username and password have been
      * checked for invalid characters.
      * @param username the username to check
      * @param password the password to check
-     * @param email the email to check
-     * @throw a ParseException if the data is incorrect
-     * @return true if the user existed prior, false otherwise
+     * @return a LoginResult representing the status of the attempt
      */
-    public static boolean logIn(String username, String password, String email)
-            throws ParseException {
-        ParseUser currentUser = null;
+    public static LoginResult logIn(String username, String password) throws ConnectionFailedException {
         try {
-            currentUser = ParseUser.logIn(username, password);
+            ParseUser.logIn(username, password);
         } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if (currentUser == null) {
-            currentUser = new ParseUser();
-            currentUser.setUsername(username);
-            currentUser.setPassword(password);
-            currentUser.setEmail(email);
-            try {
-                currentUser.signUp();
-            } catch (ParseException e) {
-                e.printStackTrace();
+            switch (e.getCode()) {
+                case ParseException.ACCOUNT_ALREADY_LINKED:
+                case ParseException.INVALID_EMAIL_ADDRESS:
+                    return LoginResult.INVALID;
+                default:
+                    throw new ConnectionFailedException();
             }
-            return false;
         }
-        return true;
+        return LoginResult.SUCCESS;
     }
     // TODO - Separate registration method
-
+    /**
+     * This method signs up a user on the Parse database, checking first to see if the specified information
+     * already exists. This method assumes that the information has been checked for invalid characters.
+     * @param username the username to check
+     * @param password the password to check
+     * @param email the email to check
+     * @return a LoginResult representing the status of the attempt
+     */
+    public static LoginResult signUp(String username, String password, String email)
+            throws ConnectionFailedException {
+        ParseUser newUser = new ParseUser();
+        newUser.setUsername(username);
+        newUser.setPassword(password);
+        newUser.setEmail(email);
+        try {
+            newUser.signUp();
+        } catch (ParseException e) {
+            switch (e.getCode()) {
+                case ParseException.EMAIL_TAKEN:
+                    return LoginResult.EMAIL_TAKEN;
+                case ParseException.INVALID_EMAIL_ADDRESS:
+                    return LoginResult.INVALID;
+                case ParseException.USERNAME_TAKEN:
+                    return LoginResult.USER_TAKEN;
+                default:
+                    throw new ConnectionFailedException();
+            }
+        }
+        return LoginResult.SUCCESS;
+    }
     /**
      * capturePoint modifies the ParseObject for the CapturePoint specified such that the owner becomes the
      * the current user and the defending troops become the number specified.

@@ -9,13 +9,18 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+<<<<<<< HEAD
 import com.parse.ParseException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+=======
+import java.util.regex.*;
+>>>>>>> master
 
 /**
  * Created by Alan on 2/22/14.
+ * Edited by Sacha on 3/15/14.
  */
 public class SignupActivity extends Activity {
 
@@ -38,20 +43,17 @@ public class SignupActivity extends Activity {
         CharSequence email = emailFieldView.getText();
 
         // First check if username contains invalid characters
-        if (usernameContainsInvalidCharacters(
-                usernameFieldView.getText().toString())) {
-            String message = "Username should be alphanumeric. Please try " +
-                    "again with a valid username.";
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        if (usernameContainsInvalidCharacters(usernameFieldView.getText())) {
+            Toast.makeText(this, "Specified username contains invalid characters",
+                    Toast.LENGTH_LONG).show();
         }
 
-        // Check if password contains invalid characters
-        if (passwordContainsInvalidCharacters(passwordInitialView.getText()
-                .toString())) {
-            String message = "Password cannot contain the following " +
-                    "characters:\n ~#@*+%{}<>[]|_^.,";
+        /* Check if username is taken. - handled by parse
+        else if (usernameTaken(username)) {
+            String message = "The name " + username + " is taken. Please " +
+                    "choose another name and try again.";
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        }
+        } */
 
         // Check if passwords match
         else if (!passwordsMatch(passwordInitial, passwordConfirm)) {
@@ -67,31 +69,25 @@ public class SignupActivity extends Activity {
 
         // If all is well, submit strings in fields to DB.
         else {
+            CharSequence submitMessage = "Successfully submitted! " + username + "," +
+                    passwordInitial + "," + email;
             try {
-                ParseManager.logIn(username.toString(), passwordInitial.toString
-                    (), email.toString());
-            } catch (ParseException pe) {
-                Toast.makeText(this, "Username taken / Other Parse error. " +
-                        "Please try again", Toast.LENGTH_LONG).show();
+                ParseManager.signUp(username.toString(), passwordConfirm.toString(), email.toString());
+            } catch (ParseManager.ConnectionFailedException e) {
+                submitMessage = "Couldn't connect to Parse. Please check your internet connection.";
             }
-            // TODO: Verify that this does not execute if exception is caught
-            Toast.makeText(this, "Registration succeeded! Please log in.",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this, submitMessage, Toast.LENGTH_LONG).show();
             finish();
         }
     }
 
-    private boolean usernameContainsInvalidCharacters(String name) {
-        String pattern = "^[a-zA-Z0-9]*$";
-        return !name.matches(pattern);
-    }
-
-    private boolean passwordContainsInvalidCharacters(String password) {
-        Pattern pattern = Pattern.compile("[~#@*+%{}<>\\[\\]|\"\\_^.,]");
-        Matcher matcher = pattern.matcher(password);
+    private boolean usernameContainsInvalidCharacters(CharSequence name) {
+        Pattern pattern = Pattern.compile("[~#@*+%{}<>\\[\\]|\"\\_^]");
+        Matcher matcher = pattern.matcher(name.toString());
         return matcher.find();
     }
 
+    /* This is handled by Parse.
     private boolean usernameTaken(CharSequence name) {
         // TODO: Unimplemented
         // Query database for matching name
@@ -100,7 +96,7 @@ public class SignupActivity extends Activity {
         } else {
             return false;
         }
-    }
+    } */
 
     private boolean passwordsMatch(CharSequence pw1, CharSequence pw2) {
         if (pw1 == null || pw2 == null) {

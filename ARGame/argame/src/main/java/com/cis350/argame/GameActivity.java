@@ -1,10 +1,12 @@
 package com.cis350.argame;
 
 import com.cis350.argame.util.SystemUiHider;
+import com.cis350.argame.util.XMLQueryHandler;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,8 +18,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -29,7 +36,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -39,6 +48,8 @@ import org.xml.sax.SAXException;
 //import org.osmdroid.views.MapView;
 
 
+import android.app.Activity;
+import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.GeolocationPermissions;
@@ -83,146 +94,93 @@ public class GameActivity extends Activity {
             Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
         }
 
-        public void showBuildings(String bbox) {
+        private class BuildingLoader extends AsyncTask<String, Integer, String> {
 
-            // --------------- Data Structures ---------------- //
-            // key = way id, value = array of node ids
-            ArrayList<ArrayList<Integer>> polygons = new ArrayList<ArrayList<Integer>>();
-            // key = node id, value = array of latitude, longitude
-            HashMap<Integer, ArrayList<Float>> points = new HashMap<Integer, ArrayList<Float>>();
-            // ------------------------------------------------ //
+            protected String doInBackground(String... strs) {
 
-            //Toast.makeText(mContext, bbox, Toast.LENGTH_SHORT).show();
-            String bounds[] = bbox.split(","); // w s e n
+                String bbox = strs[0];
 
-            // ---------------- OVERPASS API ------------------ //
-            // use XML queries and send them to interpreter as POST methods
+                // --------------- Data Structures ---------------- //
+                // key = way id, value = array of node ids
+                HashMap<String, ArrayList<String>> polygons = new HashMap<String,ArrayList<String>>();
+                // key = node id, value = array of latitude, longitude
+                HashMap<String, ArrayList<Float>> points = new HashMap<String, ArrayList<Float>>();
 
-            try {
+                String bounds[] = bbox.split(","); // w s e n
 
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+                XMLQueryHandler xmlHandler = new XMLQueryHandler();
+                String output = xmlHandler.getXMLDataFromBBox(bounds,httpclient,httppost);
 
-                // Find all ways with key "building" and all their member nodes
-                String data=
+                try {
+                    // ------------ Parsing XML -------------- //
+                    // Create a DOM element to parse XML
+                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                    factory.setNamespaceAware(true); // allows access to localName
+                    DocumentBuilder db = factory.newDocumentBuilder();
+                    InputSource inStream = new InputSource();
+                    inStream.setCharacterStream(new StringReader(output));
+                    Document doc = db.parse(inStream);
 
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><osm-script timeout=\"900\" element-limit=\"1073741824\">"+
-                "<query type=\"way\">"+
-                "<has-kv k=\"building\" v=\"yes\"/>"+
-                "<bbox-query s=\""+bounds[1]+"\" w=\""+bounds[0]+"\" n=\""+bounds[3]+"\" e=\""+bounds[2]+"\"/>"+
-                "</query>"+
-                "<union>"+
-                "<item />"+
-                "<recurse type=\"way-node\"/>"+
-                "</union>"+
-                "<print/></osm-script>";
+                    // populate polygons
+                    polygons = xmlHandler.getPolygonData(doc);
 
+                    // populate points
+                    points = xmlHandler.getPointData(doc);
 
-                nameValuePairs.add(new BasicNameValuePair("form-data", data));
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                // Execute HTTP Post Request
-                HttpResponse response = httpclient.execute(httppost);
-
-                HttpEntity entity = response.getEntity();
-                String output = "";
-                // get the result from query in XML format and convert to string
-                if (entity != null) {
-                    InputStream instream = entity.getContent();
-
-                    InputStreamReader is = new InputStreamReader(instream);
-                    StringBuilder sb=new StringBuilder();
-                    BufferedReader br = new BufferedReader(is);
-                    String read = br.readLine();
-
-                    while(read != null) {
-                        //System.out.println(read);
-                        sb.append(read);
-                        read =br.readLine();
-
-                    }
-                    output = sb.toString(); // XML
-                    System.out.println(output);
+                } catch (ClientProtocolException e) {
+                    // TODO Auto-generated catch block
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                } catch (ParserConfigurationException e) {
+                    e.printStackTrace();
+                } catch (SAXException e) {
+                    e.printStackTrace();
                 }
 
-                // ------------ Parsing XML -------------- //
-                // Create a DOM element to parse XML
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                factory.setNamespaceAware(true); // allows access to localName
-                DocumentBuilder db = factory.newDocumentBuilder();
-                InputSource inStream = new InputSource();
-                inStream.setCharacterStream(new StringReader(output));
-                Document doc = db.parse(inStream);
+               // polygons = xmlHandler.getPolygonData(doc );
+               // points = xmlHandler.getPointData(doc);
 
-                // populate polygons
-                NodeList ways = doc.getElementsByTagName("way");
-                for (int i = 0; i < ways.getLength(); i++) {
-                    Node w_item = ways.item(i);
-                    int w_id = Integer.parseInt(w_item.getAttributes().item(0).getNodeValue()); // way id
-                    NodeList w_nodes = w_item.getChildNodes();
+                // --------------- to Leaflet --------------- //
+                // send all polygon data to Leaflet to draw on the map
 
-                    ArrayList<Integer> node_ids = new ArrayList<Integer>();
-
-                    for(int j = 0; j < w_nodes.getLength(); j++) {
-                        Node w_child = w_nodes.item(j);
-                        if( w_child.hasAttributes()) {
-                            String local_name = w_child.getLocalName();
-                            // get id of the node that belongs to this way
-                            if( local_name.compareTo("nd") == 0) {
-                                 int n_id = Integer.parseInt(w_child.getAttributes().item(0).getNodeValue()); // node id
-                                 node_ids.add(n_id);
-                            }
+                String point_data = "";
+                Iterator it = polygons.entrySet().iterator();
+                while (it.hasNext()) {
+                    HashMap.Entry pairs = (HashMap.Entry)it.next();
+                    String way_id = (String) pairs.getKey();
+                    ArrayList<String> polygon = (ArrayList<String>) pairs.getValue();
+                    for( int j = 0; j < polygon.size(); j ++ ) {
+                        ArrayList<Float> lat_lon = points.get(polygon.get(j));
+                        if( lat_lon != null ) {
+                            point_data += lat_lon.get(0) + "," + lat_lon.get(1);
+                        }
+                        if(j < polygon.size() - 1) {
+                            point_data += ";";
                         }
                     }
-
-                    polygons.add(node_ids);
+                    if(point_data.compareTo("") != 0) {
+                        myWebView.loadUrl("javascript:drawPolygonFromPoints(\""+point_data+"\")");
+                        point_data = "";
+                    }
+                    it.remove(); // avoids a ConcurrentModificationException
                 }
 
-                // populate points
-                NodeList nodes = doc.getElementsByTagName("node");
-                for (int i = 0; i < nodes.getLength(); i++) {
-                    Node n_item = nodes.item(i);
-                    int n_id = Integer.parseInt(n_item.getAttributes().item(0).getNodeValue()); // node id
-                    float latitude = Float.parseFloat(n_item.getAttributes().item(1).getNodeValue()); // lat
-                    float longitude = Float.parseFloat(n_item.getAttributes().item(2).getNodeValue()); // lon
-
-                    ArrayList<Float> node_coords = new ArrayList<Float>();
-                    node_coords.add(latitude);
-                    node_coords.add(longitude);
-
-                    points.put(n_id, node_coords);
-                }
-
-            } catch (ClientProtocolException e) {
-                // TODO Auto-generated catch block
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();
-            } catch (SAXException e) {
-                e.printStackTrace();
+                return "";
             }
 
-            // --------------- to Leaflet --------------- //
-            // send all polygon data to Leaflet to draw on the map
-
-            String point_data = "";
-            for( int i = 0; i < polygons.size(); i ++) {
-                ArrayList<Integer> polygon = polygons.get(i);
-                for( int j = 0; j < polygon.size(); j ++ ) {
-                    ArrayList<Float> lat_lon = points.get(polygon.get(j));
-                    if( lat_lon != null ) {
-                        point_data += lat_lon.get(0) + "," + lat_lon.get(1);
-                    }
-                    if(j < polygon.size() - 1) {
-                        point_data += ";";
-                    }
-                }
-                myWebView.loadUrl("javascript:drawPolygonFromPoints(\""+point_data+"\")");
-                point_data = "";
+            protected void onProgressUpdate(Integer... progress) {
+                //setProgressPercent(progress[0]);
             }
 
-            //String msg = "Hello from Android";
-            //myWebView.loadUrl("javascript:wave()");
+            protected void onPostExecute(String result) {
+
+            }
+        }
+
+        @JavascriptInterface
+        public void showBuildings(String bbox) {
+            new BuildingLoader().execute(bbox);
+
         }
     }
     // end Web Interface
@@ -337,12 +295,17 @@ public class GameActivity extends Activity {
         myMapController.setZoom(4);
         myOpenMapView.setTileSource(TileSourceFactory.MAPQUESTOSM);
         */
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         //--------- LEAFLET ----------------//
 
         myWebView = (WebView) findViewById(R.id.webview);
         myWebView.clearCache(true); // clear the cached javascript
-        myWebView.loadUrl("http://poroawards.net/Geolocation/map.html");
+
         // add web interface
         myWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
 
@@ -364,9 +327,8 @@ public class GameActivity extends Activity {
         //use "file:///android_asset/map.html" for device
         //use "http://poroawards.net/Geolocation/map.html" for web or emulator, change hosting later
 
+        myWebView.loadUrl("http://poroawards.net/Geolocation/map.html");
     }
-
-
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

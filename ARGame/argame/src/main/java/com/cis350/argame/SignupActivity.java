@@ -9,14 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< HEAD
-import com.parse.ParseException;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-=======
 import java.util.regex.*;
->>>>>>> master
 
 /**
  * Created by Alan on 2/22/14.

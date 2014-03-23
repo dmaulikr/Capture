@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Log In"
-            android:id="@+id/loginButton"
+            android:id="@+id/commenceLoginButton"
             android:layout_marginBottom="129dp"
             android:background="@color/black_overlay"
             android:layout_alignParentBottom="true"

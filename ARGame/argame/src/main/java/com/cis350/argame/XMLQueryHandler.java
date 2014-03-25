@@ -1,4 +1,4 @@
-package com.cis350.argame.util;
+package com.cis350.argame;
 
 import android.util.Log;
 

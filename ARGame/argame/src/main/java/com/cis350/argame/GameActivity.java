@@ -1,7 +1,6 @@
 package com.cis350.argame;
 
 import com.cis350.argame.util.SystemUiHider;
-import com.cis350.argame.util.XMLQueryHandler;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -13,34 +12,17 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 //import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -48,8 +30,6 @@ import org.xml.sax.SAXException;
 //import org.osmdroid.views.MapView;
 
 
-import android.app.Activity;
-import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.GeolocationPermissions;
@@ -70,125 +50,6 @@ import javax.xml.parsers.ParserConfigurationException;
 public class GameActivity extends Activity {
 
     WebView myWebView;
-    // Web Interface to bind the javascript file
-    public class WebAppInterface {
-        Context mContext;
-
-        // Create a new HttpClient and Post Header
-        HttpClient httpclient;
-        HttpPost httppost;
-
-        /** Instantiate the interface and set the context */
-        WebAppInterface(Context c) {
-            mContext = c;
-
-            // Create a new HttpClient and Post Header
-            httpclient = new DefaultHttpClient();
-            httppost = new HttpPost("http://overpass-api.de/api/interpreter");
-
-        }
-
-        /** Show a toast from the web page */
-        @JavascriptInterface
-        public void showToast(String toast) {
-            Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
-        }
-
-        private class BuildingLoader extends AsyncTask<String, Integer, String> {
-
-            protected String doInBackground(String... strs) {
-
-                String bbox = strs[0];
-
-                // --------------- Data Structures ---------------- //
-                // key = way id, value = array of node ids
-                HashMap<String, ArrayList<String>> polygons = new HashMap<String,ArrayList<String>>();
-                // key = node id, value = array of latitude, longitude
-                HashMap<String, ArrayList<Float>> points = new HashMap<String, ArrayList<Float>>();
-
-                String bounds[] = bbox.split(","); // w s e n
-
-                XMLQueryHandler xmlHandler = new XMLQueryHandler();
-                String output = xmlHandler.getXMLDataFromBBox(bounds,httpclient,httppost);
-
-                try {
-                    // ------------ Parsing XML -------------- //
-                    // Create a DOM element to parse XML
-                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                    factory.setNamespaceAware(true); // allows access to localName
-                    DocumentBuilder db = factory.newDocumentBuilder();
-                    InputSource inStream = new InputSource();
-                    inStream.setCharacterStream(new StringReader(output));
-                    Document doc = db.parse(inStream);
-
-                    // populate polygons
-                    polygons = xmlHandler.getPolygonData(doc);
-
-                    // populate points
-                    points = xmlHandler.getPointData(doc);
-
-                } catch (ClientProtocolException e) {
-                    // TODO Auto-generated catch block
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                } catch (ParserConfigurationException e) {
-                    e.printStackTrace();
-                } catch (SAXException e) {
-                    e.printStackTrace();
-                }
-
-               // polygons = xmlHandler.getPolygonData(doc );
-               // points = xmlHandler.getPointData(doc);
-
-                // --------------- to Leaflet --------------- //
-                // send all polygon data to Leaflet to draw on the map
-
-                String point_data = "";
-                Iterator it = polygons.entrySet().iterator();
-                while (it.hasNext()) {
-                    HashMap.Entry pairs = (HashMap.Entry)it.next();
-                    String way_id = (String) pairs.getKey();
-                    ArrayList<String> polygon = (ArrayList<String>) pairs.getValue();
-                    for( int j = 0; j < polygon.size(); j ++ ) {
-                        ArrayList<Float> lat_lon = points.get(polygon.get(j));
-                        if( lat_lon != null ) {
-                            point_data += lat_lon.get(0) + "," + lat_lon.get(1);
-                        }
-                        if(j < polygon.size() - 1) {
-                            point_data += ";";
-                        }
-                    }
-                    if(point_data.compareTo("") != 0) {
-                        myWebView.loadUrl("javascript:drawPolygonFromPoints(\""+point_data+"\")");
-                        point_data = "";
-                    }
-                    it.remove(); // avoids a ConcurrentModificationException
-                }
-
-                return "";
-            }
-
-            protected void onProgressUpdate(Integer... progress) {
-                //setProgressPercent(progress[0]);
-            }
-
-            protected void onPostExecute(String result) {
-
-            }
-        }
-
-        @JavascriptInterface
-        public void showBuildings(String bbox) {
-            new BuildingLoader().execute(bbox);
-
-        }
-    }
-    // end Web Interface
-
-    // global variables for osmdroid
-    //private MapView myOpenMapView;
-    //private MapController myMapController;
-
 
     /**
      * Whether or not the system UI should be auto-hidden after
@@ -286,15 +147,6 @@ public class GameActivity extends Activity {
         // while interacting with the UI.
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
 
-        // Showing the Map
-        // --------------- osmdroid --------------- //
-
-         /*  myOpenMapView = (MapView)findViewById(R.id.openmapview);
-        myOpenMapView.setBuiltInZoomControls(true);
-        myMapController = myOpenMapView.getController();
-        myMapController.setZoom(4);
-        myOpenMapView.setTileSource(TileSourceFactory.MAPQUESTOSM);
-        */
     }
 
     @Override
@@ -307,7 +159,7 @@ public class GameActivity extends Activity {
         myWebView.clearCache(true); // clear the cached javascript
 
         // add web interface
-        myWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
+        myWebView.addJavascriptInterface(new WebAppInterface(this, myWebView), "Android");
 
         WebSettings webSettings = myWebView.getSettings();
 

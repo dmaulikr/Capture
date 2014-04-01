@@ -12,43 +12,30 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Created by Anton on 3/15/14.
  */
 public class XMLQueryHandler {
 
-   // private HttpPost httppost;
-   // private HttpClient httpclient;
+    // private HttpPost httppost;
+    // private HttpClient httpclient;
 
     public XMLQueryHandler() {
     }
 
+    public ArrayList<String> build_ids = new ArrayList<String>();
 
     public String getXMLDataFromBBox(String[] bounds,HttpClient httpclient, HttpPost httppost) {
         String output = "";
@@ -104,13 +91,18 @@ public class XMLQueryHandler {
         return output;
     }
 
+    public ArrayList<String> getBuildIds() {
+        return this.build_ids;
+    }
+
     /**
      * returns polygons
+     *
      * @param doc - DOM with all XML data
      * @return
      */
-    public HashMap<String,ArrayList<String>> getPolygonData(Document doc) {
-        HashMap<String,ArrayList<String>> polygons = new HashMap<String,ArrayList<String>>();
+     public ArrayList<ArrayList<String>> getPolygonData(Document doc) {
+        ArrayList<ArrayList<String>> polygons = new ArrayList<ArrayList<String>>();
         NodeList ways = doc.getElementsByTagName("way");
         for (int i = 0; i < ways.getLength(); i++) {
             Node w_item = ways.item(i);
@@ -121,6 +113,7 @@ public class XMLQueryHandler {
                 String id = child.getAttribute("id");
                 if(id.compareTo("") != 0) {
                     w_id = id; // way id
+                    //WebAppInterface.build_id = w_id; //
                 } else continue;
             }
 
@@ -141,13 +134,14 @@ public class XMLQueryHandler {
                     }
                     String build = child.getAttribute("k");
                     if(build.compareTo("building") == 0) {
+                        build_ids.add(w_id);
                         is_building = true;
                     }
                 }
             }
 
             if(node_ids.size() > 0 && is_building) {
-                polygons.put(w_id,node_ids);
+                polygons.add(node_ids);
             }
         }
         return polygons;
@@ -191,6 +185,7 @@ public class XMLQueryHandler {
                 n_id = ""; latitude = -1; longitude = -1;
             }
         }
+
         return points;
     }
 }

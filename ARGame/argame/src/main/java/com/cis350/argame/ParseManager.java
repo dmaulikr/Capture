@@ -1,6 +1,15 @@
 package com.cis350.argame;
 
 import com.parse.*;
+import com.parse.ParseException;
+
+import android.util.*;
+
+import java.lang.reflect.Array;
+import java.text.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Sacha on 2/27/14.
@@ -107,14 +116,67 @@ public class ParseManager {
         newPoint.put("pointID", pointID);
         newPoint.saveInBackground();
     }
-    public static ParseObject getPointByID(int pointID) throws ParseException {
+    public static ParseObject getPointByID(String pointID) throws ParseException {
         ParseQuery forID = ParseQuery.getQuery("CapturePoint");
         forID.whereEqualTo("pointID", pointID);
-        return (ParseObject) forID.find().get(0);
+        if (forID.find().size() > 0) {
+            return (ParseObject) forID.find().get(0);
+        } else return null;
     }
     public static ParseObject[] getBuildingsByOwner(ParseUser user) throws ParseException {
         ParseQuery forUser = ParseQuery.getQuery("CapturePoint");
         forUser.whereEqualTo("owner", user);
         return (ParseObject[]) forUser.find().toArray();
+    }
+
+    /*public static String[] getBuildingsOwnersIds(ArrayList<String> s) throws ParseException {
+        int len = s.size();
+        String[] out = new String[len];
+        for (int i = 0; i < s.size(); i++) {
+            ParseObject forID = getPointByID(s.get(i));
+            out[i] = (String) forID.get("ownerID");
+        }
+        return out;
+    }*/
+
+    //////get the owner ids of the buildings (String[] )
+    public static ParseObject[] getBuildingsOwnersIds(String[] buildings) throws ParseException {
+        int size = 0;
+        size = buildings.length;
+        String[] result = new String[size];
+        ParseQuery query = ParseQuery.getQuery("CapturePoint");
+        query.whereContainedIn("pointID", Arrays.asList(buildings));
+        /*Object[] objects_from_parse = (Object[]) query.find().toArray();
+        ParseObject[] objects = (ParseObject[]) objects_from_parse;
+        Log.w("myAppOwners", "current building owners "+objects.length+""+"CAAAAAAA");
+        String[] objs = new String[objects.length];
+        Log.w("myAppOwners", "current building owners "+objs.length+""+"BAAAAAAA");
+        for (int i = 0; i < objs.length; i++) {
+            result[i] = objects[i].get("ownerID").toString();
+            Log.w("myAppOwners", "current building owner is "+result[i]+"");
+        }
+        Log.w("myAppOwners", "current building owners "+result+""+"HAAAAAAA");
+        return result;*/
+        if (query.find().size() > 0) {
+            return (ParseObject[]) query.find().toArray(new ParseObject[size]);
+        } else return null;
+    }
+
+    public static String[] makeArrayOfOwners(ParseObject[] objects) throws java.text.ParseException {
+        if (objects == null) return new String[0];
+        int size = objects.length;
+        String[] result = new String[size];
+        String[] objs = new String[size];
+        //Log.w("myAppOwners", "current building owners "+objs.length+""+"BAAAAAAA");
+        for (int i = 0; i < objs.length; i++) {
+            if (objects[i] != null) {
+                result[i] = (String) objects[i].get("ownerID").toString();
+            } else {
+                result[i] = null;
+            }
+            //Log.w("myAppOwners", "current building owner is "+result[i]+"");
+        }
+        //Log.w("myAppOwners", "current building owners "+result+""+"HAAAAAAA");
+        return result;
     }
 }

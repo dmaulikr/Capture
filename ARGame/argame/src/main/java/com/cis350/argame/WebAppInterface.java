@@ -1,10 +1,15 @@
 package com.cis350.argame;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -214,6 +219,51 @@ public class WebAppInterface {
     @JavascriptInterface
     public void showBuildings(String bbox) {
         new BuildingLoader().execute(bbox);
+
+    }
+
+    @JavascriptInterface
+    public void showBuildingDialog(String id) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+
+        // set title
+        alertDialogBuilder.setTitle("Capture Structure");
+
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+
+        // set dialog message
+        String msg = "My id is" + id;
+
+        GameActivity game = (GameActivity) mContext;
+
+        View dialog_view = inflater.inflate(R.layout.building_dialog, null);
+        TextView tv1 = (TextView)dialog_view.findViewById(R.id.building_army_size_text);
+        tv1.setText(id);
+
+        alertDialogBuilder
+                .setView(dialog_view)
+                        //.setMessage(msg)
+                .setCancelable(true)
+                .setPositiveButton("Capture",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // if this button is clicked, close
+                        // current activity
+                    }
+                })
+                .setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
 
     }
 

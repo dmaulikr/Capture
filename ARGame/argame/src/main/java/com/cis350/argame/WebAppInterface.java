@@ -199,7 +199,7 @@ public class WebAppInterface {
                 }
                 if(point_data.compareTo("") != 0) {
                     myWebView.loadUrl("javascript:drawPolygonFromPoints(\""
-                            +point_data+"\",\""+current_id+"\",\""+current_id+"\",\""+o_id+"\")");
+                            +point_data+"\",\""+build_ids.get(i)+"\",\""+current_id+"\",\""+o_id+"\")");
                     point_data = "";
                 }
             }

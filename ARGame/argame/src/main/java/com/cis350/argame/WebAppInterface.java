@@ -274,10 +274,13 @@ public class WebAppInterface {
             ParseUser curr_user = ParseManager.getCurrentUser();
             //Log.w("myApp", "current user is "+curr_user+"");
             String curr_id = curr_user.getObjectId();
-            current_id = curr_id;
+            //current_id = curr_id;
             //Log.w("myApp", "current user id is "+curr_id+"");
             if (curr_id != null) {
+                current_id = curr_id;
                 myWebView.loadUrl("javascript:getCurrentId(\""+curr_id+"\")");
+            } else {
+                current_id = "000000000";
             }
         }
         //////

@@ -42,13 +42,6 @@ public class SignupActivity extends Activity {
                     Toast.LENGTH_LONG).show();
         }
 
-        /* Check if username is taken. - handled by parse
-        else if (usernameTaken(username)) {
-            String message = "The name " + username + " is taken. Please " +
-                    "choose another name and try again.";
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        } */
-
         // Check if passwords match
         else if (!passwordsMatch(passwordInitial, passwordConfirm)) {
             Toast.makeText(this, "Your passwords do not match. Please confirm and try again.",
@@ -84,15 +77,6 @@ public class SignupActivity extends Activity {
         return matcher.find();
     }
 
-    /* This is handled by Parse.
-    private boolean usernameTaken(CharSequence name) {
-        // Query database for matching name
-        if (name == null) {
-            return false;
-        } else {
-            return false;
-        }
-    } */
 
     private boolean passwordsMatch(CharSequence pw1, CharSequence pw2) {
         if (pw1 == null || pw2 == null) {
@@ -106,8 +90,6 @@ public class SignupActivity extends Activity {
 
     @TargetApi(Build.VERSION_CODES.FROYO)
     private boolean emailIsValid(CharSequence email) {
-        // TODO: Make more thorough by querying for popular email domains? e.g. Gmail/Ymail/penn.edu
-        // TODO: Or send a dummy email to the specified mail server and see if it bounces
         if (email == null) {
             return false;
         } else {

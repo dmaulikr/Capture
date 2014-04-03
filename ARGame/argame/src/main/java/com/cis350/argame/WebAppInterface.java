@@ -282,6 +282,8 @@ public class WebAppInterface {
             } else {
                 current_id = "000000000";
             }
+        } else {
+            current_id = "000000000";
         }
         //////
     }

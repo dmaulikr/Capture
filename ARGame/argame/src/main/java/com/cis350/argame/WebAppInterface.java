@@ -181,9 +181,13 @@ public class WebAppInterface {
                 //Log.w("myApp", "current owner_id at i "+o_id+"");
                 // if (!owner_ids.isEmpty()) { //REMOVE THIS
                 if (owner_ids.size() > 0) {
-                    o_id = owner_ids.get(i);
+                    if(owner_ids.get(i) != null) {
+                        o_id = owner_ids.get(i);
+                    } else {
+                        o_id = "";
+                    }
                 } else {
-                    o_id = null;
+                    o_id = "";
                 }
                 Log.w("myApp", "current owner_id at i "+o_id+"");
                 Log.w("myApp", "current current_id at i "+current_id+"");
@@ -201,9 +205,11 @@ public class WebAppInterface {
                     myWebView.loadUrl("javascript:drawPolygonFromPoints(\""
                             +point_data+"\",\""+build_ids.get(i)+"\",\""+current_id+"\",\""+o_id+"\")");
                     point_data = "";
+                    o_id = "";
                 }
             }
             owner_ids.clear();
+            polygons.clear();
             return "";
         }
 

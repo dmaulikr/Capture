@@ -19,8 +19,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:+'
     compile 'com.android.support:support-v4:18.0.0'
+    compile 'com.android.support:appcompat-v7:+'
     compile files('build/libs/Parse-1.4.1.jar')
     compile files('build/libs/Parse-1.4.1.jar')
 }

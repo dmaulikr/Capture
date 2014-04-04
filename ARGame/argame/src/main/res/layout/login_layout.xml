@@ -21,8 +21,8 @@
         android:layout_gravity="center">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
             android:text="Log In"
             android:id="@+id/commenceLoginButton"
             android:layout_marginBottom="129dp"
@@ -51,6 +51,7 @@
             android:id="@+id/passwordField"
             android:layout_below="@+id/usernameLabel"
             android:layout_centerHorizontal="true"
+            android:textColor="#ffffff"
             android:background="@color/black_overlay" />
 
         <TextView

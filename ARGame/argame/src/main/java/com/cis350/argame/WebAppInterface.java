@@ -44,6 +44,8 @@ public class WebAppInterface {
     private HttpClient httpclient;
     private HttpPost httppost;
 
+    public static final String DEFAULT_CURRENT_ID = "-69696969";
+
     /** This constructor instantiate the interface and set the context. */
     public WebAppInterface(final Context c, final WebView w) {
         mContext = c;
@@ -290,10 +292,10 @@ public class WebAppInterface {
                 currentID = curr_id;
                 myWebView.loadUrl("javascript:getCurrentId(\""+curr_id+"\")");
             } else {
-                currentID = "000000000";
+                currentID = DEFAULT_CURRENT_ID;
             }
         } else {
-            currentID = "00000000";
+            currentID = DEFAULT_CURRENT_ID;
         }
         //////
     }

@@ -34,6 +34,10 @@ public class LaunchScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launchscreen_layout);
         loginButton = (Button) findViewById(R.id.loginButton);
+        parseInit();
+    }
+
+    public void parseInit() {
         Parse.initialize(this, "tfq8Gi16KZq2L98xOp5cmlgKjM4rBXaiIlo2gBZx", "88zROkFEksIDYF2XPhqWqOumxocCy7hMVmkystCz");
     }
 

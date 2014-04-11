@@ -113,7 +113,7 @@ public class XMLQueryHandler {
                 String id = child.getAttribute("id");
                 if(id.compareTo("") != 0) {
                     w_id = id; // way id
-                    //WebAppInterface.build_id = w_id; //
+                    //WebAppInterface.buildID = w_id; //
                 } else continue;
             }
 
@@ -121,6 +121,7 @@ public class XMLQueryHandler {
             NodeList w_nodes = w_item.getChildNodes();
             boolean is_building = false;
             ArrayList<String> node_ids = new ArrayList<String>();
+            node_ids.add(w_id);
             for(int j = 0; j < w_nodes.getLength(); j++) {
                 Node w_child = w_nodes.item(j);
 

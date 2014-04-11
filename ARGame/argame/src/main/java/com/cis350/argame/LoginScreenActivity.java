@@ -22,10 +22,6 @@ public class LoginScreenActivity extends Activity {
         setContentView(R.layout.login_layout);
     }
 
-    public void setLSA (Activity login) {
-        this.login = login;
-    }
-
     public void onLoginSubmitButtonClick(View v) {
         TextView usernameView = (TextView)findViewById(R.id.usernameField);
         TextView passwordView = (TextView)findViewById(R.id.passwordField);
@@ -44,8 +40,6 @@ public class LoginScreenActivity extends Activity {
                 intent.putExtra("com.cis350.argame.loggedin", true);
                 this.setResult(RESULT_OK, intent);
             } catch (ParseManager.ConnectionFailedException e) {
-                // TODO: Credentials incorrect exception
-                // TODO: User already exists exception
                 submitMessage = "Couldn't connect to Parse. Please check your internet connection.";
                 this.setResult(RESULT_CANCELED);
             }
@@ -54,6 +48,9 @@ public class LoginScreenActivity extends Activity {
         }
     }
     private boolean usernameContainsInvalidCharacters(CharSequence name) {
+        if (name == null) {
+            return true;
+        }
         Pattern pattern = Pattern.compile("[~#@*+%{}<>\\[\\]|\"\\_^]");
         Matcher matcher = pattern.matcher(name.toString());
         return matcher.find();

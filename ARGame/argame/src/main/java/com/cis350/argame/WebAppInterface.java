@@ -36,6 +36,7 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class WebAppInterface {
     private boolean isLoggedIn = ParseManager.isLoggedIn();
+    //PlayerProfile
 
     private Context mContext;
     private WebView myWebView;
@@ -146,7 +147,7 @@ public class WebAppInterface {
                 for (int k = 0; k < out.length/3; k++) {
                     buildIDs.add(out[index]);
                     ownerIDs.add(out[index+1]);
-                    armiesIDs.add(out[index+2]);
+                    armiesIDs.add(out[index + 2]);
                     for (int i = 0; i < polygons.size(); i++) {
                         if (polygons.get(i).get(0) == buildIDs.get(k)) {
                             ArrayList<String> p = polygons.get(i);
@@ -332,14 +333,22 @@ public class WebAppInterface {
     public void setCurrentIdInJs() {
         //setting the current user ID////
         if(isLoggedIn) {
-            ParseUser curr_user = ParseManager.getCurrentUser();
+            PlayerProfile player = new PlayerProfile();
+
             //Log.w("myApp", "current user is "+curr_user+"");
-            String curr_id = curr_user.getObjectId();
+            String playerID = player.getId();
+            String playerName = player.getName();
+            int playerArmy = player.getArmy();
+            int playerGold = player.getGold();
+            Log.w("CU", "current user id: " + playerID);
+            Log.w("CU", "current user name: " + playerName);
+            Log.w("CU", "current user army: " + playerArmy);
+            Log.w("CU", "current user gold: " + playerGold);
             //currentID = curr_id;
             //Log.w("myApp", "current user id is "+curr_id+"");
-            if (curr_id != null) {
-                currentID = curr_id;
-                myWebView.loadUrl("javascript:getCurrentId(\""+curr_id+"\")");
+            if (player != null) {
+                currentID = playerID;
+                myWebView.loadUrl("javascript:getCurrentId(\""+playerID+"\")");
             } else {
                 currentID = DEFAULT_CURRENT_ID;
             }

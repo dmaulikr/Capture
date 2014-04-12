@@ -298,5 +298,7 @@ public class WebAppInterface {
             currentID = DEFAULT_CURRENT_ID;
         }
         //////
+
+        // create new PlayerProfile here
     }
 }

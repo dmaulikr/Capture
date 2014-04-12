@@ -121,6 +121,7 @@ public class XMLQueryHandler {
             NodeList w_nodes = w_item.getChildNodes();
             boolean is_building = false;
             ArrayList<String> node_ids = new ArrayList<String>();
+            node_ids.add(w_id);
             for(int j = 0; j < w_nodes.getLength(); j++) {
                 Node w_child = w_nodes.item(j);
 

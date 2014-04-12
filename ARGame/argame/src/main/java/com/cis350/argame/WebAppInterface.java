@@ -63,6 +63,9 @@ public class WebAppInterface {
 
         private ArrayList<String> buildIDs;
         private ArrayList<String> ownerIDs;
+
+        private ArrayList<ArrayList<String>> polys;
+
         private HashMap<String, ArrayList<Float>> points;
         private ArrayList<ArrayList<String>> polygons;
         private String pointData;
@@ -76,6 +79,9 @@ public class WebAppInterface {
             // --------------- Data Structures ---------------- //
             // key = way id, value = array of node ids
             polygons = new ArrayList<ArrayList<String>>();
+
+            polys = new ArrayList<ArrayList<String>>();
+
             // key = node id, value = array of latitude, longitude
             points = new HashMap<String, ArrayList<Float>>();
 
@@ -130,9 +136,24 @@ public class WebAppInterface {
             }
             try {
                 out = ParseManager.makeArrayOfOwners(ParseManager.getBuildingsOwnersIds(b_o));
-                //Log.w("HERE","I am here"+b_o.length+"");
-                for (int k = 0; k < out.length; k++) {
-                    ownerIDs.add(out[k]);
+
+                //Log.w("HERE","I am here"+out.length+"");
+                buildIDs.clear();
+                ownerIDs.clear();
+                int index = 0;
+                for (int k = 0; k < out.length/2; k++) {
+                    buildIDs.add(out[index]);
+                    ownerIDs.add(out[index+1]);
+                    for (int i = 0; i < polygons.size(); i++) {
+                        if (polygons.get(i).get(0) == buildIDs.get(k)) {
+                            ArrayList<String> p = polygons.get(i);
+                            p.remove(0);
+                            polys.add(p);
+                            break;
+                        }
+                    }
+                    //Log.w("ownerIDs buildingIDs", ownerIDs.get(k) + " " + buildIDs.get(k));
+                    index += 2;
                 }
                 //Log.w("HERETHERE","I am here"+ownerIDs.size()+"");
             } catch (ParseException e) {
@@ -176,11 +197,16 @@ public class WebAppInterface {
             return "";
         }
         protected void onPostExecute(String result) {
-            outerPolygonLoop(ownerIDs, buildIDs, polygons, points, pointData);
+
+            outerPolygonLoop(ownerIDs, buildIDs, polys, points, pointData);
+
         }
 
         private void outerPolygonLoop(ArrayList<String> owner_ids, ArrayList<String> build_ids, ArrayList<ArrayList<String>> polygons, HashMap<String, ArrayList<Float>> points, String point_data) {
             String o_id;
+
+            Log.w("myAppSize", "size " + owner_ids.size() + " " + build_ids.size());
+
             for( int i = 0; i < polygons.size(); i ++) {
                 ArrayList<String> polygon = polygons.get(i);
                 //Log.w("myApp", "current ownerID at i "+o_id+"");
@@ -192,8 +218,9 @@ public class WebAppInterface {
                 } else {
                     o_id = "";
                 }
-                Log.w("myApp", "current ownerID at i " + o_id + "");
-                Log.w("myApp", "current currentID at i "+ currentID +"");
+
+                Log.w("myApp", "current ownerID at i " + owner_ids.get(i) + " " + build_ids.get(i) + " ");
+
                 //} //REMOVE THIS
                 point_data = iterateThroughPolygons(build_ids, points, point_data, o_id, i, polygon);
             }
@@ -235,7 +262,8 @@ public class WebAppInterface {
     }
 
     @JavascriptInterface
-    public void showBuildingDialog(String id) {
+
+    public void showBuildingDialog(final String ids, final int closeBy) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
 
@@ -245,13 +273,18 @@ public class WebAppInterface {
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
         // set dialog message
-        String msg = "My id is" + id;
+
+        String msg = "My id is" + ids;
+        //owner of this building
+        String owner = "";
 
         GameActivity game = (GameActivity) mContext;
 
         View dialog_view = inflater.inflate(R.layout.building_dialog, null);
         TextView tv1 = (TextView)dialog_view.findViewById(R.id.building_army_size_text);
-        tv1.setText(id);
+
+        tv1.setText(ids);
+        Log.w("build ID", "build id is " + ids);
 
         alertDialogBuilder
                 .setView(dialog_view)
@@ -261,6 +294,11 @@ public class WebAppInterface {
                     public void onClick(DialogInterface dialog,int id) {
                         // if this button is clicked, close
                         // current activity
+                        Log.w("build ID", "build id is " + ids);
+                        if(closeBy == 1) {
+                            ParseManager.createPoint(ids, 10);
+                        }
+                        Log.w("Capture", "initiate building capture");
                     }
                 })
                 .setNegativeButton("Cancel",new DialogInterface.OnClickListener() {

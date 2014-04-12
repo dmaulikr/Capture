@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.util.EntityUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -80,6 +81,8 @@ public class XMLQueryHandler {
                 }
                 output = sb.toString(); // XML
             }
+
+            entity.consumeContent();
 
         }  catch (ClientProtocolException e) {
             Log.w("xml", "wrong client");

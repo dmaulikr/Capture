@@ -24,6 +24,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -342,7 +343,7 @@ public class WebAppInterface {
             //Log.w("myApp", "current user id is "+curr_id+"");
             if (curr_id != null) {
                 currentID = curr_id;
-                myWebView.loadUrl("javascript:getCurrentId(\""+curr_id+"\")");
+              //  myWebView.loadUrl("javascript:getCurrentId(\""+curr_id+"\")");
             } else {
                 currentID = DEFAULT_CURRENT_ID;
             }

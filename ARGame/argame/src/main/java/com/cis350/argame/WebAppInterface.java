@@ -309,7 +309,7 @@ public class WebAppInterface {
                         // current activity
                         Log.w("build ID", "build id is " + ids);
                         if(closeBy == 1) {
-                            setArmyDialog(ids);
+                            ParseManager.createPoint(ids, 10);
                         }
                         Log.w("Capture", "initiate building capture");
                     }
@@ -330,37 +330,6 @@ public class WebAppInterface {
 
     }
 
-    private void setArmyDialog(final String ids) {
-        final int[] out = {0};
-        final Dialog d = new Dialog(mContext);
-        d.setTitle("NumberPicker");
-        d.setContentView(R.layout.army_picker);
-        Button b1 = (Button) d.findViewById(R.id.button1);
-        Button b2 = (Button) d.findViewById(R.id.button2);
-        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
-        np.setMaxValue(100); // max value 100
-        np.setMinValue(0);   // min value 0
-        np.setWrapSelectorWheel(false);
-       // np.setOnValueChangedListener(mContext);
-        b1.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                out[0] = np.getValue(); //set the value to textview
-                ParseManager.createPoint(ids, out[0]);
-                d.dismiss();
-            }
-        });
-        b2.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                ParseManager.createPoint(ids, 0);
-                d.dismiss(); // dismiss the dialog
-            }
-        });
-        d.show();
-    }
 
     @JavascriptInterface
     public void setCurrentIdInJs() {

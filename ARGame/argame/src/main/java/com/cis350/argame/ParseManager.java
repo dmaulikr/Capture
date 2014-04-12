@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.parse.*;
 import com.parse.ParseException;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import java.util.HashMap;
@@ -149,7 +151,7 @@ public class ParseManager {
         }
         return out;
     }*/
-    private static HashMap<String, String> map_owner = new HashMap<String, String>();
+    private static HashMap<String, ArrayList<String>> map_owner = new HashMap<String, ArrayList<String>>();
     //////get the owner ids of the buildings (String[] )
     public static ParseObject[] getBuildingsOwnersIds(String[] buildings) throws ParseException {
         int size = 0;
@@ -182,7 +184,7 @@ public class ParseManager {
     public static String[] makeArrayOfOwners(ParseObject[] objects) throws java.text.ParseException {
         if (objects == null) return new String[0];
         int size = objects.length;
-        String[] result = new String[size*2];
+        String[] result = new String[size*3];
         String[] objs = new String[size];
         //Log.w("myAppOwners", "current building owners "+objs.length+""+"BAAAAAAA");
         String point = null;
@@ -190,8 +192,10 @@ public class ParseManager {
         for (int i = 0; i < objs.length; i++) {
             //result[index] = null;
             if (objects[i] != null) {
-                map_owner.put((String) objects[i].get("pointID").toString(),
-                              (String) objects[i].get("ownerID").toString());
+                ArrayList<String> dataAL = new ArrayList<String>();
+                dataAL.add((String) objects[i].get("ownerID").toString());
+                dataAL.add((String) objects[i].get("defense").toString());
+                map_owner.put((String) objects[i].get("pointID").toString(), dataAL);
                 //result[index] = (String) objects[i].get("pointID").toString();
                 //result[index+1] = (String) objects[i].get("ownerID").toString();
                 //point = objects[i].get("pointID").toString();
@@ -203,9 +207,9 @@ public class ParseManager {
             //Log.w("myAppOwners", "current building owner is "+result[i]+"");
         }
         Object[] key_set =  map_owner.keySet().toArray();
-        Log.w("Building", "key set size " + key_set.length + key_set.toString());
+        //Log.w("Building", "key set size " + key_set.length + key_set.toString());
         String[] key_str = new String[key_set.length];
-        Log.w("Building", "key array size " + key_str.length);
+        //Log.w("Building", "key array size " + key_str.length);
         int index = 0;
 
         for (int i = 0; i < key_set.length; i++) {
@@ -220,12 +224,24 @@ public class ParseManager {
         }*/
 
         index = 0;
+        ArrayList<String> unpack;
+        String owner;
+        String army;
         if (key_str.length > 0) {
             for (int i = 0; i < key_str.length; i++) {
                 result[index] = key_str[i];
-                result[index+1] = map_owner.get(result[index]);
-                Log.w("Building owners", result[index] + " " + result[index+1]);
-                index += 2;
+                unpack = map_owner.get(result[index]);
+                if (unpack != null) {
+                    owner = unpack.get(0);
+                    army = unpack.get(1);
+                } else {
+                    owner = null;
+                    army = null;
+                }
+                result[index+1] = owner;
+                result[index+2] = army;
+                //Log.w("Building owners", result[index] + " " + result[index+1] + " " + result[index+2]);
+                index += 3;
             }
         }
         map_owner.clear();

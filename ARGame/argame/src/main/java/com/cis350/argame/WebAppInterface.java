@@ -63,7 +63,7 @@ public class WebAppInterface {
 
         private ArrayList<String> buildIDs;
         private ArrayList<String> ownerIDs;
-
+        private ArrayList<String> armiesIDs;
         private ArrayList<ArrayList<String>> polys;
 
         private HashMap<String, ArrayList<Float>> points;
@@ -75,6 +75,7 @@ public class WebAppInterface {
             String bbox = strs[0];
             ownerIDs = new ArrayList<String>();
             buildIDs = new ArrayList<String>();
+            armiesIDs = new ArrayList<String>();
 
             // --------------- Data Structures ---------------- //
             // key = way id, value = array of node ids
@@ -140,10 +141,12 @@ public class WebAppInterface {
                 //Log.w("HERE","I am here"+out.length+"");
                 buildIDs.clear();
                 ownerIDs.clear();
+                armiesIDs.clear();
                 int index = 0;
-                for (int k = 0; k < out.length/2; k++) {
+                for (int k = 0; k < out.length/3; k++) {
                     buildIDs.add(out[index]);
                     ownerIDs.add(out[index+1]);
+                    armiesIDs.add(out[index+2]);
                     for (int i = 0; i < polygons.size(); i++) {
                         if (polygons.get(i).get(0) == buildIDs.get(k)) {
                             ArrayList<String> p = polygons.get(i);
@@ -153,7 +156,7 @@ public class WebAppInterface {
                         }
                     }
                     //Log.w("ownerIDs buildingIDs", ownerIDs.get(k) + " " + buildIDs.get(k));
-                    index += 2;
+                    index += 3;
                 }
                 //Log.w("HERETHERE","I am here"+ownerIDs.size()+"");
             } catch (ParseException e) {
@@ -198,14 +201,16 @@ public class WebAppInterface {
         }
         protected void onPostExecute(String result) {
 
-            outerPolygonLoop(ownerIDs, buildIDs, polys, points, pointData);
+            outerPolygonLoop(ownerIDs, buildIDs, armiesIDs, polys, points, pointData);
 
         }
 
-        private void outerPolygonLoop(ArrayList<String> owner_ids, ArrayList<String> build_ids, ArrayList<ArrayList<String>> polygons, HashMap<String, ArrayList<Float>> points, String point_data) {
+        private void outerPolygonLoop(ArrayList<String> owner_ids, ArrayList<String> build_ids,
+                                      ArrayList<String> army_ids, ArrayList<ArrayList<String>> polygons,
+                                      HashMap<String, ArrayList<Float>> points, String point_data) {
             String o_id;
-
-            Log.w("myAppSize", "size " + owner_ids.size() + " " + build_ids.size());
+            String a_id;
+            //Log.w("myAppSize", "size " + owner_ids.size() + " " + build_ids.size());
 
             for( int i = 0; i < polygons.size(); i ++) {
                 ArrayList<String> polygon = polygons.get(i);
@@ -214,20 +219,26 @@ public class WebAppInterface {
                 if (owner_ids.size() > 0) {
                     if (owner_ids.get(i) != null) {
                         o_id = owner_ids.get(i);
-                    } else o_id = "";
+                        a_id = army_ids.get(i);
+                    } else {
+                        o_id = "";
+                        a_id = "0";
+                    }
                 } else {
                     o_id = "";
+                    a_id = "0";
                 }
 
-                Log.w("myApp", "current ownerID at i " + owner_ids.get(i) + " " + build_ids.get(i) + " ");
+                //Log.w("myApp", "current ownerID at i " + owner_ids.get(i) + " " + build_ids.get(i) + " ");
 
                 //} //REMOVE THIS
-                point_data = iterateThroughPolygons(build_ids, points, point_data, o_id, i, polygon);
+                point_data = iterateThroughPolygons(build_ids, points, point_data, o_id, i, polygon, a_id);
             }
             owner_ids.clear();
         }
 
-        private String iterateThroughPolygons(ArrayList<String> build_ids, HashMap<String, ArrayList<Float>> points, String point_data, String o_id, int i, ArrayList<String> polygon) {
+        private String iterateThroughPolygons(ArrayList<String> build_ids, HashMap<String, ArrayList<Float>> points,
+                                              String point_data, String o_id, int i, ArrayList<String> polygon, String a_id) {
             for( int j = 0; j < polygon.size(); j ++ ) {
                 ArrayList<Float> lat_lon = points.get(polygon.get(j));
                 if( lat_lon != null ) {
@@ -238,15 +249,15 @@ public class WebAppInterface {
                 }
             }
             if(point_data.compareTo("") != 0) {
-                loadURL(build_ids, point_data, o_id, i);
+                loadURL(build_ids, point_data, o_id, i, a_id);
                 point_data = "";
             }
             return point_data;
         }
 
-        private void loadURL(ArrayList<String> build_ids, String point_data, String o_id, int i) {
+        private void loadURL(ArrayList<String> build_ids, String point_data, String o_id, int i, String a_id) {
             myWebView.loadUrl("javascript:drawPolygonFromPoints(\""
-                    +point_data+"\",\""+build_ids.get(i)+"\",\""+ currentID +"\",\""+o_id+"\")");
+                    +point_data+"\",\""+build_ids.get(i)+"\",\""+ currentID +"\",\""+o_id+"\",\""+a_id+"\")");
         }
 
         protected void onProgressUpdate(Integer... progress) {

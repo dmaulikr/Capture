@@ -1,6 +1,7 @@
 package com.cis350.argame;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.parse.ParseException;
@@ -21,6 +24,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -274,7 +278,6 @@ public class WebAppInterface {
     }
 
     @JavascriptInterface
-
     public void showBuildingDialog(final String ids, final int closeBy) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
@@ -300,7 +303,7 @@ public class WebAppInterface {
 
         alertDialogBuilder
                 .setView(dialog_view)
-                        //.setMessage(msg)
+                //.setMessage(msg)
                 .setCancelable(true)
                 .setPositiveButton("Capture",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
@@ -308,7 +311,7 @@ public class WebAppInterface {
                         // current activity
                         Log.w("build ID", "build id is " + ids);
                         if(closeBy == 1) {
-                            ParseManager.createPoint(ids, 10);
+                            setArmyDialog(ids);
                         }
                         Log.w("Capture", "initiate building capture");
                     }
@@ -327,6 +330,38 @@ public class WebAppInterface {
         // show it
         alertDialog.show();
 
+    }
+
+    private void setArmyDialog(final String ids) {
+        final int[] out = {0};
+        final Dialog d = new Dialog(mContext);
+        d.setTitle("NumberPicker");
+        d.setContentView(R.layout.army_picker);
+        Button b1 = (Button) d.findViewById(R.id.button1);
+        Button b2 = (Button) d.findViewById(R.id.button2);
+        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
+        np.setMaxValue(100); // max value 100
+        np.setMinValue(0);   // min value 0
+        np.setWrapSelectorWheel(false);
+       // np.setOnValueChangedListener(mContext);
+        b1.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                out[0] = np.getValue(); //set the value to textview
+                ParseManager.createPoint(ids, out[0]);
+                d.dismiss();
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                ParseManager.createPoint(ids, 0);
+                d.dismiss(); // dismiss the dialog
+            }
+        });
+        d.show();
     }
 
     @JavascriptInterface

@@ -33,6 +33,7 @@
 		19E2841418FC806D004D49E7 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E2841318FC806D004D49E7 /* StoreKit.framework */; };
 		19E2841618FC8073004D49E7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E2841518FC8073004D49E7 /* SystemConfiguration.framework */; };
 		19E2841A18FC809E004D49E7 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E2841918FC809E004D49E7 /* Parse.framework */; };
+		19E2841D18FC81A8004D49E7 /* tbnParseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E2841C18FC81A8004D49E7 /* tbnParseManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,8 @@
 		19E2841518FC8073004D49E7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		19E2841718FC807D004D49E7 /* parse-library-1.2.19.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; name = "parse-library-1.2.19.zip"; path = "../parse-library-1.2.19.zip"; sourceTree = "<group>"; };
 		19E2841918FC809E004D49E7 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = ../Parse.framework; sourceTree = "<group>"; };
+		19E2841B18FC81A8004D49E7 /* tbnParseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tbnParseManager.h; sourceTree = "<group>"; };
+		19E2841C18FC81A8004D49E7 /* tbnParseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tbnParseManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +172,8 @@
 				19E283E618FC7F80004D49E7 /* tbnSecondViewController.m */,
 				19E283E818FC7F80004D49E7 /* Images.xcassets */,
 				19E283D118FC7F80004D49E7 /* Supporting Files */,
+				19E2841B18FC81A8004D49E7 /* tbnParseManager.h */,
+				19E2841C18FC81A8004D49E7 /* tbnParseManager.m */,
 			);
 			path = Capture;
 			sourceTree = "<group>";
@@ -305,6 +310,7 @@
 				19E283D718FC7F80004D49E7 /* main.m in Sources */,
 				19E283DB18FC7F80004D49E7 /* tbnAppDelegate.m in Sources */,
 				19E283E718FC7F80004D49E7 /* tbnSecondViewController.m in Sources */,
+				19E2841D18FC81A8004D49E7 /* tbnParseManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

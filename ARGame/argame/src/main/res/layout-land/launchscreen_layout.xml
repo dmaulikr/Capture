@@ -16,7 +16,7 @@
         android:textStyle="bold"
         android:textSize="50sp"
         android:gravity="center"
-        android:text="ARGame" />
+        android:text="Capture" />
 
     <RelativeLayout
         android:layout_width="fill_parent"

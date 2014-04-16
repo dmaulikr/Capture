@@ -1,6 +1,7 @@
 package com.cis350.argame;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.parse.ParseException;
@@ -21,6 +24,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -36,6 +40,7 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class WebAppInterface {
     private boolean isLoggedIn = ParseManager.isLoggedIn();
+    //PlayerProfile
 
     private Context mContext;
     private WebView myWebView;
@@ -63,6 +68,9 @@ public class WebAppInterface {
 
         private ArrayList<String> buildIDs;
         private ArrayList<String> ownerIDs;
+        private ArrayList<String> armiesIDs;
+        private ArrayList<ArrayList<String>> polys;
+
         private HashMap<String, ArrayList<Float>> points;
         private ArrayList<ArrayList<String>> polygons;
         private String pointData;
@@ -72,10 +80,14 @@ public class WebAppInterface {
             String bbox = strs[0];
             ownerIDs = new ArrayList<String>();
             buildIDs = new ArrayList<String>();
+            armiesIDs = new ArrayList<String>();
 
             // --------------- Data Structures ---------------- //
             // key = way id, value = array of node ids
             polygons = new ArrayList<ArrayList<String>>();
+
+            polys = new ArrayList<ArrayList<String>>();
+
             // key = node id, value = array of latitude, longitude
             points = new HashMap<String, ArrayList<Float>>();
 
@@ -130,9 +142,26 @@ public class WebAppInterface {
             }
             try {
                 out = ParseManager.makeArrayOfOwners(ParseManager.getBuildingsOwnersIds(b_o));
-                //Log.w("HERE","I am here"+b_o.length+"");
-                for (int k = 0; k < out.length; k++) {
-                    ownerIDs.add(out[k]);
+
+                //Log.w("HERE","I am here"+out.length+"");
+                buildIDs.clear();
+                ownerIDs.clear();
+                armiesIDs.clear();
+                int index = 0;
+                for (int k = 0; k < out.length/3; k++) {
+                    buildIDs.add(out[index]);
+                    ownerIDs.add(out[index+1]);
+                    armiesIDs.add(out[index + 2]);
+                    for (int i = 0; i < polygons.size(); i++) {
+                        if (polygons.get(i).get(0) == buildIDs.get(k)) {
+                            ArrayList<String> p = polygons.get(i);
+                            p.remove(0);
+                            polys.add(p);
+                            break;
+                        }
+                    }
+                    //Log.w("ownerIDs buildingIDs", ownerIDs.get(k) + " " + buildIDs.get(k));
+                    index += 3;
                 }
                 //Log.w("HERETHERE","I am here"+ownerIDs.size()+"");
             } catch (ParseException e) {
@@ -176,11 +205,18 @@ public class WebAppInterface {
             return "";
         }
         protected void onPostExecute(String result) {
-            outerPolygonLoop(ownerIDs, buildIDs, polygons, points, pointData);
+
+            outerPolygonLoop(ownerIDs, buildIDs, armiesIDs, polys, points, pointData);
+
         }
 
-        private void outerPolygonLoop(ArrayList<String> owner_ids, ArrayList<String> build_ids, ArrayList<ArrayList<String>> polygons, HashMap<String, ArrayList<Float>> points, String point_data) {
+        private void outerPolygonLoop(ArrayList<String> owner_ids, ArrayList<String> build_ids,
+                                      ArrayList<String> army_ids, ArrayList<ArrayList<String>> polygons,
+                                      HashMap<String, ArrayList<Float>> points, String point_data) {
             String o_id;
+            String a_id;
+            //Log.w("myAppSize", "size " + owner_ids.size() + " " + build_ids.size());
+
             for( int i = 0; i < polygons.size(); i ++) {
                 ArrayList<String> polygon = polygons.get(i);
                 //Log.w("myApp", "current ownerID at i "+o_id+"");
@@ -188,19 +224,26 @@ public class WebAppInterface {
                 if (owner_ids.size() > 0) {
                     if (owner_ids.get(i) != null) {
                         o_id = owner_ids.get(i);
-                    } else o_id = "";
+                        a_id = army_ids.get(i);
+                    } else {
+                        o_id = "";
+                        a_id = "0";
+                    }
                 } else {
                     o_id = "";
+                    a_id = "0";
                 }
-                Log.w("myApp", "current ownerID at i " + o_id + "");
-                Log.w("myApp", "current currentID at i "+ currentID +"");
+
+                //Log.w("myApp", "current ownerID at i " + owner_ids.get(i) + " " + build_ids.get(i) + " ");
+
                 //} //REMOVE THIS
-                point_data = iterateThroughPolygons(build_ids, points, point_data, o_id, i, polygon);
+                point_data = iterateThroughPolygons(build_ids, points, point_data, o_id, i, polygon, a_id);
             }
             owner_ids.clear();
         }
 
-        private String iterateThroughPolygons(ArrayList<String> build_ids, HashMap<String, ArrayList<Float>> points, String point_data, String o_id, int i, ArrayList<String> polygon) {
+        private String iterateThroughPolygons(ArrayList<String> build_ids, HashMap<String, ArrayList<Float>> points,
+                                              String point_data, String o_id, int i, ArrayList<String> polygon, String a_id) {
             for( int j = 0; j < polygon.size(); j ++ ) {
                 ArrayList<Float> lat_lon = points.get(polygon.get(j));
                 if( lat_lon != null ) {
@@ -211,15 +254,15 @@ public class WebAppInterface {
                 }
             }
             if(point_data.compareTo("") != 0) {
-                loadURL(build_ids, point_data, o_id, i);
+                loadURL(build_ids, point_data, o_id, i, a_id);
                 point_data = "";
             }
             return point_data;
         }
 
-        private void loadURL(ArrayList<String> build_ids, String point_data, String o_id, int i) {
+        private void loadURL(ArrayList<String> build_ids, String point_data, String o_id, int i, String a_id) {
             myWebView.loadUrl("javascript:drawPolygonFromPoints(\""
-                    +point_data+"\",\""+build_ids.get(i)+"\",\""+ currentID +"\",\""+o_id+"\")");
+                    +point_data+"\",\""+build_ids.get(i)+"\",\""+ currentID +"\",\""+o_id+"\",\""+a_id+"\")");
         }
 
         protected void onProgressUpdate(Integer... progress) {
@@ -235,7 +278,7 @@ public class WebAppInterface {
     }
 
     @JavascriptInterface
-    public void showBuildingDialog(String id) {
+    public void showBuildingDialog(final String ids, final int closeBy) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
 
@@ -245,22 +288,32 @@ public class WebAppInterface {
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
         // set dialog message
-        String msg = "My id is" + id;
+
+        String msg = "My id is" + ids;
+        //owner of this building
+        String owner = "";
 
         GameActivity game = (GameActivity) mContext;
 
         View dialog_view = inflater.inflate(R.layout.building_dialog, null);
         TextView tv1 = (TextView)dialog_view.findViewById(R.id.building_army_size_text);
-        tv1.setText(id);
+
+        tv1.setText(ids);
+        Log.w("build ID", "build id is " + ids);
 
         alertDialogBuilder
                 .setView(dialog_view)
-                        //.setMessage(msg)
+                //.setMessage(msg)
                 .setCancelable(true)
                 .setPositiveButton("Capture",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         // if this button is clicked, close
                         // current activity
+                        Log.w("build ID", "build id is " + ids);
+                        if(closeBy == 1) {
+                            setArmyDialog(ids);
+                        }
+                        Log.w("Capture", "initiate building capture");
                     }
                 })
                 .setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
@@ -279,18 +332,58 @@ public class WebAppInterface {
 
     }
 
+    private void setArmyDialog(final String ids) {
+        final int[] out = {0};
+        final Dialog d = new Dialog(mContext);
+        d.setTitle("NumberPicker");
+        d.setContentView(R.layout.army_picker);
+        Button b1 = (Button) d.findViewById(R.id.button1);
+        Button b2 = (Button) d.findViewById(R.id.button2);
+        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
+        np.setMaxValue(100); // max value 100
+        np.setMinValue(0);   // min value 0
+        np.setWrapSelectorWheel(false);
+       // np.setOnValueChangedListener(mContext);
+        b1.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                out[0] = np.getValue(); //set the value to textview
+                ParseManager.createPoint(ids, out[0]);
+                d.dismiss();
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                ParseManager.createPoint(ids, 0);
+                d.dismiss(); // dismiss the dialog
+            }
+        });
+        d.show();
+    }
+
     @JavascriptInterface
     public void setCurrentIdInJs() {
         //setting the current user ID////
         if(isLoggedIn) {
-            ParseUser curr_user = ParseManager.getCurrentUser();
+            PlayerProfile player = new PlayerProfile();
+
             //Log.w("myApp", "current user is "+curr_user+"");
-            String curr_id = curr_user.getObjectId();
+            String playerID = player.getId();
+            String playerName = player.getName();
+            int playerArmy = player.getArmy();
+            int playerGold = player.getGold();
+            Log.w("CU", "current user id: " + playerID);
+            Log.w("CU", "current user name: " + playerName);
+            Log.w("CU", "current user army: " + playerArmy);
+            Log.w("CU", "current user gold: " + playerGold);
             //currentID = curr_id;
             //Log.w("myApp", "current user id is "+curr_id+"");
-            if (curr_id != null) {
-                currentID = curr_id;
-                myWebView.loadUrl("javascript:getCurrentId(\""+curr_id+"\")");
+            if (player != null) {
+                currentID = playerID;
+                myWebView.loadUrl("javascript:getCurrentId(\""+playerID+"\")");
             } else {
                 currentID = DEFAULT_CURRENT_ID;
             }
@@ -298,5 +391,7 @@ public class WebAppInterface {
             currentID = DEFAULT_CURRENT_ID;
         }
         //////
+
+        // create new PlayerProfile here
     }
 }

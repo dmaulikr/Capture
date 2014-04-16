@@ -90,6 +90,13 @@ public class ParseManager {
         }
         return LoginResult.SUCCESS;
     }
+
+    /**
+     * This method logs out the current user.
+     */
+    public static void logOut() {
+        getCurrentUser().logOut();
+    }
     /**
      * capturePoint modifies the ParseObject for the CapturePoint specified such that the owner becomes the
      * the current user and the defending troops become the number specified.

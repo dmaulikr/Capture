@@ -113,7 +113,7 @@ public class XMLQueryHandler {
                 String id = child.getAttribute("id");
                 if(id.compareTo("") != 0) {
                     w_id = id; // way id
-                    //WebAppInterface.build_id = w_id; //
+                    //WebAppInterface.buildID = w_id; //
                 } else continue;
             }
 

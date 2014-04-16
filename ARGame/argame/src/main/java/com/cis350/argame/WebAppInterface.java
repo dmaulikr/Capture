@@ -15,7 +15,6 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.parse.ParseException;
-import com.parse.ParseUser;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -24,7 +23,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -338,7 +336,7 @@ public class WebAppInterface {
         d.setTitle("NumberPicker");
         d.setContentView(R.layout.army_picker);
         Button b1 = (Button) d.findViewById(R.id.button1);
-        Button b2 = (Button) d.findViewById(R.id.button2);
+        Button b2 = (Button) d.findViewById(R.id.coinsbutton);
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
         np.setMaxValue(100); // max value 100
         np.setMinValue(0);   // min value 0

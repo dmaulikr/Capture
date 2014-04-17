@@ -278,7 +278,7 @@ public class WebAppInterface {
     }
 
     @JavascriptInterface
-    public void showBuildingDialog(final String ids, final int closeBy) {
+    public void showBuildingDialog(final String ids, final int closeBy, final String owner_id) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
 
@@ -311,6 +311,8 @@ public class WebAppInterface {
                         // current activity
                         Log.w("build ID", "build id is " + ids);
                         if(closeBy == 1) {
+                            // remove ownership from owner_id in parse here
+                            myWebView.loadUrl("javascript:captureChangeColor(\""+ids+"\")");
                             setArmyDialog(ids);
                         }
                         Log.w("Capture", "initiate building capture");

@@ -15,6 +15,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.apache.http.client.ClientProtocolException;
@@ -346,8 +347,7 @@ public class WebAppInterface {
         np.setMinValue(0);   // min value 0
         np.setWrapSelectorWheel(false);
        // np.setOnValueChangedListener(mContext);
-        b1.setOnClickListener(new View.OnClickListener()
-        {
+        b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 out[0] = np.getValue(); //set the value to textview
@@ -355,8 +355,7 @@ public class WebAppInterface {
                 d.dismiss();
             }
         });
-        b2.setOnClickListener(new View.OnClickListener()
-        {
+        b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ParseManager.createPoint(ids, 0);
@@ -370,13 +369,13 @@ public class WebAppInterface {
     public void setCurrentIdInJs() {
         //setting the current user ID////
         if(isLoggedIn) {
-            PlayerProfile player = new PlayerProfile();
+            ParseUser player = PlayerProfile.createPlayerProfile();
 
             //Log.w("myApp", "current user is "+curr_user+"");
-            String playerID = player.getId();
-            String playerName = player.getName();
-            int playerArmy = player.getArmy();
-            int playerGold = player.getGold();
+            String playerID = PlayerProfile.ID;
+            String playerName = PlayerProfile.NAME;
+            int playerArmy = PlayerProfile.ARMY;
+            int playerGold = PlayerProfile.GOLD;
             Log.w("CU", "current user id: " + playerID);
             Log.w("CU", "current user name: " + playerName);
             Log.w("CU", "current user army: " + playerArmy);

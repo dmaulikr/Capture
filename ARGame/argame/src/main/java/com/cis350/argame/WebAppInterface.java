@@ -279,7 +279,7 @@ public class WebAppInterface {
     }
 
     @JavascriptInterface
-    public void showBuildingDialog(final String ids, final int closeBy, final String owner_id) {
+    public void showBuildingDialog(final String ids, final int closeBy, final String owner_id, final int army) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
 
@@ -311,9 +311,9 @@ public class WebAppInterface {
                         // if this button is clicked, close
                         // current activity
                         Log.w("build ID", "build id is " + ids);
-                        if(closeBy == 1) {
+                        if(closeBy == 1 && PlayerProfile.ARMY >= army && owner_id.compareTo(currentID) != 0) {
                             // remove ownership from owner_id in parse here
-                            myWebView.loadUrl("javascript:captureChangeColor(\""+ids+"\")");
+                            PlayerProfile.GOLD += 100;
                             setArmyDialog(ids);
                         }
                         Log.w("Capture", "initiate building capture");
@@ -352,6 +352,7 @@ public class WebAppInterface {
             public void onClick(View v) {
                 out[0] = np.getValue(); //set the value to textview
                 ParseManager.createPoint(ids, out[0]);
+                myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+out[0]+"\")");
                 d.dismiss();
             }
         });
@@ -359,6 +360,7 @@ public class WebAppInterface {
             @Override
             public void onClick(View v) {
                 ParseManager.createPoint(ids, 0);
+                myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+0+"\")");
                 d.dismiss(); // dismiss the dialog
             }
         });

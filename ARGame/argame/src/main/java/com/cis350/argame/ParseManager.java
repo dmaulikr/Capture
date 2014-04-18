@@ -84,6 +84,8 @@ public class ParseManager {
         newUser.setUsername(username);
         newUser.setPassword(password);
         newUser.setEmail(email);
+        newUser.put("gold", 100);
+        newUser.put("army", 10);
         try {
             newUser.signUp();
         } catch (ParseException e) {
@@ -98,7 +100,17 @@ public class ParseManager {
                     throw new ConnectionFailedException();
             }
         }
+        newUser.saveInBackground();
         return LoginResult.SUCCESS;
+    }
+
+    public static void updateCurrentUserArmy(int army, int gold) {
+        if (isLoggedIn()) {
+            ParseUser ur = getCurrentUser();
+            ur.put("army", army);
+            ur.put("gold", gold);
+            ur.saveInBackground();
+        }
     }
 
     /**

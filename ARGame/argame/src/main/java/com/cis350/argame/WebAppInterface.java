@@ -370,6 +370,8 @@ public class WebAppInterface {
             }
         });
         d.show();
+
+        ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
     }
 
     @JavascriptInterface

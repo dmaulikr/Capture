@@ -34,13 +34,17 @@ public class LoginScreenActivity extends Activity {
                     Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = this.getIntent();
-            CharSequence submitMessage = "Logged in.";
+            CharSequence submitMessage;
             try {
-                ParseManager.logIn(username.toString(), password.toString());
+                ParseManager.LoginResult loginResult =
+                        ParseManager.logIn (username.toString(),
+                                password.toString());
                 intent.putExtra("com.cis350.argame.loggedin", true);
+                submitMessage = "Logged in.";
                 this.setResult(RESULT_OK, intent);
             } catch (ParseManager.ConnectionFailedException e) {
-                submitMessage = "Couldn't connect to Parse. Please check your internet connection.";
+                submitMessage = "Username/Password incorrect.\nPlease try " +
+                        "again.\nIf you are not registered, please register.";
                 this.setResult(RESULT_CANCELED);
             }
             Toast.makeText(this, submitMessage, Toast.LENGTH_LONG).show();

@@ -15,7 +15,6 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.parse.ParseException;
-import com.parse.ParseUser;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -40,6 +39,7 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class WebAppInterface {
     private boolean isLoggedIn = ParseManager.isLoggedIn();
+    //PlayerProfile
 
     private Context mContext;
     private WebView myWebView;
@@ -150,7 +150,9 @@ public class WebAppInterface {
                 for (int k = 0; k < out.length/3; k++) {
                     buildIDs.add(out[index]);
                     ownerIDs.add(out[index+1]);
-                    armiesIDs.add(out[index+2]);
+
+                    armiesIDs.add(out[index + 2]);
+
                     for (int i = 0; i < polygons.size(); i++) {
                         if (polygons.get(i).get(0) == buildIDs.get(k)) {
                             ArrayList<String> p = polygons.get(i);
@@ -310,7 +312,7 @@ public class WebAppInterface {
                         // current activity
                         Log.w("build ID", "build id is " + ids);
                         if(closeBy == 1) {
-                            ParseManager.createPoint(ids, 10);
+                            setArmyDialog(ids);
                         }
                         Log.w("Capture", "initiate building capture");
                     }
@@ -332,18 +334,59 @@ public class WebAppInterface {
     }
 
 
+    private void setArmyDialog(final String ids) {
+        final int[] out = {0};
+        final Dialog d = new Dialog(mContext);
+        d.setTitle("NumberPicker");
+        d.setContentView(R.layout.army_picker);
+        Button b1 = (Button) d.findViewById(R.id.button1);
+        Button b2 = (Button) d.findViewById(R.id.coinsbutton);
+        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
+        np.setMaxValue(100); // max value 100
+        np.setMinValue(0);   // min value 0
+        np.setWrapSelectorWheel(false);
+       // np.setOnValueChangedListener(mContext);
+        b1.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                out[0] = np.getValue(); //set the value to textview
+                ParseManager.createPoint(ids, out[0]);
+                d.dismiss();
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                ParseManager.createPoint(ids, 0);
+                d.dismiss(); // dismiss the dialog
+            }
+        });
+        d.show();
+    }
+
     @JavascriptInterface
     public void setCurrentIdInJs() {
         //setting the current user ID////
         if(isLoggedIn) {
-            ParseUser curr_user = ParseManager.getCurrentUser();
+            PlayerProfile player = new PlayerProfile();
+
             //Log.w("myApp", "current user is "+curr_user+"");
-            String curr_id = curr_user.getObjectId();
+            String playerID = player.getId();
+            String playerName = player.getName();
+            int playerArmy = player.getArmy();
+            int playerGold = player.getGold();
+            Log.w("CU", "current user id: " + playerID);
+            Log.w("CU", "current user name: " + playerName);
+            Log.w("CU", "current user army: " + playerArmy);
+            Log.w("CU", "current user gold: " + playerGold);
             //currentID = curr_id;
             //Log.w("myApp", "current user id is "+curr_id+"");
-            if (curr_id != null) {
-                currentID = curr_id;
-              //  myWebView.loadUrl("javascript:getCurrentId(\""+curr_id+"\")");
+
+            if (player != null) {
+                currentID = playerID;
+                myWebView.loadUrl("javascript:getCurrentId(\""+playerID+"\")");
             } else {
                 currentID = DEFAULT_CURRENT_ID;
             }

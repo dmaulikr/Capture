@@ -1,0 +1,87 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="com.cis350.argame.LaunchScreenActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+    <TextView android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true"
+        android:textColor="#33b5e5"
+        android:textStyle="bold"
+        android:textSize="50sp"
+        android:gravity="center"
+        android:text="Settings" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left|top">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="How do I..."
+            android:id="@+id/helpbutton"
+            android:onClick="onHelpButtonClick"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="27dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/profilepicture"
+            android:src="@drawable/placeholder"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Armies: 42"
+            android:id="@+id/armiestext"
+            android:layout_alignBottom="@+id/armiesbutton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="46dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Buy Armies"
+            android:id="@+id/armiesbutton"
+            android:onClick="onBuyArmiesClick"
+            android:layout_below="@+id/profilepicture"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="123dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Buy Coins"
+            android:id="@+id/coinsbutton"
+            android:onClick="onBuyCoinsClick"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="29dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Coins: 12957"
+            android:id="@+id/coinstext"
+            android:layout_above="@+id/coinsbutton"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+</FrameLayout>

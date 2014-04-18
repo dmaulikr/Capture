@@ -24,8 +24,6 @@ public class LaunchScreenActivity extends Activity {
 
     private Button loginButton;
 
-    // private int userID = ;
-
     // Result code constants
     private int LOGIN_COMPLETED = 50;
     private int REGISTRATION_COMPLETED = 51;
@@ -49,7 +47,6 @@ public class LaunchScreenActivity extends Activity {
             startActivityForResult(i, requestCode);
         } else {
             // Log out
-            // userID = null;
             loginButton.setText("Log In");
             loggedIn = false;
         }
@@ -58,7 +55,6 @@ public class LaunchScreenActivity extends Activity {
     public void onRegisterButtonClick(View v) {
         // Log out user first if applicable
         if (loggedIn) {
-            // userID = null;
             loginButton.setText("Log In");
         }
         Intent i = new Intent(this, SignupActivity.class);
@@ -84,9 +80,7 @@ public class LaunchScreenActivity extends Activity {
                 // when the LoginScreenActivity instance terminated
                 this.loggedIn = data.getBooleanExtra(
                         "com.cis350.argame.loggedin", false);
-                String result;
                 if (loggedIn) {
-                    // userID = _____.getUserID;
                     loginButton.setText("Log Out");
                 }
             }

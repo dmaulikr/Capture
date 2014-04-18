@@ -356,6 +356,7 @@ public class WebAppInterface {
             public void onClick(View v) {
                 out[0] = np.getValue(); //set the value to textview
                 ParseManager.createPoint(ids, out[0]);
+                PlayerProfile.ARMY -= out[0];
                 myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+out[0]+"\",\""+currentID+"\")");
                 d.dismiss();
             }

@@ -121,6 +121,7 @@ public class ParseManager {
     // TODO - modify this method to subtract troops from the previous owner?
     public static void createPoint(String pointID, int defense) {
         String currID = ParseManager.getCurrentUser().getObjectId();
+
         ParseObject newPoint = null;
         try {
             newPoint = ParseManager.getPointByID(pointID);
@@ -170,6 +171,7 @@ public class ParseManager {
 
         for (int i = 0; i < size; i++) {
             map_owner.put(buildings[i], null);
+
             Log.w("myAppOwners", "current building owners "+buildings[i]+""+"HAAAAAAA" + " " + map_owner.containsKey(buildings[i]));
         }
 
@@ -194,12 +196,15 @@ public class ParseManager {
 
     public static String[] makeArrayOfOwners(ParseObject[] objects) throws java.text.ParseException {
         if (objects == null) return new String[0];
+
         int size = map_owner.size();
+
         String[] result = new String[size*3];
         String[] objs = new String[size];
         //Log.w("myAppOwners", "current building owners "+objs.length+""+"BAAAAAAA");
         String point = null;
         //int index = 0;
+
         if (objects.length > 0) {
             for (int i = 0; i < objs.length; i++) {
                 //result[index] = null;

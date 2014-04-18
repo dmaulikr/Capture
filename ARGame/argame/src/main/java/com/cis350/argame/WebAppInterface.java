@@ -15,6 +15,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.parse.ParseException;
+
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -152,7 +153,9 @@ public class WebAppInterface {
                 for (int k = 0; k < out.length/3; k++) {
                     buildIDs.add(out[index]);
                     ownerIDs.add(out[index+1]);
+
                     armiesIDs.add(out[index + 2]);
+
                     for (int i = 0; i < polygons.size(); i++) {
                         if (polygons.get(i).get(0) == buildIDs.get(k)) {
                             ArrayList<String> p = polygons.get(i);
@@ -335,13 +338,14 @@ public class WebAppInterface {
 
     }
 
+
     private void setArmyDialog(final String ids) {
         final int[] out = {0};
         final Dialog d = new Dialog(mContext);
         d.setTitle("NumberPicker");
         d.setContentView(R.layout.army_picker);
         Button b1 = (Button) d.findViewById(R.id.button1);
-        Button b2 = (Button) d.findViewById(R.id.button2);
+        Button b2 = (Button) d.findViewById(R.id.coinsbutton);
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
         np.setMaxValue(100); // max value 100
         np.setMinValue(0);   // min value 0
@@ -384,6 +388,7 @@ public class WebAppInterface {
             Log.w("CU", "current user gold: " + playerGold);
             //currentID = curr_id;
             //Log.w("myApp", "current user id is "+curr_id+"");
+
             if (player != null) {
                 currentID = playerID;
                 myWebView.loadUrl("javascript:getCurrentId(\""+playerID+"\")");

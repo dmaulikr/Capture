@@ -347,7 +347,7 @@ public class WebAppInterface {
         Button b1 = (Button) d.findViewById(R.id.button1);
         Button b2 = (Button) d.findViewById(R.id.coinsbutton);
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
-        np.setMaxValue(100); // max value 100
+        np.setMaxValue(PlayerProfile.ARMY); // max value 100
         np.setMinValue(0);   // min value 0
         np.setWrapSelectorWheel(false);
        // np.setOnValueChangedListener(mContext);
@@ -356,7 +356,7 @@ public class WebAppInterface {
             public void onClick(View v) {
                 out[0] = np.getValue(); //set the value to textview
                 ParseManager.createPoint(ids, out[0]);
-                myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+out[0]+"\")");
+                myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+out[0]+"\",\""+currentID+"\")");
                 d.dismiss();
             }
         });
@@ -364,7 +364,7 @@ public class WebAppInterface {
             @Override
             public void onClick(View v) {
                 ParseManager.createPoint(ids, 0);
-                myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+0+"\")");
+                myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+0+"\",\""+currentID+"\")");
                 d.dismiss(); // dismiss the dialog
             }
         });

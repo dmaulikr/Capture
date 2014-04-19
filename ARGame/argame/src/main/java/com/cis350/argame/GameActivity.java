@@ -147,12 +147,12 @@ public class GameActivity extends Activity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
-
+        showMap();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    //@Override
+    protected void showMap() {
+       // super.onStart();
 
         //--------- LEAFLET ----------------//
 

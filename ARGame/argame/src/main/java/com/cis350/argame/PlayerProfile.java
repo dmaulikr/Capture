@@ -22,19 +22,19 @@ public class PlayerProfile {
         return currUser;
     }
 
-    public String getId() {
+    public static String getId() {
         return ID;
     }
 
-    public int getArmy() {
+    public static int getArmy() {
         return ARMY;
     }
 
-    public int getGold() {
+    public static int getGold() {
         return GOLD;
     }
 
-    public String getName() {
+    public static String getName() {
         return NAME;
     }
 }

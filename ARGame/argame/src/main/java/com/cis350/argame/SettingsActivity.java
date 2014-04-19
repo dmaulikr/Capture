@@ -32,7 +32,16 @@ public class SettingsActivity extends Activity {
     }
 
     public void onBuyArmiesClick(View v) {
-        Toast.makeText(this, "Buy armies unimplemented!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Buy armies unimplemented!", Toast.LENGTH_LONG).show();
+        if(PlayerProfile.getGold() >= 10) {
+            PlayerProfile.ARMY += 1;
+            PlayerProfile.GOLD -= 10;
+            Integer currentCoins = PlayerProfile.getGold();
+            Integer currentArmies = PlayerProfile.getArmy();
+
+            coinsText.setText("Coins: " + currentCoins.toString());
+            armiesText.setText("Armies: " + currentArmies.toString());
+        }
     }
 
     public void onBuyCoinsClick(View v) {
@@ -45,5 +54,12 @@ public class SettingsActivity extends Activity {
 
     public void onProfilePictureClick(View v) {
         Toast.makeText(this, "Picture changing unimplemented!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected  void onStop() {
+        super.onStop();
+
+        ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
     }
 }

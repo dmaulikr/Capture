@@ -371,6 +371,7 @@ public class WebAppInterface {
         Button b2 = (Button) d.findViewById(R.id.cancelbutton);
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
         np.setMaxValue(PlayerProfile.ARMY + army); // max value 100
+        np.setValue(army);
         np.setMinValue(0);   // min value 0
         np.setWrapSelectorWheel(false);
         // np.setOnValueChangedListener(mContext);

@@ -5,6 +5,7 @@ import com.cis350.argame.util.SystemUiHider;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -223,5 +224,14 @@ public class GameActivity extends Activity {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    /**
+     * Start a new instance of the Settings Activity when clicked.
+     * @param v
+     */
+    public void onMenuButtonClick(View v) {
+        Intent i = new Intent(this, SettingsActivity.class);
+        startActivity(i);
     }
 }

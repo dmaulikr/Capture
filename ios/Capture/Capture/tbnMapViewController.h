@@ -17,8 +17,10 @@
 //use "http://poroawards.net/Geolocation/map.html" for web or emulator, change hosting later
 
 
-@interface tbnFirstViewController : UIViewController
+@interface tbnMapViewController : UIViewController <PFLogInViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
+
+- (void) showLoginWindow;
 
 @end

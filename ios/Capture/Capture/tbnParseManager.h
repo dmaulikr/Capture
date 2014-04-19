@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <Parse/Parse.h>
 
+#define __PARSE__
+
 #define kParseCapturePointDefense @"defense"
 #define kParseCapturePointOwner @"currentOwner"
 #define kParseCapturePointClass @"CapturePoint"
@@ -31,6 +33,6 @@ typedef enum LoginResult {
 + (NSArray *) getBuildingsOwnersIDs:(NSArray *)buildings;
 + (NSArray *) makeArrayOfOwners:(NSArray *)objects;
 
-
++ (void) showLoginWindow;
 
 @end

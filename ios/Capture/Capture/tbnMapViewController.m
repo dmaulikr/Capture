@@ -6,17 +6,20 @@
 //  Copyright (c) 2014 The Best Network. All rights reserved.
 //
 
-#import "tbnFirstViewController.h"
+#import "tbnMapViewController.h"
 
-@interface tbnFirstViewController ()
+@interface tbnMapViewController ()
 
 @end
 
-@implementation tbnFirstViewController
+@implementation tbnMapViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if (![tbnParseManager isLoggedIn]) {
+        [self showLoginWindow];
+    }
     // TODO: clear webview cache
 
     // iOS handles location request natively
@@ -33,6 +36,12 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) showLoginWindow {
+    PFLogInViewController *login = [[PFLogInViewController alloc] init];
+    login.delegate = self;
+    [self presentViewController:login animated:YES completion:nil];
 }
 
 @end

@@ -11,7 +11,7 @@
 @implementation tbnParseManager
 
 + (void) capturePoint:(PFObject *)point withNewArmy:(int)army withTarget:(id)target selector:(SEL)selector {
-    [point setObject:army forKey:kParseCapturePointDefense];
+    [point setObject:[NSNumber numberWithInt:army] forKey:kParseCapturePointDefense];
     [point setObject:[PFUser currentUser] forKey:kParseCapturePointOwner];
     if (!target || !selector) {
         [point saveInBackground];
@@ -25,50 +25,44 @@
     [newPoint setObject:nodes forKey:kParseCapturePointNodes];
     [newPoint setObject:pointID forKey:kParseCapturePointID];
     if (!target || !selector) {
-        [point saveInBackground];
+        [newPoint saveInBackground];
     } else {
-        [point saveInBackgroundWithTarget:target selector:selector];
+        [newPoint saveInBackgroundWithTarget:target selector:selector];
     }
 }
 + (PFObject *) getPointByID:(NSString *)pointID {
     PFQuery *forID = [PFQuery queryWithClassName:kParseCapturePointClass];
     [forID whereKey:kParseCapturePointID equalTo:pointID];
     NSArray *results = [forID findObjects];
-    if (results.count > 0)
+    if (results.count > 0) {
         return results[0];
     } else {
         return NULL;
     }
 }
-    public static ParseObject[] getBuildingsByOwner(ParseUser user) throws ParseException {
-        ParseQuery forUser = ParseQuery.getQuery("CapturePoint");
-        forUser.whereEqualTo("owner", user);
-        return (ParseObject[]) forUser.find().toArray();
-    }
-    public static ParseObject[] getBuildingsOwnersIds(String[] buildings) throws ParseException {
-        int size = 0;
-        size = buildings.length;
-        String[] result = new String[size];
-        ParseQuery query = ParseQuery.getQuery("CapturePoint");
-        query.whereContainedIn("pointID", Arrays.asList(buildings));
-        if (query.find().size() > 0) {
-            return (ParseObject[]) query.find().toArray(new ParseObject[size]);
-        } else return null;
-    }
-    public static String[] makeArrayOfOwners(ParseObject[] objects) throws java.text.ParseException {
-        if (objects == null) return new String[0];
-        int size = objects.length;
-        String[] result = new String[size];
-        String[] objs = new String[size];
-        for (int i = 0; i < objs.length; i++) {
-            if (objects[i] != null) {
-                result[i] = (String) objects[i].get("ownerID").toString();
-            } else {
-                result[i] = null;
-            }
++ (NSArray *) getBuildingsByOwner:(PFUser *)owner {
+    PFQuery *search = [[PFQuery alloc] initWithClassName:kParseCapturePointClass];
+    [search whereKey:kParseCapturePointOwner equalTo:owner];
+    return [search findObjects];
+}
++ (NSArray *) getBuildingsOwnersIDs:(NSArray *)buildings {
+    PFQuery *search = [[PFQuery alloc] initWithClassName:kParseCapturePointClass];
+    [search whereKey:kParseCapturePointID containedIn:buildings];
+    return [search findObjects];
+}
++ (NSArray *) makeArrayOfOwners:(NSArray *)objects {
+    if (!objects)
+        return NULL;
+    NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:objects.count];
+    NSMutableArray *objs = [[NSMutableArray alloc] initWithCapacity:objects.count];
+    for (int i = 0; i < objs.count; i++) {
+        if (objects[i]) {
+            results[i] = [objects[i] objectForKey:kParseCapturePointID];
+        } else {
+            results[i] = NULL;
         }
-        return result;
     }
+    return [results copy];
 }
 
 @end

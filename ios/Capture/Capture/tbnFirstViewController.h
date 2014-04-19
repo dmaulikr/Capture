@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+#define kAutoHideMillis 3000
+#define kAutoHide true
+#define kWebMapURL @"http://poroawards.net/Geolocation/map.html"
+
+//----------File Location for MapURL------------//
+//use "file:///android_asset/map.html" for device
+//use "http://poroawards.net/Geolocation/map.html" for web or emulator, change hosting later
+
+
 @interface tbnFirstViewController : UIViewController
+
+@property (weak, nonatomic) IBOutlet UIWebView *webView;
 
 @end

@@ -11,8 +11,8 @@
 
 #define kParseCapturePointDefense @"defense"
 #define kParseCapturePointOwner @"currentOwner"
-#deifne kParseCapturePointClass @"CapturePoint"
-#deifne kParseCapturePointNodes @"nodes"
+#define kParseCapturePointClass @"CapturePoint"
+#define kParseCapturePointNodes @"nodes"
 #define kParseCapturePointID @"pointID"
 
 
@@ -29,7 +29,7 @@ typedef enum LoginResult {
 + (PFObject *) getPointByID:(NSString *)pointID;
 + (NSArray *) getBuildingsByOwner:(PFUser *)owner;
 + (NSArray *) getBuildingsOwnersIDs:(NSArray *)buildings;
-+ (NSArray *) makeArrayOfOwners:(PFObject *)objects;
++ (NSArray *) makeArrayOfOwners:(NSArray *)objects;
 
 
 

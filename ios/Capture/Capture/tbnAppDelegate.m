@@ -13,9 +13,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    if (![tbnParseManager isLoggedIn]) {
-        
-    }
+    [Parse setApplicationId:@"KRa84CgcX4HWvwMMwKU9kNbMujZItjZFlhl86hXB"
+                  clientKey:@"b9oDb6mnsf2DVh6zJ0j0YDMTD0vYxWJaRoNoz3x5"];
     return YES;
 }
 							

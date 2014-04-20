@@ -1,5 +1,6 @@
 package com.cis350.argame;
 
+import com.cis350.argame.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -367,8 +368,8 @@ public class WebAppInterface {
         final Dialog d = new Dialog(mContext);
         d.setTitle("NumberPicker");
         d.setContentView(R.layout.army_picker);
-        Button b1 = (Button) d.findViewById(R.id.setbutton);
-        Button b2 = (Button) d.findViewById(R.id.cancelbutton);
+        Button b1 = (Button) d.findViewById(R.id.setbutton1);
+        Button b2 = (Button) d.findViewById(R.id.cancelbutton1);
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
         np.setMaxValue(PlayerProfile.ARMY + army); // max value 100
         np.setValue(army);
@@ -403,8 +404,8 @@ public class WebAppInterface {
         final Dialog d = new Dialog(mContext);
         d.setTitle("NumberPicker");
         d.setContentView(R.layout.army_picker);
-        Button b1 = (Button) d.findViewById(R.id.setbutton);
-        Button b2 = (Button) d.findViewById(R.id.cancelbutton);
+        Button b1 = (Button) d.findViewById(R.id.setbutton1);
+        Button b2 = (Button) d.findViewById(R.id.cancelbutton1);
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
         np.setMaxValue(PlayerProfile.ARMY); // max value 100
         np.setMinValue(0);   // min value 0

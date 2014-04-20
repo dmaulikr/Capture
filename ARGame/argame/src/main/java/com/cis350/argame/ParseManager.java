@@ -219,18 +219,20 @@ public class ParseManager {
 
         if (objects.length > 0) {
             for (int i = 0; i < objs.length; i++) {
+                if (i < objects.length) {
                 //result[index] = null;
-                if (objects[i] != null) {
-                    ArrayList<String> dataAL = new ArrayList<String>();
-                    dataAL.add((String) objects[i].get("ownerID").toString());
-                    dataAL.add((String) objects[i].get("defense").toString());
-                    map_owner.put((String) objects[i].get("pointID").toString(), dataAL);
-                    //result[index] = (String) objects[i].get("pointID").toString();
-                    //result[index+1] = (String) objects[i].get("ownerID").toString();
-                    //point = objects[i].get("pointID").toString();
-                } else {
-                    //result[index+1] = null;
-                }
+                    if (objects[i] != null) {
+                        ArrayList<String> dataAL = new ArrayList<String>();
+                        dataAL.add((String) objects[i].get("ownerID").toString());
+                        dataAL.add((String) objects[i].get("defense").toString());
+                        map_owner.put((String) objects[i].get("pointID").toString(), dataAL);
+                        //result[index] = (String) objects[i].get("pointID").toString();
+                        //result[index+1] = (String) objects[i].get("ownerID").toString();
+                        //point = objects[i].get("pointID").toString();
+                    } else {
+                        //result[index+1] = null;
+                    }
+                } else break;
                 //Log.w("Building owners", result[index] + " " + result[index+1]);
                 //index+=2;
                 //Log.w("myAppOwners", "current building owner is "+result[i]+"");

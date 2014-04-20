@@ -32,7 +32,7 @@
     NSArray *bounds = [bbox componentsSeparatedByString:@","]; // w s e n
     
     // TODO : XML handler
-    // XMLQueryHandler xmlHandler = new XMLQueryHandler();
+    // create parser
     // String output = xmlHandler.getXMLDataFromBBox(bounds, httpclient, httppost);
     
     // ------------ Parsing XML -------------- //
@@ -89,7 +89,7 @@
         }
     }
     if ([point_data compare:@""] != 0) {
-        loadURL(build_ids, point_data, o_id, i);
+        [self loadURL:build_ids data:point_data id:o_id number:i];
         point_data = @"";
     }
     return point_data;

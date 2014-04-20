@@ -10,7 +10,6 @@
 
 #define kAutoHideMillis 3000
 #define kAutoHide true
-#define kWebMapURL @"http://poroawards.net/Geolocation/map.html"
 
 //----------File Location for MapURL------------//
 //use "file:///android_asset/map.html" for device

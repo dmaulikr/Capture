@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 The Best Network. All rights reserved.
 //
 
-#import "tbnSecondViewController.h"
+#import "tbnBasecampViewController.h"
 
-@interface tbnSecondViewController ()
+@interface tbnBasecampViewController ()
 
 @end
 
-@implementation tbnSecondViewController
+@implementation tbnBasecampViewController
 
 - (void)viewDidLoad
 {

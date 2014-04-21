@@ -10,31 +10,31 @@
 
 @implementation tbnXMLParser
 
-- (id)init {
+- (id)initWithWebView:(tbnCaptureWebView *)view {
     _nodes = [[NSMutableDictionary alloc] init];
-    _ways = [[NSMutableArray alloc] init];
+    _ways = [[NSMutableDictionary alloc] init];
+    _webView = view;
     return self;
 }
 - (void)sendXMLRequest:(NSArray *)bounds {
-    NSMutableDictionary *nameValuePairs = [[NSMutableDictionary alloc] initWithCapacity:2];
     NSString *data = [NSString stringWithFormat:@"%s%s%s%@%s%@%s%@%s%@%s%s", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><osm-script timeout=\"900\" element-limit=\"1073741824\">", "<query type=\"node\">", "<bbox-query s=\"", bounds[1], "\" w=\"", bounds[0], "\" n=\"", bounds[3], "\" e=\"", bounds[2], "\"/>", "</query><union><item /><recurse type=\"node-way\"/></union><print/></osm-script>"];
-    [nameValuePairs setObject:data forKey:@"form-data"];
     NSData *postData = [data dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:kOverpassAPI]];
-    [request setHTTPMethod:@"POST"];
+    [request setHTTPMethod:@"POST"];\
+    [request setValue:@"application/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
-    NSURLConnection *conn = [[NSURLConnection alloc]initWithRequest:request delegate:self];
-    if (conn) {
-        NSLog(@"Connection Successful");
-    } else {
-        [NSException raise:@"Connection could not be made on XML Request" format:nil];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSURLResponse *temp;
+        NSError *error;
+        NSData *conn = [NSURLConnection sendSynchronousRequest:request returningResponse:&temp error:&error];
+        [self didReceiveData:conn];
+    });
 }
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data {
+- (void)didReceiveData:(NSData*)data {
     internalParser = [[NSXMLParser alloc] initWithData:data];
     internalParser.delegate = self;
     [self parse];
@@ -74,7 +74,7 @@
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
     if ([elementName isEqualToString:@"way"]) {
         if (shouldAddWay && !justFoundWay) {
-            [_ways addObject:currentWayData];
+            [_ways setObject:currentWayData forKey:currentWayID];
             shouldAddWay = false;
             currentWayData = NULL;
             currentWayID = NULL;
@@ -82,6 +82,7 @@
     }
 }
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
+    [_webView recieveXMLData:_ways withPoints:_nodes];
     NSLog(@"%@", _ways);
 }
 @end

@@ -18,21 +18,28 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Logo"]];
+    if ([tbnParseManager isLoggedIn]) {
+        [self loadMap];
+    }
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    NSString *jsResult = [webView stringByEvaluatingJavaScriptFromString:@"getBounds();"];
+    [_webView drawBuildings:jsResult];
+}
+- (void)loadMap {
+    NSURL *mapURL = [NSURL URLWithString:kWebMapURL];
+    NSURLRequest *map = [NSURLRequest requestWithURL:mapURL];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses]; // clear cache
+    [_webView loadRequest:map];
+    _webView.delegate = self;
+}
+- (void)viewDidAppear:(BOOL)animated {
+    //[self.view addSubview:[tbnToolbarView create]];
     if (![tbnParseManager isLoggedIn]) {
         [self showLoginWindow];
     }
-    // TODO: clear webview cache
-
-    // iOS handles location request natively
-    [tbnXMLParserTest testXML];
-    NSURL *mapURL = [NSURL URLWithString:kWebMapURL];
-    NSURLRequest *map = [NSURLRequest requestWithURL:mapURL];
-    [_webView loadRequest:map];
-    
-    // TODO: Now need to send geolocation information through javascript
-    
 }
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -47,5 +54,9 @@
 - (void)showTooltop:(PFObject *)capturePoint x:(float)x y:(float)y {
     
 }
-
+- (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self loadMap];
+    }];
+}
 @end

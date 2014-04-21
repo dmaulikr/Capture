@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="XVO-o5-oDd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="8YX-ce-x5E">
     <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
@@ -16,8 +17,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="acu-FZ-ccx">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="518"/>
+                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="acu-FZ-ccx" customClass="tbnCaptureWebView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <dataDetectorType key="dataDetectorTypes"/>
@@ -25,7 +26,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="capture" image="first" id="u1e-5L-l1D"/>
+                    <tabBarItem key="tabBarItem" title="capture" id="u1e-5L-l1D"/>
+                    <navigationItem key="navigationItem" title="capture" id="1EB-WH-8s4"/>
                     <connections>
                         <outlet property="webView" destination="acu-FZ-ccx" id="bt6-dP-GXV"/>
                     </connections>
@@ -35,10 +37,10 @@
             </objects>
             <point key="canvasLocation" x="653" y="-138"/>
         </scene>
-        <!--Tbn Second View Controller - Second-->
+        <!--Tbn Basecamp View Controller - Second-->
         <scene sceneID="ot8-2e-RuS">
             <objects>
-                <viewController title="Second" id="QUy-BD-bpt" customClass="tbnSecondViewController" sceneMemberID="viewController">
+                <viewController title="Second" id="QUy-BD-bpt" customClass="tbnBasecampViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="FgS-U6-xeU"/>
                         <viewControllerLayoutGuide type="bottom" id="stI-4g-hlJ"/>
@@ -46,6 +48,12 @@
                     <view key="view" contentMode="scaleToFill" id="gMD-aP-Fq6">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hcg-YL-HLR">
+                                <rect key="frame" x="60" y="100" width="200" height="200"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="basecamp" image="second" id="Z7h-1E-pvt"/>
@@ -55,20 +63,23 @@
             </objects>
             <point key="canvasLocation" x="653" y="529"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Navigation Controller - Item-->
         <scene sceneID="Tk4-Eb-3cy">
             <objects>
                 <navigationController definesPresentationContext="YES" id="XVO-o5-oDd" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="VXP-LZ-l5i"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pVb-uv-dUT">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="0.037264838199999997" green="0.69964714400000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.037264838195507743" green="0.69964714401731154" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="8YX-ce-x5E" kind="relationship" relationship="rootViewController" id="D1D-Lz-PZ7"/>
+                        <segue destination="CZ4-MO-1fc" kind="relationship" relationship="rootViewController" id="6t5-La-i7a"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j2P-6W-3Xf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-344" y="180"/>
+            <point key="canvasLocation" x="266" y="-138"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Vex-rW-GRa">
@@ -82,17 +93,34 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="CZ4-MO-1fc" kind="relationship" relationship="viewControllers" id="SUk-Ux-ee1"/>
-                        <segue destination="QUy-BD-bpt" kind="relationship" relationship="viewControllers" id="M8t-EP-wfW"/>
+                        <segue destination="XVO-o5-oDd" kind="relationship" relationship="viewControllers" id="gt4-Ci-TpU"/>
+                        <segue destination="0HU-zB-rLe" kind="relationship" relationship="viewControllers" id="ZhH-bx-6KJ"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FNP-y4-bzi" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="132" y="180"/>
+            <point key="canvasLocation" x="-386" y="204"/>
+        </scene>
+        <!--Navigation Controller - Item-->
+        <scene sceneID="v7y-zc-ETB">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="0HU-zB-rLe" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="I1H-Au-Q0b"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="pT5-oF-2Ln">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="0.037264838199999997" green="0.69964714400000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.037264838199999997" green="0.69964714400000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="QUy-BD-bpt" kind="relationship" relationship="rootViewController" id="gcj-fF-9d1"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J4u-Oz-5qu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="258" y="529"/>
         </scene>
     </scenes>
     <resources>
-        <image name="first" width="30" height="30"/>
         <image name="second" width="30" height="30"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

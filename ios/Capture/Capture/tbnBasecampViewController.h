@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface tbnSecondViewController : UIViewController
+@interface tbnBasecampViewController : UIViewController
+
+
 
 @end

@@ -10,6 +10,9 @@
 		19027F1A190477A6004EA4D1 /* tbnXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 19027F19190477A6004EA4D1 /* tbnXMLParser.m */; };
 		19027F1D190488F1004EA4D1 /* tbnXMLParserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 19027F1C190488F1004EA4D1 /* tbnXMLParserTest.m */; };
 		194B7B4C190317B30010CAAE /* tbnCaptureWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 194B7B4B190317B30010CAAE /* tbnCaptureWebView.m */; };
+		198F4FB91905A479001067D7 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 198F4FB71905A479001067D7 /* Logo.png */; };
+		198F4FBA1905A479001067D7 /* Logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 198F4FB81905A479001067D7 /* Logo@2x.png */; };
+		198F4FBD1905A7CC001067D7 /* tbnToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 198F4FBC1905A7CC001067D7 /* tbnToolbarView.m */; };
 		19B548021904955200263474 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F11904955200263474 /* Accounts.framework */; };
 		19B548031904955200263474 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F21904955200263474 /* AdSupport.framework */; };
 		19B548041904955200263474 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F31904955200263474 /* AudioToolbox.framework */; };
@@ -34,7 +37,7 @@
 		19E283DE18FC7F80004D49E7 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19E283DC18FC7F80004D49E7 /* Main_iPhone.storyboard */; };
 		19E283E118FC7F80004D49E7 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19E283DF18FC7F80004D49E7 /* Main_iPad.storyboard */; };
 		19E283E418FC7F80004D49E7 /* tbnMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E283E318FC7F80004D49E7 /* tbnMapViewController.m */; };
-		19E283E718FC7F80004D49E7 /* tbnSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E283E618FC7F80004D49E7 /* tbnSecondViewController.m */; };
+		19E283E718FC7F80004D49E7 /* tbnBasecampViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E283E618FC7F80004D49E7 /* tbnBasecampViewController.m */; };
 		19E283E918FC7F80004D49E7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19E283E818FC7F80004D49E7 /* Images.xcassets */; };
 		19E283FA18FC7F80004D49E7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 19E283F818FC7F80004D49E7 /* InfoPlist.strings */; };
 		19E283FC18FC7F80004D49E7 /* CaptureTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E283FB18FC7F80004D49E7 /* CaptureTests.m */; };
@@ -58,6 +61,10 @@
 		19027F1C190488F1004EA4D1 /* tbnXMLParserTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tbnXMLParserTest.m; sourceTree = "<group>"; };
 		194B7B4A190317B30010CAAE /* tbnCaptureWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tbnCaptureWebView.h; sourceTree = "<group>"; };
 		194B7B4B190317B30010CAAE /* tbnCaptureWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tbnCaptureWebView.m; sourceTree = "<group>"; };
+		198F4FB71905A479001067D7 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Logo.png; path = ../../Media/Logo.png; sourceTree = "<group>"; };
+		198F4FB81905A479001067D7 /* Logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Logo@2x.png"; path = "../../Media/Logo@2x.png"; sourceTree = "<group>"; };
+		198F4FBB1905A7CC001067D7 /* tbnToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tbnToolbarView.h; sourceTree = "<group>"; };
+		198F4FBC1905A7CC001067D7 /* tbnToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tbnToolbarView.m; sourceTree = "<group>"; };
 		19B547F11904955200263474 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		19B547F21904955200263474 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		19B547F31904955200263474 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -87,8 +94,8 @@
 		19E283E018FC7F80004D49E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		19E283E218FC7F80004D49E7 /* tbnMapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tbnMapViewController.h; sourceTree = "<group>"; };
 		19E283E318FC7F80004D49E7 /* tbnMapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tbnMapViewController.m; sourceTree = "<group>"; };
-		19E283E518FC7F80004D49E7 /* tbnSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tbnSecondViewController.h; sourceTree = "<group>"; };
-		19E283E618FC7F80004D49E7 /* tbnSecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tbnSecondViewController.m; sourceTree = "<group>"; };
+		19E283E518FC7F80004D49E7 /* tbnBasecampViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tbnBasecampViewController.h; sourceTree = "<group>"; };
+		19E283E618FC7F80004D49E7 /* tbnBasecampViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tbnBasecampViewController.m; sourceTree = "<group>"; };
 		19E283E818FC7F80004D49E7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		19E283EE18FC7F80004D49E7 /* CaptureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CaptureTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		19E283F718FC7F80004D49E7 /* CaptureTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CaptureTests-Info.plist"; sourceTree = "<group>"; };
@@ -134,9 +141,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		198F4FB61905A46F001067D7 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				198F4FB71905A479001067D7 /* Logo.png */,
+				198F4FB81905A479001067D7 /* Logo@2x.png */,
+			);
+			name = Media;
+			sourceTree = "<group>";
+		};
 		19E283BE18FC7F7F004D49E7 = {
 			isa = PBXGroup;
 			children = (
+				198F4FB61905A46F001067D7 /* Media */,
 				19E283D018FC7F80004D49E7 /* Capture */,
 				19E283F518FC7F80004D49E7 /* CaptureTests */,
 				19E283C918FC7F80004D49E7 /* Frameworks */,
@@ -191,14 +208,16 @@
 				19E283DF18FC7F80004D49E7 /* Main_iPad.storyboard */,
 				19E283E218FC7F80004D49E7 /* tbnMapViewController.h */,
 				19E283E318FC7F80004D49E7 /* tbnMapViewController.m */,
-				19E283E518FC7F80004D49E7 /* tbnSecondViewController.h */,
 				194B7B4A190317B30010CAAE /* tbnCaptureWebView.h */,
 				194B7B4B190317B30010CAAE /* tbnCaptureWebView.m */,
-				19E283E618FC7F80004D49E7 /* tbnSecondViewController.m */,
-				19E283E818FC7F80004D49E7 /* Images.xcassets */,
-				19E283D118FC7F80004D49E7 /* Supporting Files */,
+				19E283E518FC7F80004D49E7 /* tbnBasecampViewController.h */,
+				19E283E618FC7F80004D49E7 /* tbnBasecampViewController.m */,
 				19E2841B18FC81A8004D49E7 /* tbnParseManager.h */,
 				19E2841C18FC81A8004D49E7 /* tbnParseManager.m */,
+				198F4FBB1905A7CC001067D7 /* tbnToolbarView.h */,
+				198F4FBC1905A7CC001067D7 /* tbnToolbarView.m */,
+				19E283E818FC7F80004D49E7 /* Images.xcassets */,
+				19E283D118FC7F80004D49E7 /* Supporting Files */,
 			);
 			path = Capture;
 			sourceTree = "<group>";
@@ -313,7 +332,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				19E283E118FC7F80004D49E7 /* Main_iPad.storyboard in Resources */,
+				198F4FBA1905A479001067D7 /* Logo@2x.png in Resources */,
 				19E283E918FC7F80004D49E7 /* Images.xcassets in Resources */,
+				198F4FB91905A479001067D7 /* Logo.png in Resources */,
 				19E283DE18FC7F80004D49E7 /* Main_iPhone.storyboard in Resources */,
 				19E283D518FC7F80004D49E7 /* InfoPlist.strings in Resources */,
 			);
@@ -335,11 +356,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				19E283E418FC7F80004D49E7 /* tbnMapViewController.m in Sources */,
+				198F4FBD1905A7CC001067D7 /* tbnToolbarView.m in Sources */,
 				19027F1A190477A6004EA4D1 /* tbnXMLParser.m in Sources */,
 				19E283D718FC7F80004D49E7 /* main.m in Sources */,
 				19E283DB18FC7F80004D49E7 /* tbnAppDelegate.m in Sources */,
 				194B7B4C190317B30010CAAE /* tbnCaptureWebView.m in Sources */,
-				19E283E718FC7F80004D49E7 /* tbnSecondViewController.m in Sources */,
+				19E283E718FC7F80004D49E7 /* tbnBasecampViewController.m in Sources */,
 				19E2841D18FC81A8004D49E7 /* tbnParseManager.m in Sources */,
 				19027F1D190488F1004EA4D1 /* tbnXMLParserTest.m in Sources */,
 			);

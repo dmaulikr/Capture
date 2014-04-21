@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "tbnCaptureWebView.h"
+#import "tbnToolbarView.h"
 
 #define kAutoHideMillis 3000
 #define kAutoHide true
@@ -17,7 +18,7 @@
 //use "http://poroawards.net/Geolocation/map.html" for web or emulator, change hosting later
 
 
-@interface tbnMapViewController : UIViewController <PFLogInViewControllerDelegate>
+@interface tbnMapViewController : UIViewController <PFLogInViewControllerDelegate, UIWebViewDelegate>
 
 @property (weak, nonatomic) IBOutlet tbnCaptureWebView *webView;
 

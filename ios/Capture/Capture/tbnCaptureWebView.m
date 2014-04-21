@@ -13,9 +13,6 @@
 -(void)drawBuildings:(NSString *)bbox {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self backgroundDraw:bbox];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self outerPolygonLoop:ownerIDs buildings:buildingIDs polygons:polygons points:points data:pointData];
-        });
     });
 }
 -(void)backgroundDraw:(NSString *)bbox {
@@ -25,74 +22,46 @@
     
     // --------------- Data Structures ---------------- //
     // key = way id, value = array of node ids
-    polygons = [[NSMutableArray alloc] init];
+    polygons = [[NSArray alloc] init];
     // key = node id, value = array of latitude, longitude
-    points = [[NSMutableDictionary alloc] init];
+    points = [[NSArray alloc] init];
     
     NSArray *bounds = [bbox componentsSeparatedByString:@","]; // w s e n
-    
-    // TODO : XML handler
-    // create parser
-    // String output = xmlHandler.getXMLDataFromBBox(bounds, httpclient, httppost);
-    
-    // ------------ Parsing XML -------------- //
-    // Create a DOM element to parse XML
-    /*
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setNamespaceAware(true); // allows access to localName
-    DocumentBuilder db = factory.newDocumentBuilder();
-    InputSource inStream = new InputSource();
-    inStream.setCharacterStream(new StringReader(output));
-    Document doc = db.parse(inStream);
-    */
-    // populate polygons
-    //polygons = xmlHandler.getPolygonData(doc);
-    
-    // populate points
-    //points = xmlHandler.getPointData(doc);
-    
-    //buildIDs = xmlHandler.getBuildIds();
-    
-    pointData = @"";
-    NSMutableArray *b_o = [[NSMutableArray alloc] initWithCapacity:[buildingIDs count]];
-    for (int k = 0; k < [buildingIDs count]; k++) {
-        b_o[k] = [buildingIDs objectAtIndex:k];
-    }
-    NSArray *outArray = [tbnParseManager makeArrayOfOwners:[tbnParseManager getBuildingsOwnersIDs:b_o]];
-    for (int k = 0; k < [outArray count]; k++) {
-        [ownerIDs addObject:outArray[k]];
-    }
+    tbnXMLParser *parser = [[tbnXMLParser alloc] initWithWebView:self];
+    [parser sendXMLRequest:bounds];
+
+    // XML Parser will now call recieveXMLData in this class when it is done.
 }
--(void) outerPolygonLoop:(NSMutableArray *)owner_ids buildings:(NSMutableArray *)build_ids polygons:(NSMutableArray *)polygons points:(NSDictionary *)points data:(NSString *)point_data {
+-(void) outerPolygonLoop {
     NSString *o_id = [NSString alloc];
     for (int i = 0; i < [polygons count]; i ++) {
         NSArray *polygon = polygons[i];
-        if ([owner_ids count] > 0) {
-            if (owner_ids[i]) {
-                o_id = owner_ids[i];
+        if ([ownerIDs count] > 0) {
+            if (ownerIDs[i]) {
+                o_id = ownerIDs[i];
             } else o_id = @"";
         } else {
             o_id = @"";
         }
-        point_data = [self iterateThroughPolygons:build_ids points:points data:point_data id:o_id number:i polygon:polygon];
+        pointData = [self iterateThroughPolygons:o_id number:i polygon:polygon];
     }
-    [owner_ids removeAllObjects];
+    ownerIDs = [[NSArray alloc] init];
 }
--(NSString *) iterateThroughPolygons:(NSMutableArray *)build_ids points:(NSDictionary *)points data:(NSString *)point_data id:(NSString *)o_id number:(int)i polygon:(NSArray *)polygon {
+-(NSString *) iterateThroughPolygons:(NSString *)o_id number:(int)i polygon:(NSArray *)polygon {
     for( int j = 0; j < [polygons count]; j ++ ) {
         NSArray *lat_lon = points[polygons[j]];
         if(lat_lon) {
-            point_data = [[[point_data stringByAppendingString:lat_lon[0]] stringByAppendingString:@","] stringByAppendingString:lat_lon[1]];
+            pointData = [[[pointData stringByAppendingString:lat_lon[0]] stringByAppendingString:@","] stringByAppendingString:lat_lon[1]];
         }
         if(j < [polygon count] - 1) {
-            [point_data stringByAppendingString:@";"];
+            [pointData stringByAppendingString:@";"];
         }
     }
-    if ([point_data compare:@""] != 0) {
-        [self loadURL:build_ids data:point_data id:o_id number:i];
-        point_data = @"";
+    if ([pointData compare:@""] != 0) {
+        [self loadURL:buildingIDs data:pointData id:o_id number:i];
+        pointData = @"";
     }
-    return point_data;
+    return pointData;
 }
 -(NSString *) loadURL:(NSArray *)build_ids data:(NSString *)point_data id:(NSString *)o_id number:(int)i {
     NSMutableString *javascript = [[NSMutableString alloc] initWithString:@"drawPolygonFromPoints(\""];
@@ -103,8 +72,15 @@
     [javascript appendString:currentID];
     [javascript appendString:@"\",\""];
     [javascript appendString:o_id];
-    [javascript appendString:@"\")"];
+    [javascript appendString:@"\");"];
     return [self stringByEvaluatingJavaScriptFromString:javascript];
 }
-
+-(void)recieveXMLData:(NSDictionary *)buildings withPoints:(NSDictionary *)drawPoints {
+    pointData = @"";
+    buildingIDs = [buildings allKeys];
+    ownerIDs = [tbnParseManager makeArrayOfOwners:[tbnParseManager getBuildingsOwnersIDs:buildingIDs]];
+    polygons = [buildings allValues];
+    points = [drawPoints copy];
+    [self outerPolygonLoop];
+}
 @end

@@ -48,16 +48,18 @@
 + (NSArray *) getBuildingsOwnersIDs:(NSArray *)buildings {
     PFQuery *search = [[PFQuery alloc] initWithClassName:kParseCapturePointClass];
     [search whereKey:kParseCapturePointID containedIn:buildings];
-    return [search findObjects];
+    NSArray *results = [search findObjects];
+    if ([results count] <= 0)
+        return [NSMutableArray arrayWithCapacity:[buildings count]];
+    return results;
 }
 + (NSArray *) makeArrayOfOwners:(NSArray *)objects {
     if (!objects)
         return NULL;
     NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:objects.count];
-    NSMutableArray *objs = [[NSMutableArray alloc] initWithCapacity:objects.count];
-    for (int i = 0; i < objs.count; i++) {
+    for (int i = 0; i < objects.count; i++) {
         if (objects[i]) {
-            results[i] = [objects[i] objectForKey:kParseCapturePointID];
+            results[i] = [objects[i] objectForKey:kParseCapturePointOwner];
         } else {
             results[i] = NULL;
         }
@@ -65,6 +67,9 @@
     return [results copy];
 }
 + (BOOL)isLoggedIn {
-    return [PFUser currentUser] == NULL;
+    return [PFUser currentUser] != NULL;
+}
++ (PFUser *)getCurrentUser {
+    return [PFUser currentUser];
 }
 @end

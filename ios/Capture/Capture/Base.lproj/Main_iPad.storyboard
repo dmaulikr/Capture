@@ -55,10 +55,10 @@
             </objects>
             <point key="canvasLocation" x="3041" y="150"/>
         </scene>
-        <!--Tbn Second View Controller - Second-->
+        <!--Tbn Basecamp View Controller - Second-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
-                <viewController id="8rJ-Kc-sve" customClass="tbnSecondViewController" sceneMemberID="viewController">
+                <viewController id="8rJ-Kc-sve" customClass="tbnBasecampViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="L7p-HK-0SC"/>
                         <viewControllerLayoutGuide type="bottom" id="Djb-ko-YwX"/>

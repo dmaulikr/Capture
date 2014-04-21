@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "tbnCaptureWebView.h"
 
-@interface tbnXMLParser : NSObject <NSURLConnectionDataDelegate, NSXMLParserDelegate> {
+@class tbnCaptureWebView;
+
+@interface tbnXMLParser : NSObject <NSXMLParserDelegate> {
     NSXMLParser *internalParser;
     NSString *currentWayID;
     NSMutableArray *currentWayData;
@@ -16,10 +19,11 @@
     BOOL justFoundWay;
 }
 
-@property NSArray *buildingIDs;
+@property tbnCaptureWebView *webView;
 @property NSMutableDictionary *nodes;
-@property NSMutableArray *ways;
+@property NSMutableDictionary *ways;
 
+- (id)initWithWebView:(tbnCaptureWebView *)view;
 - (void) sendXMLRequest:(NSArray *)bounds;
 - (void) parse;
 - (void)manualParse:(NSString *)data;

@@ -7,21 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "tbnXMLParser.h"
 
 @interface tbnCaptureWebView : UIWebView {
     NSString *currentID;
-    NSMutableArray *buildingIDs;
-    NSMutableArray *ownerIDs;
-    NSMutableDictionary *points;
-    NSMutableArray *polygons;
+    NSArray *buildingIDs;
+    NSArray *ownerIDs;
+    NSDictionary *points;
+    NSArray *polygons;
     NSString *pointData;
 }
 
 
 -(void)drawBuildings:(NSString *)bbox;
 -(void)backgroundDraw:(NSString *)bbox;
--(void) outerPolygonLoop:(NSMutableArray *)owner_ids buildings:(NSMutableArray *)build_ids polygons:(NSMutableArray *)polygons points:(NSDictionary *)points data:(NSString *)point_data;
--(NSString *) iterateThroughPolygons:(NSMutableArray *)build_ids points:(NSDictionary *)points data:(NSString *)point_data id:(NSString *)o_id number:(int)i polygon:(NSArray *)polygon;
+-(void)recieveXMLData:(NSDictionary *)buildings withPoints:(NSDictionary *)drawPoints;
+-(void) outerPolygonLoop;
+-(NSString *) iterateThroughPolygons:(NSString *)o_id number:(int)i polygon:(NSArray *)polygon;
 -(NSString *) loadURL:(NSArray *)build_ids data:(NSString *)point_data id:(NSString *)o_id number:(int)i;
 
 @end

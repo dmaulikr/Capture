@@ -12,7 +12,7 @@
 #define __PARSE__
 
 #define kParseCapturePointDefense @"defense"
-#define kParseCapturePointOwner @"currentOwner"
+#define kParseCapturePointOwner @"ownerID"
 #define kParseCapturePointClass @"CapturePoint"
 #define kParseCapturePointNodes @"nodes"
 #define kParseCapturePointID @"pointID"

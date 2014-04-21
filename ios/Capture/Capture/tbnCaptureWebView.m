@@ -16,20 +16,9 @@
     });
 }
 -(void)backgroundDraw:(NSString *)bbox {
-    
-    ownerIDs = [[NSMutableArray alloc] init];
-    buildingIDs = [[NSMutableArray alloc] init];
-    
-    // --------------- Data Structures ---------------- //
-    // key = way id, value = array of node ids
-    polygons = [[NSArray alloc] init];
-    // key = node id, value = array of latitude, longitude
-    points = [[NSArray alloc] init];
-    
     NSArray *bounds = [bbox componentsSeparatedByString:@","]; // w s e n
     tbnXMLParser *parser = [[tbnXMLParser alloc] initWithWebView:self];
     [parser sendXMLRequest:bounds];
-
     // XML Parser will now call recieveXMLData in this class when it is done.
 }
 -(void) outerPolygonLoop {
@@ -78,7 +67,7 @@
 -(void)recieveXMLData:(NSDictionary *)buildings withPoints:(NSDictionary *)drawPoints {
     pointData = @"";
     buildingIDs = [buildings allKeys];
-    ownerIDs = [tbnParseManager makeArrayOfOwners:[tbnParseManager getBuildingsOwnersIDs:buildingIDs]];
+    ownerIDs = [tbnParseManager getBuildingsOwnersIDs:buildingIDs];
     polygons = [buildings allValues];
     points = [drawPoints copy];
     [self outerPolygonLoop];

@@ -45,13 +45,20 @@
     [search whereKey:kParseCapturePointOwner equalTo:owner];
     return [search findObjects];
 }
-+ (NSArray *) getBuildingsOwnersIDs:(NSArray *)buildings {
++ (NSDictionary *) getBuildingsOwnersIDs:(NSArray *)buildings {
     PFQuery *search = [[PFQuery alloc] initWithClassName:kParseCapturePointClass];
     [search whereKey:kParseCapturePointID containedIn:buildings];
     NSArray *results = [search findObjects];
-    if ([results count] <= 0)
-        return [NSMutableArray arrayWithCapacity:[buildings count]];
-    return results;
+    NSMutableDictionary *buildingToOwner = [[NSMutableDictionary alloc] initWithCapacity:buildings.count];
+    for (int i = 0; i < buildings.count; i++) {
+        [buildingToOwner setObject:nil forKey:buildings[i]];
+        for (int j = 0; j < results.count; j++) {
+            if ([[results[j] objectForKey:kParseCapturePointID] isEqualToString:buildings[i]]) {
+                [buildingToOwner setObject:results[j] forKey:buildings[i]];
+            }
+        }
+    }
+    return [buildingToOwner copy];
 }
 + (NSArray *) makeArrayOfOwners:(NSArray *)objects {
     if (!objects)

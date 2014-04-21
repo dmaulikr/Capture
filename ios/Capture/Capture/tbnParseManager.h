@@ -30,7 +30,7 @@ typedef enum LoginResult {
 + (void) createPoint:(NSArray *)nodes atPointID:(NSString *)pointID withTarget:(id)target selector:(SEL)selector;
 + (PFObject *) getPointByID:(NSString *)pointID;
 + (NSArray *) getBuildingsByOwner:(PFUser *)owner;
-+ (NSArray *) getBuildingsOwnersIDs:(NSArray *)buildings;
++ (NSDictionary *) getBuildingsOwnersIDs:(NSArray *)buildings;
 + (NSArray *) makeArrayOfOwners:(NSArray *)objects;
 
 + (void) showLoginWindow;

@@ -35,10 +35,10 @@
     _webView.delegate = self;
 }
 - (void)viewDidAppear:(BOOL)animated {
-    //[self.view addSubview:[tbnToolbarView create]];
     if (![tbnParseManager isLoggedIn]) {
         [self showLoginWindow];
     }
+    //[self.view addSubview:[tbnToolbarView create]];
 }
 - (void)didReceiveMemoryWarning
 {

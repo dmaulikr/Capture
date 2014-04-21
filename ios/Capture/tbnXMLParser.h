@@ -13,6 +13,7 @@
     NSString *currentWayID;
     NSMutableArray *currentWayData;
     BOOL shouldAddWay;
+    BOOL justFoundWay;
 }
 
 @property NSArray *buildingIDs;

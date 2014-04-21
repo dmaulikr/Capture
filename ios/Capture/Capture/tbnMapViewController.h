@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "tbnCaptureWebView.h"
 
 #define kAutoHideMillis 3000
 #define kAutoHide true
@@ -18,8 +19,9 @@
 
 @interface tbnMapViewController : UIViewController <PFLogInViewControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (weak, nonatomic) IBOutlet tbnCaptureWebView *webView;
 
 - (void) showLoginWindow;
+- (void) showTooltop:(PFObject *)capturePoint x:(float)x y:(float)y;
 
 @end

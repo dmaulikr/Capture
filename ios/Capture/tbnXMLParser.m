@@ -36,10 +36,12 @@
 }
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data {
     internalParser = [[NSXMLParser alloc] initWithData:data];
+    internalParser.delegate = self;
     [self parse];
 }
 - (void)manualParse:(NSString *)data {
     internalParser = [[NSXMLParser alloc] initWithData:[data dataUsingEncoding:NSUTF8StringEncoding]];
+    internalParser.delegate = self;
     [self parse];
 }
 - (void)parse {
@@ -48,28 +50,38 @@
         [NSException raise:@"Parse of XML was unsuccessful" format:nil];
     }
 }
+// MY PARSER IS BETTER THAN YOUR PARSER BITCH
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict {
+    justFoundWay = false;
     if ([elementName isEqualToString:@"node"]) {
         // Store the node object, all data is included
         [_nodes setObject:attributeDict forKey:[attributeDict objectForKey:@"id"]];
     } else if ([elementName isEqualToString:@"way"]) {
         // Store the way object template and fill in later
         shouldAddWay = false;
+        justFoundWay = true;
         currentWayID = [attributeDict objectForKey:@"id"];
         currentWayData = [[NSMutableArray alloc] init];
         [_nodes setObject:[[NSMutableDictionary alloc] init] forKey:currentWayID];
     } else if ([elementName isEqualToString:@"nd"]) {
         [currentWayData addObject:[attributeDict objectForKey:@"ref"]];
+    } else if ([elementName isEqualToString:@"tag"]) {
+        if (currentWayData && [[attributeDict objectForKey:@"k"] isEqualToString:@"building"]) {
+            shouldAddWay = true;
+        }
     }
 }
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
     if ([elementName isEqualToString:@"way"]) {
-        if (shouldAddWay) {
+        if (shouldAddWay && !justFoundWay) {
             [_ways addObject:currentWayData];
             shouldAddWay = false;
             currentWayData = NULL;
             currentWayID = NULL;
         }
     }
+}
+- (void)parserDidEndDocument:(NSXMLParser *)parser {
+    NSLog(@"%@", _ways);
 }
 @end

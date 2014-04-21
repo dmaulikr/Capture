@@ -64,5 +64,7 @@
     }
     return [results copy];
 }
-
++ (BOOL)isLoggedIn {
+    return [PFUser currentUser] == NULL;
+}
 @end

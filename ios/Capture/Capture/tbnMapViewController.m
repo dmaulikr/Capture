@@ -7,6 +7,7 @@
 //
 
 #import "tbnMapViewController.h"
+#import "tbnXMLParserTest.h"
 
 @interface tbnMapViewController ()
 
@@ -23,7 +24,7 @@
     // TODO: clear webview cache
 
     // iOS handles location request natively
-    
+    [tbnXMLParserTest testXML];
     NSURL *mapURL = [NSURL URLWithString:kWebMapURL];
     NSURLRequest *map = [NSURLRequest requestWithURL:mapURL];
     [_webView loadRequest:map];
@@ -42,6 +43,9 @@
     PFLogInViewController *login = [[PFLogInViewController alloc] init];
     login.delegate = self;
     [self presentViewController:login animated:YES completion:nil];
+}
+- (void)showTooltop:(PFObject *)capturePoint x:(float)x y:(float)y {
+    
 }
 
 @end

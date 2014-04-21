@@ -23,42 +23,43 @@
 }
 -(void) outerPolygonLoop {
     NSString *o_id = [NSString alloc];
-    for (int i = 0; i < [polygons count]; i ++) {
-        NSArray *polygon = polygons[i];
-        if ([ownerIDs count] > 0) {
-            if (ownerIDs[i]) {
-                o_id = ownerIDs[i];
-            } else o_id = @"";
-        } else {
-            o_id = @"";
+    for (NSString *buildingID in ownerIDs) {
+        PFUser *owner = [ownerIDs objectForKey:buildingID];
+        if (![owner isEqual:@0]) {
+            o_id = owner.objectId;
         }
-        pointData = [self iterateThroughPolygons:o_id number:i polygon:polygon];
+        pointData = [self iterateThroughPolygons:o_id buildingID:buildingID polygon:[buildingIDs objectForKey:buildingID]];
     }
-    ownerIDs = [[NSArray alloc] init];
+    ownerIDs = [[NSDictionary alloc] init];
 }
--(NSString *) iterateThroughPolygons:(NSString *)o_id number:(int)i polygon:(NSArray *)polygon {
-    for( int j = 0; j < [polygons count]; j ++ ) {
-        NSArray *lat_lon = points[polygons[j]];
-        if(lat_lon) {
+-(NSString *) iterateThroughPolygons:(NSString *)o_id buildingID:(NSString *)b_id polygon:(NSArray *)polygon {
+    for (NSString *buildingID in buildingIDs) {
+        NSArray *lat_lon = [buildingIDs objectForKey:buildingID];
+        if (lat_lon) {
             pointData = [[[pointData stringByAppendingString:lat_lon[0]] stringByAppendingString:@","] stringByAppendingString:lat_lon[1]];
-        }
-        if(j < [polygon count] - 1) {
-            [pointData stringByAppendingString:@";"];
+            pointData = [pointData stringByAppendingString:@";"];
         }
     }
+    if (pointData.length > 2)
+        pointData = [pointData substringToIndex:pointData.length - 1];
     if ([pointData compare:@""] != 0) {
-        [self loadURL:buildingIDs data:pointData id:o_id number:i];
+        // Must draw UI elements and edit WebView on the main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Copy to avoid concurrent EXC_BAD_ACCESS b/c concurrent modification from 2 threads
+            [self loadURL:o_id buildingID:b_id point:[pointData copy] current:[currentID copy]];
+        });
         pointData = @"";
     }
     return pointData;
 }
--(NSString *) loadURL:(NSArray *)build_ids data:(NSString *)point_data id:(NSString *)o_id number:(int)i {
+// holds method parameters for same reason as above EXC_BAD_ACCESS
+-(NSString *) loadURL:(NSString *)o_id buildingID:(NSString *)b_id point:(NSString *)data current:(NSString *)current {
     NSMutableString *javascript = [[NSMutableString alloc] initWithString:@"drawPolygonFromPoints(\""];
-    [javascript appendString:point_data];
+    [javascript appendString:data];
     [javascript appendString:@"\",\""];
-    [javascript appendString:build_ids[i]];
+    [javascript appendString:b_id];
     [javascript appendString:@"\",\""];
-    [javascript appendString:currentID];
+    [javascript appendString:current];
     [javascript appendString:@"\",\""];
     [javascript appendString:o_id];
     [javascript appendString:@"\");"];
@@ -66,9 +67,9 @@
 }
 -(void)recieveXMLData:(NSDictionary *)buildings withPoints:(NSDictionary *)drawPoints {
     pointData = @"";
-    buildingIDs = [buildings allKeys];
-    ownerIDs = [tbnParseManager getBuildingsOwnersIDs:buildingIDs];
-    polygons = [buildings allValues];
+    buildingIDs = buildings;
+    ownerIDs = [tbnParseManager getBuildingsOwnersIDs:buildingIDs.allKeys];
+    currentID = [tbnParseManager getCurrentUser].objectId;
     points = [drawPoints copy];
     [self outerPolygonLoop];
 }

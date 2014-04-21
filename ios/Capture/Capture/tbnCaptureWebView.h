@@ -11,10 +11,9 @@
 
 @interface tbnCaptureWebView : UIWebView {
     NSString *currentID;
-    NSArray *buildingIDs;
-    NSArray *ownerIDs;
+    NSDictionary *buildingIDs;
+    NSDictionary *ownerIDs;
     NSDictionary *points;
-    NSArray *polygons;
     NSString *pointData;
 }
 
@@ -23,7 +22,7 @@
 -(void)backgroundDraw:(NSString *)bbox;
 -(void)recieveXMLData:(NSDictionary *)buildings withPoints:(NSDictionary *)drawPoints;
 -(void) outerPolygonLoop;
--(NSString *) iterateThroughPolygons:(NSString *)o_id number:(int)i polygon:(NSArray *)polygon;
--(NSString *) loadURL:(NSArray *)build_ids data:(NSString *)point_data id:(NSString *)o_id number:(int)i;
+-(NSString *) iterateThroughPolygons:(NSString *)o_id buildingID:(NSString *)b_id polygon:(NSArray *)polygon;
+-(NSString *) loadURL:(NSString *)o_id buildingID:(NSString *)b_id point:(NSString *)data current:(NSString *)current;
 
 @end

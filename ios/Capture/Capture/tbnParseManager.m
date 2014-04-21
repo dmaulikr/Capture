@@ -51,7 +51,7 @@
     NSArray *results = [search findObjects];
     NSMutableDictionary *buildingToOwner = [[NSMutableDictionary alloc] initWithCapacity:buildings.count];
     for (int i = 0; i < buildings.count; i++) {
-        [buildingToOwner setObject:nil forKey:buildings[i]];
+        [buildingToOwner setObject:@0 forKey:buildings[i]];
         for (int j = 0; j < results.count; j++) {
             if ([[results[j] objectForKey:kParseCapturePointID] isEqualToString:buildings[i]]) {
                 [buildingToOwner setObject:results[j] forKey:buildings[i]];

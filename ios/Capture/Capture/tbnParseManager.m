@@ -74,9 +74,14 @@
     return [results copy];
 }
 + (BOOL)isLoggedIn {
-    return [PFUser currentUser] != NULL;
+    if ([PFUser currentUser]) {
+        [[PFUser currentUser] refresh];
+        return true;
+    }
+    return false;
 }
 + (PFUser *)getCurrentUser {
+    [[PFUser currentUser] fetchIfNeeded];
     return [PFUser currentUser];
 }
 @end

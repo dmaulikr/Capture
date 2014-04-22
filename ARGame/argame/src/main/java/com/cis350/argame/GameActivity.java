@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -283,6 +284,10 @@ public class GameActivity extends Activity {
                 }
             }
         });
+
+        final AlertDialog dialog = builder.create();
+
+        dialog.show();
     }
 
     @Override
@@ -300,6 +305,9 @@ public class GameActivity extends Activity {
             case CROP_FROM_CAMERA:
                 Bundle extras = data.getExtras();
                 if (extras != null) {
+                    for (String key : extras.keySet()) {
+                        Log.v("GameActivity", key);
+                    }
                     Bitmap photo = extras.getParcelable("data");
                     profilePic.setImageBitmap(photo);
                 }

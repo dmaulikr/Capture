@@ -25,22 +25,4 @@ public class CropOptionAdapter extends ArrayAdapter<CropOption> {
         mOptions = options;
         mInflater = LayoutInflater.from(context);
     }
-
-    /*@Override
-    public View getview(int position, View convertView, ViewGroup group) {
-        if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.crop_selector, null);
-
-            CropOption item = mOptions.get(position);
-
-            if (item != null) {
-                ((ImageView) convertView.findViewById(R.id.iv_icon)).setImageDrawable(item.icon);
-                ((TextView) convertView.findViewById(R.id.tv_name)).setText(item.title);
-
-                return convertView;
-            }
-        }
-
-        return null;
-    }*/
 }

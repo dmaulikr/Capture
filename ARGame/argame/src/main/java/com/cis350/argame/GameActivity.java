@@ -36,6 +36,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.GeolocationPermissions;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -49,6 +50,10 @@ import javax.xml.parsers.ParserConfigurationException;
  * @see SystemUiHider
  */
 public class GameActivity extends Activity {
+
+    private TextView coinsText;
+    private TextView armiesText;
+    private TextView nameText;
 
     WebView myWebView;
 
@@ -131,17 +136,20 @@ public class GameActivity extends Activity {
                     }
                 });
 
-        // Set up the user interaction to manually show or hide the system UI.
-        /*contentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (TOGGLE_ON_CLICK) {
-                    mSystemUiHider.toggle();
-                } else {
-                    mSystemUiHider.show();
-                }
-            }
-        });*/
+        TextView coinsText = (TextView)findViewById(R.id.coinstext);
+        TextView armiesText = (TextView)findViewById(R.id.armiestext);
+        TextView nameText = (TextView)findViewById(R.id.playerName);
+
+        this.coinsText = coinsText;
+        this.armiesText = armiesText;
+        this.nameText = nameText;
+
+        Integer currentCoins = PlayerProfile.getGold();
+        Integer currentArmies = PlayerProfile.getArmy();
+
+        coinsText.setText(currentCoins.toString() + "\nCoins");
+        armiesText.setText(currentArmies.toString() + "\nArmies");
+        nameText.setText(PlayerProfile.getName());
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
@@ -226,12 +234,33 @@ public class GameActivity extends Activity {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-    /**
-     * Start a new instance of the Settings Activity when clicked.
-     * @param v
-     */
-    public void onMenuButtonClick(View v) {
-        Intent i = new Intent(this, SettingsActivity.class);
-        startActivity(i);
+    // Player settings methods
+
+    public void onBuyArmiesClick(View v) {
+        //Toast.makeText(this, "Buy armies unimplemented!", Toast.LENGTH_LONG).show();
+        if(PlayerProfile.getGold() >= 10) {
+            PlayerProfile.ARMY += 1;
+            PlayerProfile.GOLD -= 10;
+            Integer currentCoins = PlayerProfile.getGold();
+            Integer currentArmies = PlayerProfile.getArmy();
+
+            coinsText.setText("Coins: " + currentCoins.toString());
+            armiesText.setText("Armies: " + currentArmies.toString());
+        }
+    }
+
+    public void onBuyCoinsClick(View v) {
+        Toast.makeText(this, "Buy coins unimplemented!", Toast.LENGTH_LONG).show();
+    }
+
+    public void onProfilePictureClick(View v) {
+        Toast.makeText(this, "Picture changing unimplemented!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected  void onStop() {
+        super.onStop();
+
+        ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
     }
 }

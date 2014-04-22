@@ -10,11 +10,6 @@
 
 @implementation tbnCaptureWebView
 
--(void)drawBuildings:(NSString *)bbox {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [self backgroundDraw:bbox];
-    });
-}
 -(void)backgroundDraw:(NSString *)bbox {
     NSArray *bounds = [bbox componentsSeparatedByString:@","]; // w s e n
     tbnXMLParser *parser = [[tbnXMLParser alloc] initWithWebView:self];
@@ -47,7 +42,7 @@
         }
     }
     if (ptLocal && ptLocal.length > 2) {
-        [ptLocal substringToIndex:ptLocal.length - 1];
+        [ptLocal deleteCharactersInRange:NSMakeRange([ptLocal length]-1, 1)];
         // Must draw UI elements and edit WebView on the main thread
         dispatch_async(dispatch_get_main_queue(), ^{
             [self loadURL:o_id buildingID:b_id point:ptLocal current:currentID];
@@ -81,7 +76,7 @@
 }
 -(void)showBuildings:(NSString *)newBounds {
     NSLog(@"Javscript invoked");
-    [self drawBuildings:newBounds];
+    [self backgroundDraw:newBounds];
 }
 -(void)connectToJavascript {
     [self addJavascriptInterfaces:self WithName:@"Android"];

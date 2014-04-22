@@ -22,6 +22,7 @@
     if ([tbnParseManager isLoggedIn]) {
         [self loadMap];
     }
+    [self.view addSubview:[tbnToolbarView create]];
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 }
@@ -37,7 +38,6 @@
     if (![tbnParseManager isLoggedIn]) {
         [self showLoginWindow];
     }
-    //[self.view addSubview:[tbnToolbarView create]];
 }
 - (void)didReceiveMemoryWarning
 {

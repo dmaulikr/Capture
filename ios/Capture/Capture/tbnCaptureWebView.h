@@ -18,8 +18,6 @@
     NSString *pointData;
 }
 
-
--(void)drawBuildings:(NSString *)bbox;
 -(void)backgroundDraw:(NSString *)bbox;
 -(void)recieveXMLData:(NSDictionary *)buildings withPoints:(NSDictionary *)drawPoints;
 -(void) outerPolygonLoop;

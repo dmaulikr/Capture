@@ -161,6 +161,23 @@
 			name = CustomWebView;
 			sourceTree = "<group>";
 		};
+		191D4E91190624AF00751EB7 /* map */ = {
+			isa = PBXGroup;
+			children = (
+				198F4FBB1905A7CC001067D7 /* tbnToolbarView.h */,
+				198F4FBC1905A7CC001067D7 /* tbnToolbarView.m */,
+				19E283E218FC7F80004D49E7 /* tbnMapViewController.h */,
+				19E283E318FC7F80004D49E7 /* tbnMapViewController.m */,
+				194B7B4A190317B30010CAAE /* tbnCaptureWebView.h */,
+				194B7B4B190317B30010CAAE /* tbnCaptureWebView.m */,
+				19027F18190477A6004EA4D1 /* tbnXMLParser.h */,
+				19027F19190477A6004EA4D1 /* tbnXMLParser.m */,
+				19027F1B190488F1004EA4D1 /* tbnXMLParserTest.h */,
+				19027F1C190488F1004EA4D1 /* tbnXMLParserTest.m */,
+			);
+			name = map;
+			sourceTree = "<group>";
+		};
 		198F4FB61905A46F001067D7 /* Media */ = {
 			isa = PBXGroup;
 			children = (
@@ -219,24 +236,15 @@
 		19E283D018FC7F80004D49E7 /* Capture */ = {
 			isa = PBXGroup;
 			children = (
-				19027F18190477A6004EA4D1 /* tbnXMLParser.h */,
-				19027F19190477A6004EA4D1 /* tbnXMLParser.m */,
-				19027F1B190488F1004EA4D1 /* tbnXMLParserTest.h */,
-				19027F1C190488F1004EA4D1 /* tbnXMLParserTest.m */,
+				191D4E91190624AF00751EB7 /* map */,
 				19E283D918FC7F80004D49E7 /* tbnAppDelegate.h */,
 				19E283DA18FC7F80004D49E7 /* tbnAppDelegate.m */,
 				19E283DC18FC7F80004D49E7 /* Main_iPhone.storyboard */,
 				19E283DF18FC7F80004D49E7 /* Main_iPad.storyboard */,
-				19E283E218FC7F80004D49E7 /* tbnMapViewController.h */,
-				19E283E318FC7F80004D49E7 /* tbnMapViewController.m */,
-				194B7B4A190317B30010CAAE /* tbnCaptureWebView.h */,
-				194B7B4B190317B30010CAAE /* tbnCaptureWebView.m */,
 				19E283E518FC7F80004D49E7 /* tbnBasecampViewController.h */,
 				19E283E618FC7F80004D49E7 /* tbnBasecampViewController.m */,
 				19E2841B18FC81A8004D49E7 /* tbnParseManager.h */,
 				19E2841C18FC81A8004D49E7 /* tbnParseManager.m */,
-				198F4FBB1905A7CC001067D7 /* tbnToolbarView.h */,
-				198F4FBC1905A7CC001067D7 /* tbnToolbarView.m */,
 				19E283E818FC7F80004D49E7 /* Images.xcassets */,
 				19E283D118FC7F80004D49E7 /* Supporting Files */,
 			);

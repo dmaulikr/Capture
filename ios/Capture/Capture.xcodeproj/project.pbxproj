@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		19027F1A190477A6004EA4D1 /* tbnXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 19027F19190477A6004EA4D1 /* tbnXMLParser.m */; };
 		19027F1D190488F1004EA4D1 /* tbnXMLParserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 19027F1C190488F1004EA4D1 /* tbnXMLParserTest.m */; };
+		191D4E8B1905FDE600751EB7 /* libJSWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 191D4E8A1905FDE600751EB7 /* libJSWebView.a */; };
+		191D4E901905FE0700751EB7 /* easyjs-inject.js in Sources */ = {isa = PBXBuildFile; fileRef = 191D4E8F1905FE0700751EB7 /* easyjs-inject.js */; };
 		194B7B4C190317B30010CAAE /* tbnCaptureWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 194B7B4B190317B30010CAAE /* tbnCaptureWebView.m */; };
 		198F4FB91905A479001067D7 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 198F4FB71905A479001067D7 /* Logo.png */; };
 		198F4FBA1905A479001067D7 /* Logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 198F4FB81905A479001067D7 /* Logo@2x.png */; };
@@ -59,6 +61,11 @@
 		19027F19190477A6004EA4D1 /* tbnXMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = tbnXMLParser.m; path = ../tbnXMLParser.m; sourceTree = "<group>"; };
 		19027F1B190488F1004EA4D1 /* tbnXMLParserTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tbnXMLParserTest.h; sourceTree = "<group>"; };
 		19027F1C190488F1004EA4D1 /* tbnXMLParserTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tbnXMLParserTest.m; sourceTree = "<group>"; };
+		191D4E8A1905FDE600751EB7 /* libJSWebView.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libJSWebView.a; path = "../JSWebView/build/JSWebView.build/Debug-universal/libJSWebView.a"; sourceTree = "<group>"; };
+		191D4E8C1905FE0200751EB7 /* EasyJSDataFunction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EasyJSDataFunction.h; path = ../JSWebView/JSWebView/EasyJSDataFunction.h; sourceTree = "<group>"; };
+		191D4E8D1905FE0200751EB7 /* EasyJSWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EasyJSWebView.h; path = ../JSWebView/JSWebView/EasyJSWebView.h; sourceTree = "<group>"; };
+		191D4E8E1905FE0200751EB7 /* EasyJSWebViewProxyDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EasyJSWebViewProxyDelegate.h; path = ../JSWebView/JSWebView/EasyJSWebViewProxyDelegate.h; sourceTree = "<group>"; };
+		191D4E8F1905FE0700751EB7 /* easyjs-inject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "easyjs-inject.js"; path = "../JSWebView/JSWebView/easyjs-inject.js"; sourceTree = "<group>"; };
 		194B7B4A190317B30010CAAE /* tbnCaptureWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tbnCaptureWebView.h; sourceTree = "<group>"; };
 		194B7B4B190317B30010CAAE /* tbnCaptureWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tbnCaptureWebView.m; sourceTree = "<group>"; };
 		198F4FB71905A479001067D7 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Logo.png; path = ../../Media/Logo.png; sourceTree = "<group>"; };
@@ -112,6 +119,7 @@
 			files = (
 				19B548021904955200263474 /* Accounts.framework in Frameworks */,
 				19B548031904955200263474 /* AdSupport.framework in Frameworks */,
+				191D4E8B1905FDE600751EB7 /* libJSWebView.a in Frameworks */,
 				19B548041904955200263474 /* AudioToolbox.framework in Frameworks */,
 				19B548051904955200263474 /* CFNetwork.framework in Frameworks */,
 				19B548061904955200263474 /* CoreFoundation.framework in Frameworks */,
@@ -141,6 +149,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		191D4E891905FDCC00751EB7 /* CustomWebView */ = {
+			isa = PBXGroup;
+			children = (
+				191D4E8F1905FE0700751EB7 /* easyjs-inject.js */,
+				191D4E8C1905FE0200751EB7 /* EasyJSDataFunction.h */,
+				191D4E8D1905FE0200751EB7 /* EasyJSWebView.h */,
+				191D4E8E1905FE0200751EB7 /* EasyJSWebViewProxyDelegate.h */,
+				191D4E8A1905FDE600751EB7 /* libJSWebView.a */,
+			);
+			name = CustomWebView;
+			sourceTree = "<group>";
+		};
 		198F4FB61905A46F001067D7 /* Media */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +173,7 @@
 		19E283BE18FC7F7F004D49E7 = {
 			isa = PBXGroup;
 			children = (
+				191D4E891905FDCC00751EB7 /* CustomWebView */,
 				198F4FB61905A46F001067D7 /* Media */,
 				19E283D018FC7F80004D49E7 /* Capture */,
 				19E283F518FC7F80004D49E7 /* CaptureTests */,
@@ -359,6 +380,7 @@
 				198F4FBD1905A7CC001067D7 /* tbnToolbarView.m in Sources */,
 				19027F1A190477A6004EA4D1 /* tbnXMLParser.m in Sources */,
 				19E283D718FC7F80004D49E7 /* main.m in Sources */,
+				191D4E901905FE0700751EB7 /* easyjs-inject.js in Sources */,
 				19E283DB18FC7F80004D49E7 /* tbnAppDelegate.m in Sources */,
 				194B7B4C190317B30010CAAE /* tbnCaptureWebView.m in Sources */,
 				19E283E718FC7F80004D49E7 /* tbnBasecampViewController.m in Sources */,
@@ -513,6 +535,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"/Volumes/sachabest/Documents/ARGame/ios/JSWebView/build/JSWebView.build/Debug-universal",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -542,6 +565,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"/Volumes/sachabest/Documents/ARGame/ios/JSWebView/build/JSWebView.build/Debug-universal",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

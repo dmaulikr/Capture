@@ -11,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,7 +48,7 @@ public class GameActivity extends Activity {
     private TextView armiesText;
     private TextView nameText;
     private ImageView profilePic;
-    private int PIC_SQUARE_WIDTH;
+    private int PIC_SQUARE_WIDTH = 180;
 
     private Uri mImageCaptureUri;
 
@@ -135,25 +137,6 @@ public class GameActivity extends Activity {
                     }
                 });
 
-        TextView coinsText = (TextView)findViewById(R.id.coinstext);
-        TextView armiesText = (TextView)findViewById(R.id.armiestext);
-        TextView nameText = (TextView)findViewById(R.id.playerName);
-        ImageView profilePic = (ImageView)findViewById(R.id.profilePicture);
-
-        this.coinsText = coinsText;
-        this.armiesText = armiesText;
-        this.nameText = nameText;
-        this.profilePic = profilePic;
-        this.PIC_SQUARE_WIDTH = profilePic.getWidth();
-
-        Integer currentCoins = PlayerProfile.getGold();
-        Integer currentArmies = PlayerProfile.getArmy();
-
-        coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
-        armiesText.setText(currentArmies.toString() + "\nArmies"); // Same with armies.
-        nameText.setText(PlayerProfile.getName()); // Set player name.
-        // TODO: Get the player picture from profile if applicable, else prompt the player for a pic
-
         showMap();
     }
 
@@ -193,6 +176,24 @@ public class GameActivity extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
+        TextView coinsText = (TextView)findViewById(R.id.coinstext);
+        TextView armiesText = (TextView)findViewById(R.id.armiestext);
+        TextView nameText = (TextView)findViewById(R.id.playerName);
+        ImageView profilePic = (ImageView)findViewById(R.id.profilePicture);
+
+        this.coinsText = coinsText;
+        this.armiesText = armiesText;
+        this.nameText = nameText;
+        this.profilePic = profilePic;
+
+        Integer currentCoins = PlayerProfile.getGold();
+        Integer currentArmies = PlayerProfile.getArmy();
+
+        coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
+        armiesText.setText(currentArmies.toString() + "\nArmies"); // Same with armies.
+        nameText.setText(PlayerProfile.getName()); // Set player name.
+        // TODO: Get the player picture from profile if applicable, else prompt the player for a pic
 
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
@@ -236,6 +237,7 @@ public class GameActivity extends Activity {
     // Player settings methods
 
     public void onBuyArmiesClick(View v) {
+        Log.v("onBuyArmiesClick", "clicked");
         if(PlayerProfile.getGold() >= 10) {
             PlayerProfile.ARMY += 1;
             PlayerProfile.GOLD -= 10;
@@ -305,16 +307,15 @@ public class GameActivity extends Activity {
             case CROP_FROM_CAMERA:
                 Bundle extras = data.getExtras();
                 if (extras != null) {
-                    for (String key : extras.keySet()) {
-                        Log.v("GameActivity", key);
-                    }
                     Bitmap photo = extras.getParcelable("data");
                     profilePic.setImageBitmap(photo);
+                    Log.v("CROP_FROM_CAMERA", "Picture set");
                 }
                 File f = new File(mImageCaptureUri.getPath());
                 if (f.exists()) {
                     f.delete(); // Delete the temporary file.
                 }
+                Toast.makeText(this, "Profile picture set.", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -343,7 +344,7 @@ public class GameActivity extends Activity {
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
             intent.putExtra("scale", true);
-            intent.putExtra("return-data", true);
+            intent.putExtra("return-data", false);
 
             if (size == 1) {
                 Intent i = new Intent(intent);

@@ -55,6 +55,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#000000"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Player Name"
                 android:id="@+id/playerName"
@@ -71,6 +72,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="100\nCoins"
                 android:id="@+id/coinstext"
+                android:clickable="true"
                 android:onClick="onBuyCoinsClick"
                 android:gravity="center"
                 android:layout_alignParentBottom="true"
@@ -85,6 +87,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="100\nArmy"
                 android:id="@+id/armiestext"
+                android:clickable="true"
                 android:onClick="onBuyArmiesClick"
                 android:gravity="center"
                 android:layout_gravity="right|bottom"

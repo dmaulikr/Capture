@@ -43,6 +43,7 @@
             android:layout_width="180px"
             android:layout_height="180px"
             android:id="@+id/imageView"
+            android:onClick="onProfilePictureClick"
             android:layout_gravity="left|bottom"
             android:src="@drawable/placeholder" />
 
@@ -70,6 +71,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="100\nCoins"
                 android:id="@+id/coinstext"
+                android:onClick="onBuyCoinsClick"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -83,6 +85,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="100\nArmy"
                 android:id="@+id/armiestext"
+                android:onClick="onBuyArmiesClick"
                 android:gravity="center"
                 android:layout_above="@+id/coinstext"
                 android:layout_alignParentRight="true"

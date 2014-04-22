@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "tbnXMLParser.h"
+#import "EasyJSWebView.h"
 
-@interface tbnCaptureWebView : UIWebView {
+@interface tbnCaptureWebView : EasyJSWebView <UIWebViewDelegate> {
     NSString *currentID;
     NSDictionary *buildingIDs;
     NSDictionary *ownerIDs;
@@ -22,7 +23,10 @@
 -(void)backgroundDraw:(NSString *)bbox;
 -(void)recieveXMLData:(NSDictionary *)buildings withPoints:(NSDictionary *)drawPoints;
 -(void) outerPolygonLoop;
--(NSString *) iterateThroughPolygons:(NSString *)o_id buildingID:(NSString *)b_id polygon:(NSArray *)polygon;
--(NSString *) loadURL:(NSString *)o_id buildingID:(NSString *)b_id point:(NSString *)data current:(NSString *)current;
+-(NSString *) iterateThroughPolygons:(NSString *)o_id buildingID:(NSString *)b_id polygon:(NSArray *)polygon data:(NSMutableString *)ptLocal;
+-(NSString *) loadURL:(NSString *)o_id buildingID:(NSString *)b_id point:(NSMutableString *)data current:(NSString *)current;
+-(void)showBuildings:(NSString *)newBounds;
+-(void)connectToJavascript;
 
 @end
+

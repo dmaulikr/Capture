@@ -24,14 +24,13 @@
     }
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSString *jsResult = [webView stringByEvaluatingJavaScriptFromString:@"getBounds();"];
-    [_webView drawBuildings:jsResult];
 }
 - (void)loadMap {
     NSURL *mapURL = [NSURL URLWithString:kWebMapURL];
     NSURLRequest *map = [NSURLRequest requestWithURL:mapURL];
     [[NSURLCache sharedURLCache] removeAllCachedResponses]; // clear cache
     [_webView loadRequest:map];
+    [_webView connectToJavascript];
     _webView.delegate = self;
 }
 - (void)viewDidAppear:(BOOL)animated {
@@ -54,6 +53,10 @@
 - (void)showTooltop:(PFObject *)capturePoint x:(float)x y:(float)y {
     
 }
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    return YES;
+}
+- (void)webViewDidStartLoad:(UIWebView *)webView {}
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
     [self dismissViewControllerAnimated:YES completion:^{
         [self loadMap];

@@ -537,6 +537,7 @@
 					"$(PROJECT_DIR)",
 					"/Volumes/sachabest/Documents/ARGame/ios/JSWebView/build/JSWebView.build/Debug-universal",
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -567,6 +568,7 @@
 					"$(PROJECT_DIR)",
 					"/Volumes/sachabest/Documents/ARGame/ios/JSWebView/build/JSWebView.build/Debug-universal",
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;

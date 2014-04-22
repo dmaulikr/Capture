@@ -64,7 +64,9 @@
         currentWayData = [[NSMutableArray alloc] init];
         [_nodes setObject:[[NSMutableDictionary alloc] init] forKey:currentWayID];
     } else if ([elementName isEqualToString:@"nd"]) {
-        [currentWayData addObject:[attributeDict objectForKey:@"ref"]];
+        NSString *nodeID = [attributeDict objectForKey:@"ref"];
+        if ([_nodes objectForKey:nodeID])
+            [currentWayData addObject:[_nodes objectForKey:nodeID]];
     } else if ([elementName isEqualToString:@"tag"]) {
         if (currentWayData && [[attributeDict objectForKey:@"k"] isEqualToString:@"building"]) {
             shouldAddWay = true;
@@ -83,6 +85,6 @@
 }
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
     [_webView recieveXMLData:_ways withPoints:_nodes];
-    NSLog(@"%@", _ways);
+    
 }
 @end

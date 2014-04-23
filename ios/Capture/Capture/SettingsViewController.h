@@ -14,6 +14,10 @@
 }
 @property (weak, nonatomic) IBOutlet PFImageView *userPhoto;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem    *doneButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
+
+@property (weak, nonatomic) IBOutlet UINavigationItem *navBar;
 
 - (IBAction)close:(id)sender;
 

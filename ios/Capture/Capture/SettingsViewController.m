@@ -20,9 +20,6 @@
     username.text = [PFUser currentUser].username;
     email.text = [PFUser currentUser][@"email"];
     _userPhoto.file = [PFUser currentUser][@"photo"];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(close:)];
-    tap.delegate = self;
-    [self.view addGestureRecognizer:tap];
     [_userPhoto loadInBackground:^(UIImage *image, NSError *error) {
         _userPhoto.frame = CGRectMake(_userPhoto.frame.origin.x, _userPhoto.frame.origin.y, 200, 200);
         [_userPhoto.layer setCornerRadius:100];
@@ -83,18 +80,6 @@
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self textFieldDidEndEditing:textField];
-    return YES;
-}
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    if ([touch.view.superview isKindOfClass:[UINavigationBar class]]) {
-        CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-        if (pos.x > ([[UIScreen mainScreen] bounds].size.width / 2.0)) {
-            [[PFUser currentUser] saveInBackground];
-        } else {
-            [[PFUser currentUser] refreshInBackgroundWithBlock:^(PFObject *object, NSError *error) {}];
-        }
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
     return YES;
 }
 - (IBAction)close:(id)sender {

@@ -131,7 +131,8 @@ public class ParseManager {
         point.saveInBackground();
     }
     // TODO - modify this method to subtract troops from the previous owner?
-    public static void createPoint(String pointID, int defense, String ownerID) {
+    public static void createPoint(String pointID, int defense,
+                                   String previousOwnerID) {
         String currID = ParseManager.getCurrentUser().getObjectId();
 
         ParseObject newPoint = null;
@@ -153,7 +154,7 @@ public class ParseManager {
         Log.w("Capture", "trying to capture the building" + " " + pointID + " " + currID );
         newPoint.saveInBackground();
 
-        sendCapturePush();
+        sendCapturePush(previousOwnerID);
     }
     public static ParseObject getPointByID(String pointID) throws ParseException {
         ParseQuery forID = ParseQuery.getQuery("CapturePoint");
@@ -252,7 +253,6 @@ public class ParseManager {
     }
 
     private static void sendCapturePush(String oldUser) {
-        // TODO: Need previous owner?
         ParseInstallation installation = ParseInstallation
                 .getCurrentInstallation();
         installation.put("objectId", oldUser);

@@ -1,5 +1,6 @@
 package com.cis350.argame;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -30,16 +31,26 @@ import org.w3c.dom.NodeList;
  */
 public class XMLQueryHandler {
 
-    // private HttpPost httppost;
-    // private HttpClient httpclient;
+    private HttpPost HTTPPOST;
+    private HttpClient HTTPCLIENT;
 
     public XMLQueryHandler() {
     }
 
     public ArrayList<String> build_ids = new ArrayList<String>();
 
+    private class XMLQueryRequest extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return null;
+        }
+    }
+
     public String getXMLDataFromBBox(String[] bounds,HttpClient httpclient, HttpPost httppost) {
         String output = "";
+        HTTPPOST = httppost;
+        HTTPCLIENT = httpclient;
 
         try {
 
@@ -61,7 +72,7 @@ public class XMLQueryHandler {
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
             // Execute HTTP Post Request
-            HttpResponse response = httpclient.execute(httppost);
+            HttpResponse response = HTTPCLIENT.execute(HTTPPOST);
 
             HttpEntity entity = response.getEntity();
             // get the result from query in XML format and convert to string

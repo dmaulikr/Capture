@@ -279,11 +279,11 @@ public class WebAppInterface {
     @JavascriptInterface
     public void showBuildings(String bbox) {
         new BuildingLoader().execute(bbox);
-
     }
 
     @JavascriptInterface
-    public void showBuildingDialog(final String ids, final int closeBy, final String owner_id, final String armyS) {
+    public void showBuildingDialog(final String ids, final String closeByS, final String owner_id, final String armyS) {
+        final int closeBy = Integer.parseInt(closeByS);
         final int army = Integer.parseInt(armyS);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
@@ -368,8 +368,8 @@ public class WebAppInterface {
         final Dialog d = new Dialog(mContext);
         d.setTitle("NumberPicker");
         d.setContentView(R.layout.army_picker);
-        Button b1 = (Button) d.findViewById(R.id.setbutton1);
-        Button b2 = (Button) d.findViewById(R.id.cancelbutton1);
+        Button b1 = (Button) d.findViewById(R.id.setbutton);
+        Button b2 = (Button) d.findViewById(R.id.cancelbutton);
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
         np.setMaxValue(PlayerProfile.ARMY + army); // max value 100
         np.setValue(army);
@@ -404,8 +404,8 @@ public class WebAppInterface {
         final Dialog d = new Dialog(mContext);
         d.setTitle("NumberPicker");
         d.setContentView(R.layout.army_picker);
-        Button b1 = (Button) d.findViewById(R.id.setbutton1);
-        Button b2 = (Button) d.findViewById(R.id.cancelbutton1);
+        Button b1 = (Button) d.findViewById(R.id.setbutton);
+        Button b2 = (Button) d.findViewById(R.id.cancelbutton);
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
         np.setMaxValue(PlayerProfile.ARMY); // max value 100
         np.setMinValue(0);   // min value 0

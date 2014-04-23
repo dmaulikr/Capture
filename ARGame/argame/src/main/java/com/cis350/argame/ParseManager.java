@@ -251,11 +251,18 @@ public class ParseManager {
         return result;
     }
 
-    private static void sendCapturePush() {
+    private static void sendCapturePush(String oldUser) {
         // TODO: Need previous owner?
+        ParseInstallation installation = ParseInstallation
+                .getCurrentInstallation();
+        installation.put("objectId", oldUser);
+        installation.saveInBackground();
+
         ParsePush push = new ParsePush();
-        // TODO: Search query?
-        push.setMessage("One of your buildings has been captured by ");
+        ParseQuery pQuery = ParseInstallation.getQuery();
+        pQuery.whereEqualTo("objectId", oldUser);
+        push.setMessage("One of your buildings has been captured by " +
+                getCurrentUser().getUsername() + "!");
         push.sendInBackground();
     }
 }

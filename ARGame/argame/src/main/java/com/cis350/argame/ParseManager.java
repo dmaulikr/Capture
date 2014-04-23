@@ -131,7 +131,7 @@ public class ParseManager {
         point.saveInBackground();
     }
     // TODO - modify this method to subtract troops from the previous owner?
-    public static void createPoint(String pointID, int defense) {
+    public static void createPoint(String pointID, int defense, String ownerID) {
         String currID = ParseManager.getCurrentUser().getObjectId();
 
         ParseObject newPoint = null;

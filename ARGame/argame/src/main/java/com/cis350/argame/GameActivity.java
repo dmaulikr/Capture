@@ -1,6 +1,8 @@
 package com.cis350.argame;
 
 import com.cis350.argame.util.SystemUiHider;
+import com.parse.ParseAnalytics;
+import com.parse.PushService;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -136,6 +138,10 @@ public class GameActivity extends Activity {
                         }
                     }
                 });
+
+        // Set parse notifications to appear for this activity
+        PushService.setDefaultPushCallback(this, GameActivity.class);
+        ParseAnalytics.trackAppOpened(getIntent());
 
         showMap();
     }

@@ -314,9 +314,9 @@ public class WebAppInterface {
                 Log.w("build ID", "build id is " + ids);
                 if(closeBy == 1 && PlayerProfile.ARMY >= army && owner_id.compareTo(currentID) != 0) {
                     PlayerProfile.GOLD += 100;
-                    setArmyDialog(ids);
+                    setArmyDialog(ids, owner_id);
                 } else if(closeBy == 1 && owner_id.compareTo(currentID) == 0) {
-                    changeArmyDialog(ids, army);
+                    changeArmyDialog(ids, army, owner_id);
                 }
                 Log.w("Capture", "initiate building capture");
             }
@@ -333,7 +333,7 @@ public class WebAppInterface {
                     // current activity
                     if(PlayerProfile.ARMY >= army ) {
                         PlayerProfile.GOLD += 100;
-                        setArmyDialog(ids);
+                        setArmyDialog(ids, owner_id);
                     }
                 }
             });
@@ -342,7 +342,7 @@ public class WebAppInterface {
                 public void onClick(DialogInterface dialog,int id) {
                     // if this button is clicked, close
                     // current activity
-                    changeArmyDialog(ids, army);
+                    changeArmyDialog(ids, army, owner_id);
                 }
             });
         }
@@ -363,7 +363,7 @@ public class WebAppInterface {
 
     }
 
-    private void changeArmyDialog(final String ids, final int army) {
+    private void changeArmyDialog(final String ids, final int army, final String owner_id) {
         final int[] out = {0};
         final Dialog d = new Dialog(mContext);
         d.setTitle("NumberPicker");
@@ -380,7 +380,7 @@ public class WebAppInterface {
             @Override
             public void onClick(View v) {
                 out[0] = np.getValue(); //set the value to textview
-                ParseManager.createPoint(ids, out[0]);
+                ParseManager.createPoint(ids, out[0], owner_id);
                 PlayerProfile.ARMY += army - out[0];
                 myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+out[0]+"\",\""+currentID+"\")");
                 ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
@@ -399,7 +399,7 @@ public class WebAppInterface {
         d.show();
     }
 
-    private void setArmyDialog(final String ids) {
+    private void setArmyDialog(final String ids, final String owner_id) {
         final int[] out = {0};
         final Dialog d = new Dialog(mContext);
         d.setTitle("NumberPicker");
@@ -415,7 +415,7 @@ public class WebAppInterface {
             @Override
             public void onClick(View v) {
                 out[0] = np.getValue(); //set the value to textview
-                ParseManager.createPoint(ids, out[0]);
+                ParseManager.createPoint(ids, out[0], owner_id);
                 PlayerProfile.ARMY -= out[0];
                 myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+out[0]+"\",\""+currentID+"\")");
                 ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
@@ -425,7 +425,7 @@ public class WebAppInterface {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ParseManager.createPoint(ids, 0);
+                ParseManager.createPoint(ids, 0, owner_id);
                 myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+0+"\",\""+currentID+"\")");
                 ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
                 d.dismiss(); // dismiss the dialog

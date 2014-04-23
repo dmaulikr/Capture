@@ -152,6 +152,8 @@ public class ParseManager {
         }
         Log.w("Capture", "trying to capture the building" + " " + pointID + " " + currID );
         newPoint.saveInBackground();
+
+        sendCapturePush();
     }
     public static ParseObject getPointByID(String pointID) throws ParseException {
         ParseQuery forID = ParseQuery.getQuery("CapturePoint");
@@ -247,5 +249,13 @@ public class ParseManager {
         map_owner.clear();
 
         return result;
+    }
+
+    private static void sendCapturePush() {
+        // TODO: Need previous owner?
+        ParsePush push = new ParsePush();
+        // TODO: Search query?
+        push.setMessage("One of your buildings has been captured by ");
+        push.sendInBackground();
     }
 }

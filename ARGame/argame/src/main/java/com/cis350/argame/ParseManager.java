@@ -1,8 +1,18 @@
 package com.cis350.argame;
 
+import android.util.Log;
+
 import com.parse.*;
 import com.parse.ParseException;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Sacha on 2/27/14.
@@ -74,6 +84,8 @@ public class ParseManager {
         newUser.setUsername(username);
         newUser.setPassword(password);
         newUser.setEmail(email);
+        newUser.put("gold", 100);
+        newUser.put("army", 10);
         try {
             newUser.signUp();
         } catch (ParseException e) {
@@ -88,7 +100,17 @@ public class ParseManager {
                     throw new ConnectionFailedException();
             }
         }
+        newUser.saveInBackground();
         return LoginResult.SUCCESS;
+    }
+
+    public static void updateCurrentUserArmy(int army, int gold) {
+        if (isLoggedIn()) {
+            ParseUser ur = getCurrentUser();
+            ur.put("army", army);
+            ur.put("gold", gold);
+            ur.saveInBackground();
+        }
     }
 
     /**
@@ -101,19 +123,34 @@ public class ParseManager {
      * capturePoint modifies the ParseObject for the CapturePoint specified such that the owner becomes the
      * the current user and the defending troops become the number specified.
      * @param point the CapturePoint to be captured
-     * @param newDefense the new amount of defending
+     * @param defense the new amount of defending
      */
-    public static void capturePoint(ParseObject point, int newDefense) {
-        point.put("defense", newDefense);
-        point.put("currentOwner", ParseManager.getCurrentUser());
+    public static void capturePoint(ParseObject point, int defense) {
+        point.put("defense", defense);
+        point.put("ownerID", ParseManager.getCurrentUser().getObjectId());
         point.saveInBackground();
     }
     // TODO - modify this method to subtract troops from the previous owner?
-    public static void createPoint(ParseObject[] nodes, int pointID) {
-        ParseObject newPoint = new ParseObject("CapturePoint");
-        newPoint.put("defense", 0);
-        newPoint.put("nodes", nodes);
-        newPoint.put("pointID", pointID);
+    public static void createPoint(String pointID, int defense) {
+        String currID = ParseManager.getCurrentUser().getObjectId();
+
+        ParseObject newPoint = null;
+        try {
+            newPoint = ParseManager.getPointByID(pointID);
+        } catch (ParseException e) {
+            newPoint = null;
+        }
+        if (newPoint != null) {
+            newPoint.put("ownerID", currID);
+            newPoint.put("defense", defense);
+        } else {
+            newPoint = new ParseObject("CapturePoint");
+            newPoint.put("defense", defense);
+            newPoint.put("pointID", pointID);
+            newPoint.put("ownerID", currID);
+            newPoint.put("captured", true);
+        }
+        Log.w("Capture", "trying to capture the building" + " " + pointID + " " + currID );
         newPoint.saveInBackground();
     }
     public static ParseObject getPointByID(String pointID) throws ParseException {
@@ -129,54 +166,86 @@ public class ParseManager {
         return (ParseObject[]) forUser.find().toArray();
     }
 
-    /*public static String[] getBuildingsOwnersIds(ArrayList<String> s) throws ParseException {
-        int len = s.size();
-        String[] out = new String[len];
-        for (int i = 0; i < s.size(); i++) {
-            ParseObject forID = getPointByID(s.get(i));
-            out[i] = (String) forID.get("ownerID");
-        }
-        return out;
-    }*/
-
+    private static HashMap<String, ArrayList<String>> map_owner = new HashMap<String, ArrayList<String>>();
     //////get the owner ids of the buildings (String[] )
     public static ParseObject[] getBuildingsOwnersIds(String[] buildings) throws ParseException {
         int size = 0;
         size = buildings.length;
+
+        for (int i = 0; i < size; i++) {
+            map_owner.put(buildings[i], null);
+        }
+
         String[] result = new String[size];
         ParseQuery query = ParseQuery.getQuery("CapturePoint");
         query.whereContainedIn("pointID", Arrays.asList(buildings));
-        /*Object[] objects_from_parse = (Object[]) query.find().toArray();
-        ParseObject[] objects = (ParseObject[]) objects_from_parse;
-        Log.w("myAppOwners", "current building owners "+objects.length+""+"CAAAAAAA");
-        String[] objs = new String[objects.length];
-        Log.w("myAppOwners", "current building owners "+objs.length+""+"BAAAAAAA");
-        for (int i = 0; i < objs.length; i++) {
-            result[i] = objects[i].get("ownerID").toString();
-            Log.w("myAppOwners", "current building owner is "+result[i]+"");
-        }
-        Log.w("myAppOwners", "current building owners "+result+""+"HAAAAAAA");
-        return result;*/
+
         if (query.find().size() > 0) {
             return (ParseObject[]) query.find().toArray(new ParseObject[size]);
-        } else return null;
+        } else return new ParseObject[0];
     }
 
     public static String[] makeArrayOfOwners(ParseObject[] objects) throws java.text.ParseException {
         if (objects == null) return new String[0];
-        int size = objects.length;
-        String[] result = new String[size];
+
+        int size = map_owner.size();
+
+        String[] result = new String[size*3];
         String[] objs = new String[size];
-        //Log.w("myAppOwners", "current building owners "+objs.length+""+"BAAAAAAA");
-        for (int i = 0; i < objs.length; i++) {
-            if (objects[i] != null) {
-                result[i] = (String) objects[i].get("ownerID").toString();
-            } else {
-                result[i] = null;
+
+        if (objects.length > 0) {
+            for (int i = 0; i < objs.length; i++) {
+                if (i < objects.length) {
+                //result[index] = null;
+                    if (objects[i] != null) {
+                        ArrayList<String> dataAL = new ArrayList<String>();
+                        dataAL.add((String) objects[i].get("ownerID").toString());
+                        dataAL.add((String) objects[i].get("defense").toString());
+                        map_owner.put((String) objects[i].get("pointID").toString(), dataAL);
+                        objects[i] = null;
+                    } else {
+                        //result[index+1] = null;
+                    }
+                } else {
+                    break;
+                }
             }
-            //Log.w("myAppOwners", "current building owner is "+result[i]+"");
         }
-        //Log.w("myAppOwners", "current building owners "+result+""+"HAAAAAAA");
+        Object[] key_set =  map_owner.keySet().toArray();
+        //Log.w("Building", "key set size " + key_set.length + key_set.toString());
+        String[] key_str = new String[key_set.length];
+        //Log.w("Building", "key array size " + key_str.length);
+        int index = 0;
+
+        for (int i = 0; i < key_set.length; i++) {
+            key_str[i] = key_set[i].toString();
+        }
+
+        index = 0;
+        ArrayList<String> unpack;
+        String owner;
+        String army;
+        if (key_str.length > 0) {
+            for (int i = 0; i < key_str.length; i++) {
+                result[index] = key_str[i];
+                unpack = map_owner.get(result[index]);
+                if (unpack != null) {
+                    owner = unpack.get(0);
+                    army = unpack.get(1);
+                } else {
+                    owner = null;
+                    army = null;
+                }
+                result[index+1] = owner;
+                result[index+2] = army;
+
+                index += 3;
+            }
+        } else {
+            //re
+        }
+        map_owner.clear();
+
         return result;
     }
 }

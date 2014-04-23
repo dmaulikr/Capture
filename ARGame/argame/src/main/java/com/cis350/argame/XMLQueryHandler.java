@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.util.EntityUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -81,6 +82,8 @@ public class XMLQueryHandler {
                 output = sb.toString(); // XML
             }
 
+            entity.consumeContent();
+
         }  catch (ClientProtocolException e) {
             Log.w("xml", "wrong client");
         } catch (IOException e) {
@@ -121,6 +124,7 @@ public class XMLQueryHandler {
             NodeList w_nodes = w_item.getChildNodes();
             boolean is_building = false;
             ArrayList<String> node_ids = new ArrayList<String>();
+            node_ids.add(w_id);
             for(int j = 0; j < w_nodes.getLength(); j++) {
                 Node w_child = w_nodes.item(j);
 

@@ -113,7 +113,7 @@ public class XMLQueryHandler {
         while(output == null) {
             output = XMLOutput;
             try {
-                Thread.sleep(10);
+                Thread.sleep((long) 0.01);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -126,13 +126,6 @@ public class XMLQueryHandler {
         return this.build_ids;
     }
 
-    /**
-     * returns polygons
-     *
-     * @param doc - DOM with all XML data
-     * @return
-     */
-
     private class getPolygonDataTask extends AsyncTask<String, Integer, String> {
 
         @Override
@@ -141,6 +134,12 @@ public class XMLQueryHandler {
         }
     }
 
+    /**
+     * returns polygons
+     *
+     * @param doc - DOM with all XML data
+     * @return
+     */
      public ArrayList<ArrayList<String>> getPolygonData(Document doc) {
         ArrayList<ArrayList<String>> polygons = new ArrayList<ArrayList<String>>();
         NodeList ways = doc.getElementsByTagName("way");

@@ -12,6 +12,7 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -299,12 +300,23 @@ public class WebAppInterface {
         //owner of this building
         String owner = "";
 
-        GameActivity game = (GameActivity) mContext;
+        //GameActivity game = (GameActivity) mContext;
 
         View dialog_view = inflater.inflate(R.layout.building_dialog, null);
-        TextView tv1 = (TextView)dialog_view.findViewById(R.id.building_army_size_text);
+        TextView tv1 = (TextView)dialog_view.findViewById(R.id.building_id_text);
+        TextView tv2 = (TextView)dialog_view.findViewById(R.id.building_army_size_text);
 
-        tv1.setText(ids);
+        ImageView img1 = (ImageView)dialog_view.findViewById(R.id.buildingImage);
+        if(owner_id.compareTo(currentID) == 0) {
+            img1.setImageResource(R.drawable.friendly_point);
+        } else if (owner_id.compareTo("") == 0) {
+            img1.setImageResource(R.drawable.neutral_point);
+        } else {
+            img1.setImageResource(R.drawable.enemy_point);
+        }
+
+        tv1.setText("Building Id is: " + ids);
+        tv2.setText("Army size is: " + armyS);
         Log.w("build ID", "build id is " + ids);
 
         DialogInterface.OnClickListener positiveButtonListener = new DialogInterface.OnClickListener() {

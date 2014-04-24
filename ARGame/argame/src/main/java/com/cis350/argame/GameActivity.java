@@ -97,8 +97,20 @@ public class GameActivity extends Activity {
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
 
+        // Initialize view references
+        TextView coinsText = (TextView)findViewById(R.id.coinstext);
+        TextView armiesText = (TextView)findViewById(R.id.armiestext);
+        TextView nameText = (TextView)findViewById(R.id.playerName);
+        ImageView profilePic = (ImageView)findViewById(R.id.profilePicture);
+
+        this.coinsText = coinsText;
+        this.armiesText = armiesText;
+        this.nameText = nameText;
+        this.profilePic = profilePic;
+
         // Set up an instance of SystemUiHider to control the system UI for
         // this activity.
+
         mSystemUiHider = SystemUiHider.getInstance(this, contentView, HIDER_FLAGS);
         mSystemUiHider.setup();
         mSystemUiHider
@@ -183,30 +195,11 @@ public class GameActivity extends Activity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        TextView coinsText = (TextView)findViewById(R.id.coinstext);
-        TextView armiesText = (TextView)findViewById(R.id.armiestext);
-        TextView nameText = (TextView)findViewById(R.id.playerName);
-        ImageView profilePic = (ImageView)findViewById(R.id.profilePicture);
-
-        this.coinsText = coinsText;
-        this.armiesText = armiesText;
-        this.nameText = nameText;
-        this.profilePic = profilePic;
-
-        Integer currentCoins = PlayerProfile.getGold();
-        Integer currentArmies = PlayerProfile.getArmy();
-
-        coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
-        armiesText.setText(currentArmies.toString() + "\nArmies"); // Same with armies.
-        nameText.setText(PlayerProfile.getName()); // Set player name.
-        // TODO: Get the player picture from profile if applicable, else prompt the player for a pic
-
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
         // are available.
         delayedHide(100);
     }
-
 
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
@@ -242,6 +235,25 @@ public class GameActivity extends Activity {
 
     // Player settings methods
 
+    public void refreshValues() {
+        TextView coinsText = (TextView)findViewById(R.id.coinstext);
+        TextView armiesText = (TextView)findViewById(R.id.armiestext);
+        TextView nameText = (TextView)findViewById(R.id.playerName);
+        ImageView profilePic = (ImageView)findViewById(R.id.profilePicture);
+
+        this.coinsText = coinsText;
+        this.armiesText = armiesText;
+        this.nameText = nameText;
+        this.profilePic = profilePic;
+
+        Integer currentCoins = PlayerProfile.getGold();
+        Integer currentArmies = PlayerProfile.getArmy();
+
+        coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
+        armiesText.setText(currentArmies.toString() + "\nArmies"); // Same with armies.
+        nameText.setText(PlayerProfile.getName()); // Set player name.
+    }
+
     public void onBuyArmiesClick(View v) {
         Log.v("onBuyArmiesClick", "clicked");
         if(PlayerProfile.getGold() >= 10) {
@@ -250,13 +262,17 @@ public class GameActivity extends Activity {
             Integer currentCoins = PlayerProfile.getGold();
             Integer currentArmies = PlayerProfile.getArmy();
 
-            coinsText.setText("Coins: " + currentCoins.toString());
-            armiesText.setText("Armies: " + currentArmies.toString());
+            coinsText.setText("Coins:\n " + currentCoins.toString());
+            armiesText.setText("Armies:\n " + currentArmies.toString());
         }
     }
 
     public void onBuyCoinsClick(View v) {
         Toast.makeText(this, "Buy coins unimplemented!", Toast.LENGTH_LONG).show();
+    }
+
+    public void onNameClick(View v) {
+        refreshValues();
     }
 
     public void onProfilePictureClick(View v) {

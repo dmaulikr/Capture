@@ -59,6 +59,8 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Player Name"
                 android:id="@+id/playerName"
+                android:clickable="true"
+                android:onClick="onNameClick"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"

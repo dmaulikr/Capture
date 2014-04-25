@@ -358,9 +358,14 @@ public class WebAppInterface {
                 }
             });
         }
+
+        // TODO
+        // Send push notification to the previous owner indicating that their
+        // building was captured
+
         alertDialogBuilder
-                .setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
                         // if this button is clicked, just close
                         // the dialog box and do nothing
                         dialog.cancel();
@@ -443,6 +448,7 @@ public class WebAppInterface {
                 d.dismiss(); // dismiss the dialog
             }
         });
+
         d.show();
     }
 

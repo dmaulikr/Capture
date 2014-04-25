@@ -26,12 +26,20 @@ public class PlayerProfile {
         return ID;
     }
 
+    public static void setArmy(int ARMY) {
+        PlayerProfile.ARMY = ARMY;
+    }
+
     public static int getArmy() {
         return ARMY;
     }
 
     public static int getGold() {
         return GOLD;
+    }
+
+    public static void setGold(int GOLD) {
+        PlayerProfile.GOLD = GOLD;
     }
 
     public static String getName() {

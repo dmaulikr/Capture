@@ -1,5 +1,6 @@
 package com.cis350.argame;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -30,72 +31,107 @@ import org.w3c.dom.NodeList;
  */
 public class XMLQueryHandler {
 
-    // private HttpPost httppost;
-    // private HttpClient httpclient;
+    private HttpPost HTTPPOST;
+    private HttpClient HTTPCLIENT;
+    private String XMLOutput;
 
     public XMLQueryHandler() {
     }
 
     public ArrayList<String> build_ids = new ArrayList<String>();
 
-    public String getXMLDataFromBBox(String[] bounds,HttpClient httpclient, HttpPost httppost) {
-        String output = "";
+    private class XMLQueryRequestTask extends AsyncTask<String, Integer, String> {
 
-        try {
+        @Override
+        protected String doInBackground(String... strs) {
 
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            String output = "";
 
-            // Find all ways with key "building" and all their member nodes
-            String data=
-                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?><osm-script timeout=\"900\" element-limit=\"1073741824\">"+
-                            "<query type=\"node\">"+
-                            "<bbox-query s=\""+bounds[1]+"\" w=\""+bounds[0]+"\" n=\""+bounds[3]+"\" e=\""+bounds[2]+"\"/>"+
-                            "</query>"+
-                            "<union>"+
-                            "<item />"+
-                            "<recurse type=\"node-way\"/>"+
-                            "</union>"+
-                            "<print/></osm-script>";
+            String[] bounds = { strs[0], strs[1], strs[2], strs[3]};
+            try {
 
-            nameValuePairs.add(new BasicNameValuePair("form-data", data));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 
-            // Execute HTTP Post Request
-            HttpResponse response = httpclient.execute(httppost);
+                // Find all ways with key "building" and all their member nodes
+                String data=
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><osm-script timeout=\"900\" element-limit=\"1073741824\">"+
+                                "<query type=\"node\">"+
+                                "<bbox-query s=\""+bounds[1]+"\" w=\""+bounds[0]+"\" n=\""+bounds[3]+"\" e=\""+bounds[2]+"\"/>"+
+                                "</query>"+
+                                "<union>"+
+                                "<item />"+
+                                "<recurse type=\"node-way\"/>"+
+                                "</union>"+
+                                "<print/></osm-script>";
 
-            HttpEntity entity = response.getEntity();
-            // get the result from query in XML format and convert to string
-            if (entity != null) {
-                InputStream instream = entity.getContent();
+                nameValuePairs.add(new BasicNameValuePair("form-data", data));
+                HTTPPOST.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-                InputStreamReader is = new InputStreamReader(instream);
-                StringBuilder sb=new StringBuilder();
-                BufferedReader br = new BufferedReader(is);
-                String read = br.readLine();
+                // Execute HTTP Post Request
+                HttpResponse response = HTTPCLIENT.execute(HTTPPOST);
 
-                while(read != null) {
-                    //System.out.println(read);
-                    sb.append(read);
-                    read =br.readLine();
+                HttpEntity entity = response.getEntity();
+                // get the result from query in XML format and convert to string
+                if (entity != null) {
+                    InputStream instream = entity.getContent();
 
+                    InputStreamReader is = new InputStreamReader(instream);
+                    StringBuilder sb=new StringBuilder();
+                    BufferedReader br = new BufferedReader(is);
+                    String read = br.readLine();
+
+                    while(read != null) {
+                        //System.out.println(read);
+                        sb.append(read);
+                        read =br.readLine();
+
+                    }
+                    output = sb.toString(); // XML
                 }
-                output = sb.toString(); // XML
+
+                entity.consumeContent();
+
+            }  catch (ClientProtocolException e) {
+                Log.w("xml", "wrong client");
+            } catch (IOException e) {
+                Log.w("xml", "IO exception");
             }
 
-            entity.consumeContent();
+            XMLOutput = output;
 
-        }  catch (ClientProtocolException e) {
-            Log.w("xml", "wrong client");
-        } catch (IOException e) {
-            Log.w("xml", "IO exception");
+            return null;
+        }
+    }
+
+    public String getXMLDataFromBBox(String[] bounds,HttpClient httpclient, HttpPost httppost) {
+        String output = null;
+        HTTPPOST = httppost;
+        HTTPCLIENT = httpclient;
+
+        new XMLQueryRequestTask().execute(bounds[0], bounds[1], bounds[2], bounds[3]);
+
+        while(output == null) {
+            output = XMLOutput;
+            try {
+                Thread.sleep((long) 0.01);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
-        // Create a DOM element to parse XML
         return output;
     }
 
     public ArrayList<String> getBuildIds() {
         return this.build_ids;
+    }
+
+    private class getPolygonDataTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return null;
+        }
     }
 
     /**
@@ -149,6 +185,14 @@ public class XMLQueryHandler {
             }
         }
         return polygons;
+    }
+
+    private class getPointDataTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return null;
+        }
     }
 
     /**

@@ -11,21 +11,21 @@
         android:layout_marginTop="64dp" />
 
     <Button
-        android:id="@+id/cancelbutton1"
+        android:id="@+id/cancelbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/numberPicker1"
         android:layout_marginTop="98dp"
         android:gravity="right"
-        android:layout_toRightOf="@+id/setbutton1"
+        android:layout_toRightOf="@+id/setbutton"
         android:text="Cancel" />
 
     <Button
-        android:id="@+id/setbutton1"
+        android:id="@+id/setbutton"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/cancelbutton1"
-        android:layout_alignBottom="@+id/cancelbutton1"
+        android:layout_alignBaseline="@+id/cancelbutton"
+        android:layout_alignBottom="@+id/cancelbutton"
         android:gravity="left"
         android:text="Set"
         android:width="23dp" />

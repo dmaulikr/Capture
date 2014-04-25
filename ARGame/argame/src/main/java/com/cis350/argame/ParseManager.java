@@ -154,7 +154,7 @@ public class ParseManager {
         Log.w("Capture", "trying to capture the building" + " " + pointID + " " + currID );
         newPoint.saveInBackground();
 
-        sendCapturePush(previousOwnerID);
+        //sendCapturePush(previousOwnerID);
     }
     public static ParseUser getUserByID(String userId) throws ParseException {
         ParseQuery forID = ParseQuery.getQuery("User");
@@ -262,7 +262,7 @@ public class ParseManager {
     }
 
     private static void sendCapturePush(String oldId) {
-        ParseInstallation installation = ParseInstallation
+       /* ParseInstallation installation = ParseInstallation
                 .getCurrentInstallation();
         installation.put("User", getCurrentUser().getUsername());
         installation.saveInBackground();
@@ -278,11 +278,11 @@ public class ParseManager {
         }
 
         ParseQuery pQuery = ParseInstallation.getQuery();
-        pQuery.whereEqualTo("User", oldUser);
+        pQuery.whereEqualTo("User", oldUser);*/
         // TODO: FIX
-        push.sendMessageInBackground("One of your buildings has been " +
-                "captured by " + getCurrentUser().getUsername() + "!",
-                pQuery);
+        //push.sendMessageInBackground("One of your buildings has been " +
+         //       "captured by " + getCurrentUser().getUsername() + "!",
+         //       pQuery);
 
     }
 }

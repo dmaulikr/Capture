@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

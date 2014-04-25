@@ -2,6 +2,7 @@ package com.cis350.argame;
 
 import com.cis350.argame.util.SystemUiHider;
 import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
 import com.parse.PushService;
 
 import android.annotation.TargetApi;
@@ -13,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -199,6 +201,12 @@ public class GameActivity extends Activity {
         // created, to briefly hint to the user that UI controls
         // are available.
         delayedHide(100);
+
+        // Set parse installation.
+        ParseInstallation installation = ParseInstallation
+                .getCurrentInstallation();
+        installation.put("user", ParseManager.getCurrentUser());
+        installation.saveInBackground();
     }
 
     /**
@@ -329,9 +337,13 @@ public class GameActivity extends Activity {
             case CROP_FROM_CAMERA:
                 Bundle extras = data.getExtras();
                 if (extras != null) {
-                    Bitmap photo = extras.getParcelable("data");
-                    profilePic.setImageBitmap(photo);
+                    mImageCaptureUri = data.getData();
+                    profilePic.setImageURI(mImageCaptureUri);
                     Log.v("CROP_FROM_CAMERA", "Picture set");
+
+                    // Convert photo to bitmap and then upload to Parse
+
+
                 }
                 File f = new File(mImageCaptureUri.getPath());
                 if (f.exists()) {

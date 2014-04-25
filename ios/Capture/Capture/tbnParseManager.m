@@ -14,7 +14,7 @@
     NSString *oldOwner = point[kParseCapturePointOwner];
     [point setObject:[NSNumber numberWithInt:army] forKey:kParseCapturePointDefense];
     [point setObject:[PFUser currentUser].objectId forKey:kParseCapturePointOwner];
-    if (oldUser) {
+    if (oldOwner) {
         [tbnParseManager sendPush:oldOwner];
     }
     if (!target || !selector) {

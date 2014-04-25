@@ -16,7 +16,7 @@
 #define kParseCapturePointClass @"CapturePoint"
 #define kParseCapturePointNodes @"nodes"
 #define kParseCapturePointID @"pointID"
-
+#define kParseDefaultUserID @"69696969"
 
 @interface tbnParseManager : NSObject
 
@@ -27,12 +27,12 @@ typedef enum LoginResult {
 + (BOOL) isLoggedIn;
 + (PFUser *) getCurrentUser;
 + (void) capturePoint:(PFObject *)point withNewArmy:(int)army withTarget:(id)target selector:(SEL)selector;
-+ (void) createPoint:(NSArray *)nodes atPointID:(NSString *)pointID withTarget:(id)target selector:(SEL)selector;
++ (void) capturePointByNodeID:(NSString *)pointID withNewArmy:(int)army withTarget:(id)target selector:(SEL)selector;
+
++ (void) createPoint:(int)army atPointID:(NSString *)pointID withTarget:(id)target selector:(SEL)selector;
 + (PFObject *) getPointByID:(NSString *)pointID;
 + (NSArray *) getBuildingsByOwner:(PFUser *)owner;
 + (NSDictionary *) getBuildingsOwnersIDs:(NSArray *)buildings;
 + (NSArray *) makeArrayOfOwners:(NSArray *)objects;
-
-+ (void) showLoginWindow;
-
++ (void)sendPush:(NSString *)userID;
 @end

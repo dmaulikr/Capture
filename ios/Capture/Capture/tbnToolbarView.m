@@ -24,10 +24,14 @@
     toReturn.name.text = [tbnParseManager getCurrentUser].username;
     [toReturn addSubview:toReturn.name];
     toReturn.coin = [[UILabel alloc] initWithFrame:CGRectMake(toReturn.frame.size.width - 2 * kImageSize, 0, kImageSize, kImageSize)];
-    toReturn.coin.text = [[[tbnParseManager getCurrentUser] objectForKey:@"goid"] description];
+    toReturn.coin.textAlignment = NSTextAlignmentCenter;
+    toReturn.coin.font = [UIFont systemFontOfSize:20];
+    toReturn.coin.text = [[[tbnParseManager getCurrentUser] objectForKey:@"gold"] description];
     toReturn.coin.backgroundColor = [UIColor colorWithRed:255/255.0f green:234/255.0f blue:19/255.0f alpha:0.5f];
     [toReturn addSubview:toReturn.coin];
     toReturn.army = [[UILabel alloc] initWithFrame:CGRectMake(toReturn.frame.size.width - kImageSize, 0, kImageSize, kImageSize)];
+    toReturn.army.textAlignment = NSTextAlignmentCenter;
+    toReturn.army.font = [UIFont systemFontOfSize:20];
     toReturn.army.text = [[[tbnParseManager getCurrentUser] objectForKey:@"army"] description];
     toReturn.army.backgroundColor = [UIColor colorWithRed:91/255.0f green:224/255.0f blue:245/255.0f alpha:0.5f];
     [toReturn addSubview:toReturn.army];

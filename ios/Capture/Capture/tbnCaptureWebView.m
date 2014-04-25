@@ -18,14 +18,14 @@
 }
 -(void) outerPolygonLoop {
     NSString *o_id = [NSString alloc];
-    for (NSString *buildingID in ownerIDs) {
-        PFUser *owner = [ownerIDs objectForKey:buildingID];
-        if ([owner isMemberOfClass:[PFObject class]]) {
-            o_id = owner.objectId;
+    for (NSString *buildingID in ownerIDs.keyEnumerator) {
+        NSString *owner = [ownerIDs objectForKey:buildingID];
+//        if (![owner isEqualToString:@""]) { Commented out to allow for all buildings to be drawn
+            o_id = owner;
             NSArray *building = [buildingIDs objectForKey:buildingID];
             NSMutableString *ptData = [[NSMutableString alloc] init];
             [self iterateThroughPolygons:o_id buildingID:buildingID polygon:building data:ptData];
-        }
+//        }
     }
     // clear dictionary for next map-move
     ownerIDs = [[NSDictionary alloc] init];
@@ -35,9 +35,11 @@
         if (nodeData) {
             NSString *lat = [nodeData objectForKey:@"lat"];
             NSString *lon = [nodeData objectForKey:@"lon"];
-            [ptLocal appendString:lat];
-            [ptLocal appendString:@","];
-            [ptLocal appendString:lon];
+            if (![lat isEqualToString:@""]) {
+                [ptLocal appendString:lat];
+                [ptLocal appendString:@","];
+                [ptLocal appendString:lon];
+            }
             [ptLocal appendString:@";"];
         }
     }
@@ -62,7 +64,6 @@
     [javascript appendString:o_id];
     [javascript appendString:@"\",0);"];
     NSString *result = [self stringByEvaluatingJavaScriptFromString:javascript];
-    NSLog(@"draw");
     NSLog(javascript);
     return result;
 }
@@ -74,9 +75,51 @@
     points = [drawPoints copy];
     [self outerPolygonLoop];
 }
+// Javascript Interface
 -(void)showBuildings:(NSString *)newBounds {
     NSLog(@"Javscript invoked");
     [self backgroundDraw:newBounds];
+}
+// Javascript Interface
+- (void)showBuildingDialog:(NSString *)ids :(NSString *)closeBy :(NSString *)owner_id :(NSString *)armyS {
+    captureNewArmy = [armyS intValue];
+    capturePointID = ids;
+    captureOldOwnerID = owner_id;
+    NSString *message = [NSString stringWithFormat:@"The owner id is %@ with %d army holding the building.", owner_id, captureNewArmy];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Capture Structure" message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert textFieldAtIndex:0].keyboardType = UIKeyboardTypeNumberPad;
+    [alert show];
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:
+            break;
+        case 1:
+            if (captureOldOwnerID) {
+                [tbnParseManager capturePointByNodeID:capturePointID withNewArmy:captureNewArmy withTarget:self selector:@selector(updateMapAfterCapture)];
+            } else {
+                [tbnParseManager createPoint:captureNewArmy atPointID:capturePointID withTarget:self selector:@selector(updateMapAfterCapture)];
+            }
+        default:
+            break;
+    }
+}
+// Javascript Interface
+- (void)updateMapAfterCapture {
+    NSString *javascript = [NSString stringWithFormat:@"captureChangeColorAndArmy(\"%@\", \"%d\", \"%@\");", capturePointID, captureNewArmy, [tbnParseManager getCurrentUser].objectId];
+    [self stringByEvaluatingJavaScriptFromString:javascript];
+}
+// Javascript Interface
+- (void) setCurrentIdInJs {
+    NSString *objectID;
+    if ([tbnParseManager isLoggedIn]) {
+        objectID = [tbnParseManager getCurrentUser].objectId;
+    } else {
+        objectID = kParseDefaultUserID;
+    }
+    NSString *js = [NSString stringWithFormat:@"%@%@%@", @"getCurrentId(\"",  objectID, @"\");"];
+    [self stringByEvaluatingJavaScriptFromString:js];
 }
 -(void)connectToJavascript {
     [self addJavascriptInterfaces:self WithName:@"Android"];

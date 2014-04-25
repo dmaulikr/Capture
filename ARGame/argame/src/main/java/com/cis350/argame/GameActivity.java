@@ -1,46 +1,42 @@
 package com.cis350.argame;
 
 import com.cis350.argame.util.SystemUiHider;
+import com.parse.ParseAnalytics;
+import com.parse.PushService;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-//import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-//import org.osmdroid.views.MapController;
-//import org.osmdroid.views.MapView;
-
-
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.GeolocationPermissions;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -49,6 +45,18 @@ import javax.xml.parsers.ParserConfigurationException;
  * @see SystemUiHider
  */
 public class GameActivity extends Activity {
+
+    private TextView coinsText;
+    private TextView armiesText;
+    private TextView nameText;
+    private ImageView profilePic;
+    private int PIC_SQUARE_WIDTH = 180;
+
+    private Uri mImageCaptureUri;
+
+    private static final int PICK_FROM_CAMERA = 1;
+    private static final int CROP_FROM_CAMERA = 2;
+    private static final int PICK_FROM_FILE = 3;
 
     WebView myWebView;
 
@@ -89,8 +97,20 @@ public class GameActivity extends Activity {
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
 
+        // Initialize view references
+        TextView coinsText = (TextView)findViewById(R.id.coinstext);
+        TextView armiesText = (TextView)findViewById(R.id.armiestext);
+        TextView nameText = (TextView)findViewById(R.id.playerName);
+        ImageView profilePic = (ImageView)findViewById(R.id.profilePicture);
+
+        this.coinsText = coinsText;
+        this.armiesText = armiesText;
+        this.nameText = nameText;
+        this.profilePic = profilePic;
+
         // Set up an instance of SystemUiHider to control the system UI for
         // this activity.
+
         mSystemUiHider = SystemUiHider.getInstance(this, contentView, HIDER_FLAGS);
         mSystemUiHider.setup();
         mSystemUiHider
@@ -131,22 +151,10 @@ public class GameActivity extends Activity {
                     }
                 });
 
-        // Set up the user interaction to manually show or hide the system UI.
-        /*contentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (TOGGLE_ON_CLICK) {
-                    mSystemUiHider.toggle();
-                } else {
-                    mSystemUiHider.show();
-                }
-            }
-        });*/
+        // Set parse notifications to appear for this activity
+        PushService.setDefaultPushCallback(this, GameActivity.class);
+        ParseAnalytics.trackAppOpened(getIntent());
 
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
         showMap();
     }
 
@@ -193,7 +201,6 @@ public class GameActivity extends Activity {
         delayedHide(100);
     }
 
-
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -226,12 +233,197 @@ public class GameActivity extends Activity {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
+    // Player settings methods
+
+    public void refreshValues() {
+        TextView coinsText = (TextView)findViewById(R.id.coinstext);
+        TextView armiesText = (TextView)findViewById(R.id.armiestext);
+        TextView nameText = (TextView)findViewById(R.id.playerName);
+        ImageView profilePic = (ImageView)findViewById(R.id.profilePicture);
+
+        this.coinsText = coinsText;
+        this.armiesText = armiesText;
+        this.nameText = nameText;
+        this.profilePic = profilePic;
+
+        Integer currentCoins = PlayerProfile.getGold();
+        Integer currentArmies = PlayerProfile.getArmy();
+
+        coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
+        armiesText.setText(currentArmies.toString() + "\nArmies"); // Same with armies.
+        nameText.setText(PlayerProfile.getName()); // Set player name.
+    }
+
+    public void onBuyArmiesClick(View v) {
+        Log.v("onBuyArmiesClick", "clicked");
+        if(PlayerProfile.getGold() >= 10) {
+            PlayerProfile.ARMY += 1;
+            PlayerProfile.GOLD -= 10;
+            Integer currentCoins = PlayerProfile.getGold();
+            Integer currentArmies = PlayerProfile.getArmy();
+
+            coinsText.setText("Coins:\n " + currentCoins.toString());
+            armiesText.setText("Armies:\n " + currentArmies.toString());
+        }
+    }
+
+    public void onBuyCoinsClick(View v) {
+        Toast.makeText(this, "Buy coins unimplemented!", Toast.LENGTH_LONG).show();
+    }
+
+    public void onNameClick(View v) {
+        refreshValues();
+    }
+
+    public void onProfilePictureClick(View v) {
+        final String[] items = new String[] {"Take from camera", "Select from gallery"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.select_dialog_item, items);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Select Image");
+        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) { // Pick from camera
+                if (item == 0) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                    mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
+                            "tempAvatar" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
+
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+
+                    try {
+                        intent.putExtra("return-data", true);
+                        startActivityForResult(intent, PICK_FROM_CAMERA);
+                    } catch (ActivityNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else { // Pick from a file
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(
+                            intent, "Complete action using"), PICK_FROM_FILE);
+                }
+            }
+        });
+
+        final AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) return;
+
+        switch (requestCode) {
+            case PICK_FROM_CAMERA:
+                doCrop();
+                break;
+            case PICK_FROM_FILE:
+                mImageCaptureUri = data.getData();
+                doCrop();
+                break;
+            case CROP_FROM_CAMERA:
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    Bitmap photo = extras.getParcelable("data");
+                    profilePic.setImageBitmap(photo);
+                    Log.v("CROP_FROM_CAMERA", "Picture set");
+                }
+                File f = new File(mImageCaptureUri.getPath());
+                if (f.exists()) {
+                    f.delete(); // Delete the temporary file.
+                }
+                Toast.makeText(this, "Profile picture set.", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
     /**
-     * Start a new instance of the Settings Activity when clicked.
-     * @param v
+     * Crop the picture passed in by the user.
      */
-    public void onMenuButtonClick(View v) {
-        Intent i = new Intent(this, SettingsActivity.class);
-        startActivity(i);
+    private void doCrop() {
+        final ArrayList<CropOption> cropOptions = new ArrayList<CropOption>();
+
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setType("image/*");
+
+        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 0);
+
+        int size = list.size();
+
+        if (size == 0) {
+            Toast.makeText(this, "Cannot find image crop app", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            intent.setData(mImageCaptureUri);
+
+            intent.putExtra("outputX", PIC_SQUARE_WIDTH);
+            intent.putExtra("outputY", PIC_SQUARE_WIDTH);
+            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectY", 1);
+            intent.putExtra("scale", true);
+            intent.putExtra("return-data", false);
+
+            if (size == 1) {
+                Intent i = new Intent(intent);
+                ResolveInfo res = list.get(0);
+
+                i.setComponent(new ComponentName(res.activityInfo.packageName,
+                        res.activityInfo.name));
+
+                startActivityForResult(i, CROP_FROM_CAMERA);
+            } else {
+                for (ResolveInfo res : list) {
+                    final CropOption co = new CropOption();
+                    co.title = getPackageManager().getApplicationLabel(
+                            res.activityInfo.applicationInfo);
+                    co.icon = getPackageManager().getApplicationIcon(
+                            res.activityInfo.applicationInfo);
+                    co.appIntent = new Intent(intent);
+
+                    co.appIntent.setComponent(new ComponentName(
+                            res.activityInfo.packageName, res.activityInfo.name));
+
+                    cropOptions.add(co);
+                }
+
+                CropOptionAdapter adapter = new CropOptionAdapter(
+                        getApplicationContext(), cropOptions);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Choose Crop App");
+                builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int item) {
+                        startActivityForResult(cropOptions.get(item).appIntent, CROP_FROM_CAMERA);
+                    }
+                });
+
+                builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        if (mImageCaptureUri != null) {
+                            getContentResolver().delete(mImageCaptureUri, null, null);
+                            mImageCaptureUri = null;
+                        }
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+
+                alert.show();
+            }
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
     }
 }

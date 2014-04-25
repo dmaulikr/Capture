@@ -131,7 +131,8 @@ public class ParseManager {
         point.saveInBackground();
     }
     // TODO - modify this method to subtract troops from the previous owner?
-    public static void createPoint(String pointID, int defense, String ownerID) {
+    public static void createPoint(String pointID, int defense,
+                                   String previousOwnerID) {
         String currID = ParseManager.getCurrentUser().getObjectId();
 
         ParseObject newPoint = null;
@@ -152,6 +153,17 @@ public class ParseManager {
         }
         Log.w("Capture", "trying to capture the building" + " " + pointID + " " + currID );
         newPoint.saveInBackground();
+
+        sendCapturePush(previousOwnerID);
+    }
+    public static ParseUser getUserByID(String userId) throws ParseException {
+        ParseQuery forID = ParseQuery.getQuery("User");
+        forID.whereEqualTo("objectId", userId);
+        if (forID.find().size() > 0) {
+            return (ParseUser) forID.find().get(0);
+        } else {
+            return null;
+        }
     }
     public static ParseObject getPointByID(String pointID) throws ParseException {
         ParseQuery forID = ParseQuery.getQuery("CapturePoint");
@@ -247,5 +259,30 @@ public class ParseManager {
         map_owner.clear();
 
         return result;
+    }
+
+    private static void sendCapturePush(String oldId) {
+        ParseInstallation installation = ParseInstallation
+                .getCurrentInstallation();
+        installation.put("User", getCurrentUser().getUsername());
+        installation.saveInBackground();
+
+        ParsePush push = new ParsePush();
+        ParseUser oldUser;
+
+        try {
+            oldUser = getUserByID(oldId);
+        } catch (ParseException e) {
+            // Does nothing on exception.
+            return;
+        }
+
+        ParseQuery pQuery = ParseInstallation.getQuery();
+        pQuery.whereEqualTo("User", oldUser);
+        // TODO: FIX
+        push.sendMessageInBackground("One of your buildings has been " +
+                "captured by " + getCurrentUser().getUsername() + "!",
+                pQuery);
+
     }
 }

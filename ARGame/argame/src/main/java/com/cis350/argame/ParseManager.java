@@ -262,11 +262,6 @@ public class ParseManager {
     }
 
     private static void sendCapturePush(String oldId) {
-        ParseInstallation installation = ParseInstallation
-                .getCurrentInstallation();
-        installation.put("User", getCurrentUser().getUsername());
-        installation.saveInBackground();
-
         ParseUser oldUser;
 
         try {
@@ -277,7 +272,7 @@ public class ParseManager {
         }
 
         ParseQuery<ParseInstallation> pQuery = ParseInstallation.getQuery();
-        pQuery.whereEqualTo("User", oldUser);
+        pQuery.whereEqualTo("user", oldUser);
         // TODO: FIX
         ParsePush.sendMessageInBackground("One of your buildings has been " +
                 "captured by " + getCurrentUser().getUsername() +

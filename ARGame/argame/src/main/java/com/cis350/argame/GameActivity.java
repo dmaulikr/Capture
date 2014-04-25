@@ -329,8 +329,10 @@ public class GameActivity extends Activity {
             case CROP_FROM_CAMERA:
                 Bundle extras = data.getExtras();
                 if (extras != null) {
-                    Bitmap photo = extras.getParcelable("data");
-                    profilePic.setImageBitmap(photo);
+                    //Bitmap photo = extras.getParcelable("mData");
+                    //profilePic.setImageBitmap(photo);
+                    mImageCaptureUri = data.getData();
+                    profilePic.setImageURI(mImageCaptureUri);
                     Log.v("CROP_FROM_CAMERA", "Picture set");
                 }
                 File f = new File(mImageCaptureUri.getPath());

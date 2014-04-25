@@ -101,7 +101,8 @@
     [userToTarget findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         PFQuery *sendQuery = [PFInstallation query];
         [sendQuery whereKey:@"user" equalTo:objects[0]];
-        [PFPush sendPushMessageToQuery:sendQuery withMessage:@"Your building was captured!" error:nil];
+        NSString *msg = [NSString stringWithFormat:@"Your building was captured by %@!", [tbnParseManager getCurrentUser].username];
+        [PFPush sendPushMessageToQuery:sendQuery withMessage:msg error:nil];
     }];
 }
 @end

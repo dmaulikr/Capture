@@ -84,6 +84,7 @@
 - (void)showBuildingDialog:(NSString *)ids :(NSString *)closeBy :(NSString *)owner_id :(NSString *)armyS {
     captureNewArmy = [armyS intValue];
     capturePointID = ids;
+    captureOldOwnerID = owner_id;
     NSString *message = [NSString stringWithFormat:@"The owner id is %@ with %d army holding the building.", owner_id, captureNewArmy];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Capture Structure" message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -95,8 +96,11 @@
         case 0:
             break;
         case 1:
-            [tbnParseManager capturePointByNodeID:capturePointID withNewArmy:captureNewArmy withTarget:self selector:@selector(updateMapAfterCapture)];
-            
+            if (captureOldOwnerID) {
+                [tbnParseManager capturePointByNodeID:capturePointID withNewArmy:captureNewArmy withTarget:self selector:@selector(updateMapAfterCapture)];
+            } else {
+                [tbnParseManager createPoint:captureNewArmy atPointID:capturePointID withTarget:self selector:@selector(updateMapAfterCapture)];
+            }
         default:
             break;
     }

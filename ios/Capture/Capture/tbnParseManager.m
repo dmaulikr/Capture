@@ -14,7 +14,9 @@
     NSString *oldOwner = point[kParseCapturePointOwner];
     [point setObject:[NSNumber numberWithInt:army] forKey:kParseCapturePointDefense];
     [point setObject:[PFUser currentUser].objectId forKey:kParseCapturePointOwner];
-    [tbnParseManager sendPush:oldOwner];
+    if (oldUser) {
+        [tbnParseManager sendPush:oldOwner];
+    }
     if (!target || !selector) {
         [point saveInBackground];
     } else {
@@ -28,10 +30,10 @@
         [tbnParseManager capturePoint:objects[0] withNewArmy:army withTarget:target selector:selector];
     }];
 }
-+ (void) createPoint:(NSArray *)nodes atPointID:(NSString *)pointID withTarget:(id)target selector:(SEL)selector {
++ (void) createPoint:(int)army atPointID:(NSString *)pointID withTarget:(id)target selector:(SEL)selector {
     PFObject *newPoint = [[PFObject alloc] initWithClassName:kParseCapturePointClass];
     [newPoint setObject:0 forKey:kParseCapturePointDefense];
-    [newPoint setObject:nodes forKey:kParseCapturePointNodes];
+    [newPoint setObject:[NSNumber numberWithInt:army] forKey:kParseCapturePointDefense];
     [newPoint setObject:pointID forKey:kParseCapturePointID];
     if (!target || !selector) {
         [newPoint saveInBackground];

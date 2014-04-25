@@ -19,6 +19,7 @@
     
     int captureNewArmy;
     NSString *capturePointID;
+    NSString *captureOldOwnerID;
 }
 
 

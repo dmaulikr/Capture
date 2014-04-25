@@ -29,7 +29,7 @@ typedef enum LoginResult {
 + (void) capturePoint:(PFObject *)point withNewArmy:(int)army withTarget:(id)target selector:(SEL)selector;
 + (void) capturePointByNodeID:(NSString *)pointID withNewArmy:(int)army withTarget:(id)target selector:(SEL)selector;
 
-+ (void) createPoint:(NSArray *)nodes atPointID:(NSString *)pointID withTarget:(id)target selector:(SEL)selector;
++ (void) createPoint:(int)army atPointID:(NSString *)pointID withTarget:(id)target selector:(SEL)selector;
 + (PFObject *) getPointByID:(NSString *)pointID;
 + (NSArray *) getBuildingsByOwner:(PFUser *)owner;
 + (NSDictionary *) getBuildingsOwnersIDs:(NSArray *)buildings;

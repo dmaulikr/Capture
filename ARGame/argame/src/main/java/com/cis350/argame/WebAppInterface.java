@@ -479,6 +479,50 @@ public class WebAppInterface {
         } else {
             currentID = DEFAULT_CURRENT_ID;
         }
+
+        //GameActivity game = (GameActivity) mContext;
+        //game.runOnUiThread(new Runnable() {
+        //    @Override
+         //   public void run() {
+
+                LayoutInflater inflater = LayoutInflater.from(mContext);
+
+                View view = inflater.inflate(R.layout.gameactivity_layout, null);
+                final TextView coinsText = (TextView)view.findViewById(R.id.coinstext);
+                final TextView armiesText = (TextView)view.findViewById(R.id.armiestext);
+                final TextView nameText = (TextView)view.findViewById(R.id.playerName);
+                ImageView profilePic = (ImageView)view.findViewById(R.id.profilePicture);
+
+                //this.coinsText = coinsText;
+                //this.armiesText = armiesText;
+                //this.nameText = nameText;
+                //this.profilePic = profilePic;
+
+                final Integer currentCoins = PlayerProfile.getGold();
+                final Integer currentArmies = PlayerProfile.getArmy();
+
+
+                nameText.post(new Runnable() {
+                    public void run() {
+                        nameText.setText(PlayerProfile.getName());
+                    }
+                });
+                coinsText.post(new Runnable() {
+                      public void run() {
+                          coinsText.setText(currentCoins.toString() + "\nCoins");
+                      }
+                  });
+               // coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
+                //armiesText.setText(currentArmies.toString() + "\nArmies"); // Same with armies.
+                armiesText.post(new Runnable() {
+                    public void run() {
+                        armiesText.setText(currentArmies.toString() + "\nArmies");
+                    }
+                });
+                //nameText.setText(PlayerProfile.getName()); // Set player name.
+
+         //   }
+        //});
         //////
 
         // create new PlayerProfile here

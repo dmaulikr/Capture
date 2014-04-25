@@ -152,8 +152,8 @@ public class GameActivity extends Activity {
                 });
 
         // Set parse notifications to appear for this activity
-        PushService.setDefaultPushCallback(this, GameActivity.class);
-        ParseAnalytics.trackAppOpened(getIntent());
+       // PushService.setDefaultPushCallback(this, GameActivity.class);
+       // ParseAnalytics.trackAppOpened(getIntent());
 
         showMap();
     }
@@ -189,6 +189,8 @@ public class GameActivity extends Activity {
         //use "http://poroawards.net/Geolocation/map.html" for web or emulator, change hosting later
 
         myWebView.loadUrl("http://poroawards.net/Geolocation/map.html");
+
+        //refreshValues();
     }
 
     @Override

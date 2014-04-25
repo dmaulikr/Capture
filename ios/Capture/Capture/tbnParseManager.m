@@ -11,8 +11,10 @@
 @implementation tbnParseManager
 
 + (void) capturePoint:(PFObject *)point withNewArmy:(int)army withTarget:(id)target selector:(SEL)selector {
+    NSString *oldOwner = point[kParseCapturePointOwner];
     [point setObject:[NSNumber numberWithInt:army] forKey:kParseCapturePointDefense];
     [point setObject:[PFUser currentUser].objectId forKey:kParseCapturePointOwner];
+    [tbnParseManager sendPush:oldOwner];
     if (!target || !selector) {
         [point saveInBackground];
     } else {

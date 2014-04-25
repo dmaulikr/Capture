@@ -1,5 +1,6 @@
 package com.cis350.argame;
 
+import com.cis350.argame.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -278,11 +280,12 @@ public class WebAppInterface {
     @JavascriptInterface
     public void showBuildings(String bbox) {
         new BuildingLoader().execute(bbox);
-
     }
 
     @JavascriptInterface
-    public void showBuildingDialog(final String ids, final int closeBy, final String owner_id, final int army) {
+    public void showBuildingDialog(final String ids, final String closeByS, final String owner_id, final String armyS) {
+        final int closeBy = Integer.parseInt(closeByS);
+        final int army = Integer.parseInt(armyS);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
 
@@ -297,31 +300,65 @@ public class WebAppInterface {
         //owner of this building
         String owner = "";
 
-        GameActivity game = (GameActivity) mContext;
+        //GameActivity game = (GameActivity) mContext;
 
         View dialog_view = inflater.inflate(R.layout.building_dialog, null);
-        TextView tv1 = (TextView)dialog_view.findViewById(R.id.building_army_size_text);
+        TextView tv1 = (TextView)dialog_view.findViewById(R.id.building_id_text);
+        TextView tv2 = (TextView)dialog_view.findViewById(R.id.building_army_size_text);
 
-        tv1.setText(ids);
+        ImageView img1 = (ImageView)dialog_view.findViewById(R.id.buildingImage);
+        if(owner_id.compareTo(currentID) == 0) {
+            img1.setImageResource(R.drawable.friendly_point);
+        } else if (owner_id.compareTo("") == 0) {
+            img1.setImageResource(R.drawable.neutral_point);
+        } else {
+            img1.setImageResource(R.drawable.enemy_point);
+        }
+
+        tv1.setText("Building Id is: " + ids);
+        tv2.setText("Army size is: " + armyS);
         Log.w("build ID", "build id is " + ids);
+
+        DialogInterface.OnClickListener positiveButtonListener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                // if this button is clicked, close
+                // current activity
+                Log.w("build ID", "build id is " + ids);
+                if(closeBy == 1 && PlayerProfile.ARMY >= army && owner_id.compareTo(currentID) != 0) {
+                    PlayerProfile.GOLD += 100;
+                    setArmyDialog(ids, owner_id);
+                } else if(closeBy == 1 && owner_id.compareTo(currentID) == 0) {
+                    changeArmyDialog(ids, army, owner_id);
+                }
+                Log.w("Capture", "initiate building capture");
+            }
+        };
 
         alertDialogBuilder
                 .setView(dialog_view)
                 //.setMessage(msg)
-                .setCancelable(true)
-                .setPositiveButton("Capture",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
-                        // if this button is clicked, close
-                        // current activity
-                        Log.w("build ID", "build id is " + ids);
-                        if(closeBy == 1 && PlayerProfile.ARMY >= army && owner_id.compareTo(currentID) != 0) {
-                            // remove ownership from owner_id in parse here
-                            PlayerProfile.GOLD += 100;
-                            setArmyDialog(ids);
-                        }
-                        Log.w("Capture", "initiate building capture");
+                .setCancelable(true);
+        if(owner_id.compareTo(currentID) != 0 && closeBy == 1) {
+            alertDialogBuilder.setPositiveButton("Capture",new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    // if this button is clicked, close
+                    // current activity
+                    if(PlayerProfile.ARMY >= army ) {
+                        PlayerProfile.GOLD += 100;
+                        setArmyDialog(ids, owner_id);
                     }
-                })
+                }
+            });
+        } else if(owner_id.compareTo(currentID) == 0 && closeBy == 1) {
+            alertDialogBuilder.setPositiveButton("Update",new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    // if this button is clicked, close
+                    // current activity
+                    changeArmyDialog(ids, army, owner_id);
+                }
+            });
+        }
+        alertDialogBuilder
                 .setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         // if this button is clicked, just close
@@ -338,16 +375,51 @@ public class WebAppInterface {
 
     }
 
-
-    private void setArmyDialog(final String ids) {
+    private void changeArmyDialog(final String ids, final int army, final String owner_id) {
         final int[] out = {0};
         final Dialog d = new Dialog(mContext);
         d.setTitle("NumberPicker");
         d.setContentView(R.layout.army_picker);
-        Button b1 = (Button) d.findViewById(R.id.button1);
-        Button b2 = (Button) d.findViewById(R.id.coinsbutton);
+        Button b1 = (Button) d.findViewById(R.id.setbutton);
+        Button b2 = (Button) d.findViewById(R.id.cancelbutton);
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
-        np.setMaxValue(100); // max value 100
+        np.setMaxValue(PlayerProfile.ARMY + army); // max value 100
+        np.setValue(army);
+        np.setMinValue(0);   // min value 0
+        np.setWrapSelectorWheel(false);
+        // np.setOnValueChangedListener(mContext);
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                out[0] = np.getValue(); //set the value to textview
+                ParseManager.createPoint(ids, out[0], owner_id);
+                PlayerProfile.ARMY += army - out[0];
+                myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+out[0]+"\",\""+currentID+"\")");
+                ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
+                d.dismiss();
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ParseManager.createPoint(ids, 0);
+                //myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+0+"\",\""+currentID+"\")");
+                //ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
+                d.dismiss(); // dismiss the dialog
+            }
+        });
+        d.show();
+    }
+
+    private void setArmyDialog(final String ids, final String owner_id) {
+        final int[] out = {0};
+        final Dialog d = new Dialog(mContext);
+        d.setTitle("NumberPicker");
+        d.setContentView(R.layout.army_picker);
+        Button b1 = (Button) d.findViewById(R.id.setbutton);
+        Button b2 = (Button) d.findViewById(R.id.cancelbutton);
+        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
+        np.setMaxValue(PlayerProfile.ARMY); // max value 100
         np.setMinValue(0);   // min value 0
         np.setWrapSelectorWheel(false);
        // np.setOnValueChangedListener(mContext);
@@ -355,16 +427,19 @@ public class WebAppInterface {
             @Override
             public void onClick(View v) {
                 out[0] = np.getValue(); //set the value to textview
-                ParseManager.createPoint(ids, out[0]);
-                myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+out[0]+"\")");
+                ParseManager.createPoint(ids, out[0], owner_id);
+                PlayerProfile.ARMY -= out[0];
+                myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+out[0]+"\",\""+currentID+"\")");
+                ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
                 d.dismiss();
             }
         });
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ParseManager.createPoint(ids, 0);
-                myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+0+"\")");
+                ParseManager.createPoint(ids, 0, owner_id);
+                myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+0+"\",\""+currentID+"\")");
+                ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
                 d.dismiss(); // dismiss the dialog
             }
         });

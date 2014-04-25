@@ -13,8 +13,6 @@
 		191D4E901905FE0700751EB7 /* easyjs-inject.js in Sources */ = {isa = PBXBuildFile; fileRef = 191D4E8F1905FE0700751EB7 /* easyjs-inject.js */; };
 		19342FD01906CF27002C7522 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19342FCF1906CF27002C7522 /* SettingsViewController.m */; };
 		194B7B4C190317B30010CAAE /* tbnCaptureWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 194B7B4B190317B30010CAAE /* tbnCaptureWebView.m */; };
-		198F4FB91905A479001067D7 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 198F4FB71905A479001067D7 /* Logo.png */; };
-		198F4FBA1905A479001067D7 /* Logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 198F4FB81905A479001067D7 /* Logo@2x.png */; };
 		198F4FBD1905A7CC001067D7 /* tbnToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 198F4FBC1905A7CC001067D7 /* tbnToolbarView.m */; };
 		19B548021904955200263474 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F11904955200263474 /* Accounts.framework */; };
 		19B548031904955200263474 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F21904955200263474 /* AdSupport.framework */; };
@@ -34,6 +32,8 @@
 		19B548111904955200263474 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B548001904955200263474 /* Twitter.framework */; };
 		19B548121904955200263474 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B548011904955200263474 /* UIKit.framework */; };
 		19B548141904955C00263474 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B548131904955C00263474 /* Parse.framework */; };
+		19D75AF9190834B800A276FD /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D75AF7190834B800A276FD /* Logo.png */; };
+		19D75AFA190834B800A276FD /* Logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D75AF8190834B800A276FD /* Logo@2x.png */; };
 		19E283D518FC7F80004D49E7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 19E283D318FC7F80004D49E7 /* InfoPlist.strings */; };
 		19E283D718FC7F80004D49E7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E283D618FC7F80004D49E7 /* main.m */; };
 		19E283DB18FC7F80004D49E7 /* tbnAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E283DA18FC7F80004D49E7 /* tbnAppDelegate.m */; };
@@ -71,8 +71,6 @@
 		19342FCF1906CF27002C7522 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		194B7B4A190317B30010CAAE /* tbnCaptureWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tbnCaptureWebView.h; sourceTree = "<group>"; };
 		194B7B4B190317B30010CAAE /* tbnCaptureWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tbnCaptureWebView.m; sourceTree = "<group>"; };
-		198F4FB71905A479001067D7 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Logo.png; path = ../../Media/Logo.png; sourceTree = "<group>"; };
-		198F4FB81905A479001067D7 /* Logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Logo@2x.png"; path = "../../Media/Logo@2x.png"; sourceTree = "<group>"; };
 		198F4FBB1905A7CC001067D7 /* tbnToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tbnToolbarView.h; sourceTree = "<group>"; };
 		198F4FBC1905A7CC001067D7 /* tbnToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tbnToolbarView.m; sourceTree = "<group>"; };
 		19B547F11904955200263474 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -93,6 +91,8 @@
 		19B548001904955200263474 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		19B548011904955200263474 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		19B548131904955C00263474 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		19D75AF7190834B800A276FD /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Logo.png; path = ../../Media/Logo.png; sourceTree = "<group>"; };
+		19D75AF8190834B800A276FD /* Logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Logo@2x.png"; path = "../../Media/Logo@2x.png"; sourceTree = "<group>"; };
 		19E283C718FC7F80004D49E7 /* Capture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Capture.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19E283D218FC7F80004D49E7 /* Capture-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Capture-Info.plist"; sourceTree = "<group>"; };
 		19E283D418FC7F80004D49E7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -184,8 +184,8 @@
 		198F4FB61905A46F001067D7 /* Media */ = {
 			isa = PBXGroup;
 			children = (
-				198F4FB71905A479001067D7 /* Logo.png */,
-				198F4FB81905A479001067D7 /* Logo@2x.png */,
+				19D75AF7190834B800A276FD /* Logo.png */,
+				19D75AF8190834B800A276FD /* Logo@2x.png */,
 			);
 			name = Media;
 			sourceTree = "<group>";
@@ -366,9 +366,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				19E283E118FC7F80004D49E7 /* Main_iPad.storyboard in Resources */,
-				198F4FBA1905A479001067D7 /* Logo@2x.png in Resources */,
+				19D75AFA190834B800A276FD /* Logo@2x.png in Resources */,
 				19E283E918FC7F80004D49E7 /* Images.xcassets in Resources */,
-				198F4FB91905A479001067D7 /* Logo.png in Resources */,
+				19D75AF9190834B800A276FD /* Logo.png in Resources */,
 				19E283DE18FC7F80004D49E7 /* Main_iPhone.storyboard in Resources */,
 				19E283D518FC7F80004D49E7 /* InfoPlist.strings in Resources */,
 			);

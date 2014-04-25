@@ -12,12 +12,19 @@
 
 + (void) capturePoint:(PFObject *)point withNewArmy:(int)army withTarget:(id)target selector:(SEL)selector {
     [point setObject:[NSNumber numberWithInt:army] forKey:kParseCapturePointDefense];
-    [point setObject:[PFUser currentUser] forKey:kParseCapturePointOwner];
+    [point setObject:[PFUser currentUser].objectId forKey:kParseCapturePointOwner];
     if (!target || !selector) {
         [point saveInBackground];
     } else {
         [point saveInBackgroundWithTarget:target selector:selector];
     }
+}
++ (void)capturePointByNodeID:(NSString *)pointID withNewArmy:(int)army withTarget:(id)target selector:(SEL)selector {
+    PFQuery *ptQuery = [PFQuery queryWithClassName:kParseCapturePointClass];
+    [ptQuery whereKey:kParseCapturePointID equalTo:pointID];
+    [ptQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        [tbnParseManager capturePoint:objects[0] withNewArmy:army withTarget:target selector:selector];
+    }];
 }
 + (void) createPoint:(NSArray *)nodes atPointID:(NSString *)pointID withTarget:(id)target selector:(SEL)selector {
     PFObject *newPoint = [[PFObject alloc] initWithClassName:kParseCapturePointClass];
@@ -51,10 +58,10 @@
     NSArray *results = [search findObjects];
     NSMutableDictionary *buildingToOwner = [[NSMutableDictionary alloc] initWithCapacity:buildings.count];
     for (int i = 0; i < buildings.count; i++) {
-        [buildingToOwner setObject:@0 forKey:buildings[i]];
+        [buildingToOwner setObject:@"" forKey:buildings[i]];
         for (int j = 0; j < results.count; j++) {
             if ([[results[j] objectForKey:kParseCapturePointID] isEqualToString:buildings[i]]) {
-                [buildingToOwner setObject:results[j] forKey:buildings[i]];
+                [buildingToOwner setObject:[results[j] objectForKey:kParseCapturePointOwner] forKey:buildings[i]];
             }
         }
     }
@@ -83,5 +90,14 @@
 + (PFUser *)getCurrentUser {
     [[PFUser currentUser] fetchIfNeeded];
     return [PFUser currentUser];
+}
++ (void)sendPush:(NSString *)userID {
+    PFQuery *userToTarget = [PFUser query];
+    [userToTarget whereKey:@"objectId" equalTo:userID];
+    [userToTarget findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        PFQuery *sendQuery = [PFInstallation query];
+        [sendQuery whereKey:@"user" equalTo:objects[0]];
+        [PFPush sendPushMessageToQuery:sendQuery withMessage:@"Your building was captured!" error:nil];
+    }];
 }
 @end

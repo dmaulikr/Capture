@@ -66,9 +66,10 @@
     } else if ([elementName isEqualToString:@"nd"]) {
         NSString *nodeID = [attributeDict objectForKey:@"ref"];
         NSDictionary *node = [_nodes objectForKey:nodeID];
-        if (node && [currentWayData containsObject:node]) {
-            [currentWayData addObject:node];
+        if (!node) {
+            node = @{@"id": nodeID, @"lat": @"", @"lon": @""};
         }
+        [currentWayData addObject:node];
     } else if ([elementName isEqualToString:@"tag"]) {
         if (currentWayData && [[attributeDict objectForKey:@"k"] isEqualToString:@"building"]) {
             shouldAddWay = true;

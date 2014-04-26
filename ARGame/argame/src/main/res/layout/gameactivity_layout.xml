@@ -37,65 +37,85 @@
             android:background="@color/black_overlay"
             android:orientation="horizontal"
             tools:ignore="UselessParent">
-         </LinearLayout>
-
-        <ImageView
-            android:layout_width="180px"
-            android:layout_height="180px"
-            android:id="@+id/profilePicture"
-            android:src="@drawable/placeholder"
-            android:onClick="onProfilePictureClick"
-            android:layout_gravity="left|bottom" />
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="left|bottom">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Player Name"
-                android:clickable="true"
-                android:onClick="onNameClick"
-                android:id="@+id/playerName"
-                android:layout_marginLeft="91dp"
-                android:layout_alignBottom="@+id/coinstext"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#e9e27b"
-                android:textColor="#000000"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="100\nCoins"
-                android:id="@+id/coinstext"
-                android:clickable="true"
-                android:onClick="onBuyCoinsClick"
-                android:gravity="center"
+            <ImageView
+                android:layout_width="180px"
+                android:layout_height="180px"
+                android:id="@+id/profilePicture"
+                android:src="@drawable/placeholder"
+                android:onClick="onProfilePictureClick"
+                android:contentDescription="profileImage"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentLeft="true" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#6bb7d1"
-                android:textColor="#000000"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="100\nArmy"
-                android:id="@+id/armiestext"
-                android:clickable="true"
-                android:onClick="onBuyArmiesClick"
-                android:gravity="center"
-                android:layout_gravity="right|bottom"
-                android:layout_alignParentEnd="true"
-                android:layout_above="@+id/coinstext"
-                android:layout_alignParentRight="true" />
+                android:gravity="bottom"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="false"
+                android:weightSum="0"
+                android:id="@+id/linearLayout">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:textColor="#000"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Player Name"
+                    android:clickable="false"
+                    android:onClick="onNameClick"
+                    android:id="@+id/playerName"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignBottom="@+id/coinstext"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_weight="0.47"
+                    android:gravity="bottom|left"
+                    android:layout_marginBottom="0dp"
+                    android:autoText="false" />
+
+                <TextView
+                    android:layout_width="100px"
+                    android:layout_height="100px"
+                    android:background="@drawable/gold"
+                    android:textColor="#fff"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="100\nCoins"
+                    android:id="@+id/coinstext"
+                    android:clickable="true"
+                    android:onClick="onBuyCoinsClick"
+                    android:gravity="center"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center|bottom|right"
+                    android:src="@drawable/gold" />
+
+                <TextView
+                    android:layout_width="100px"
+                    android:layout_height="100px"
+                    android:background="@drawable/army"
+                    android:textColor="#fff"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="100\nArmy"
+                    android:id="@+id/armiestext"
+                    android:clickable="true"
+                    android:onClick="onBuyArmiesClick"
+                    android:layout_alignParentEnd="true"
+                    android:layout_above="@+id/coinstext"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:layout_gravity="bottom|right" />
+
+            </LinearLayout>
 
         </RelativeLayout>
 

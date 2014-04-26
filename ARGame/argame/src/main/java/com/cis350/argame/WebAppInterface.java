@@ -494,20 +494,20 @@ public class WebAppInterface {
             @Override
             public void run() {
 
-                LayoutInflater inflater = LayoutInflater.from(mContext);
+            LayoutInflater inflater = LayoutInflater.from(mContext);
 
-                View view = inflater.inflate(R.layout.gameactivity_layout, null);
-                TextView coinsText = (TextView)game.findViewById(R.id.coinstext);
-                TextView armiesText = (TextView)game.findViewById(R.id.armiestext);
-                TextView nameText = (TextView)game.findViewById(R.id.playerName);
-                ImageView profilePic = (ImageView)game.findViewById(R.id.profilePicture);
+            View view = inflater.inflate(R.layout.gameactivity_layout, null);
+            TextView coinsText = (TextView)game.findViewById(R.id.coinstext);
+            TextView armiesText = (TextView)game.findViewById(R.id.armiestext);
+            TextView nameText = (TextView)game.findViewById(R.id.playerName);
+            ImageView profilePic = (ImageView)game.findViewById(R.id.profilePicture);
 
-                Integer currentCoins = PlayerProfile.getGold();
-                Integer currentArmies = PlayerProfile.getArmy();
+            Integer currentCoins = PlayerProfile.getGold();
+            Integer currentArmies = PlayerProfile.getArmy();
 
-                coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
-                armiesText.setText(currentArmies.toString() + "\nArmies"); // Same with armies.
-                nameText.setText(PlayerProfile.getName()); // Set player name.
+            coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
+            armiesText.setText(currentArmies.toString() + "\nArmies"); // Same with armies.
+            nameText.setText(PlayerProfile.getName()); // Set player name.
             }
         });
     }

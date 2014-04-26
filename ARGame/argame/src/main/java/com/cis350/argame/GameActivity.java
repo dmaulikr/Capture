@@ -287,6 +287,7 @@ public class GameActivity extends Activity {
     }
 
     public void onNameClick(View v) {
+
         refreshValues();
     }
 

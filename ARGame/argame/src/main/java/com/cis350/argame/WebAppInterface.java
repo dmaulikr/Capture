@@ -401,6 +401,7 @@ public class WebAppInterface {
                 PlayerProfile.ARMY += army - out[0];
                 myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+out[0]+"\",\""+currentID+"\")");
                 ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
+                refreshValues();
                 d.dismiss();
             }
         });
@@ -436,6 +437,7 @@ public class WebAppInterface {
                 PlayerProfile.ARMY -= out[0];
                 myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+out[0]+"\",\""+currentID+"\")");
                 ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
+                refreshValues();
                 d.dismiss();
             }
         });
@@ -445,6 +447,7 @@ public class WebAppInterface {
                 ParseManager.createPoint(ids, 0, owner_id);
                 myWebView.loadUrl("javascript:captureChangeColorAndArmy(\""+ids+"\",\""+0+"\",\""+currentID+"\")");
                 ParseManager.updateCurrentUserArmy(PlayerProfile.ARMY, PlayerProfile.GOLD);
+                refreshValues();
                 d.dismiss(); // dismiss the dialog
             }
         });
@@ -479,52 +482,33 @@ public class WebAppInterface {
         } else {
             currentID = DEFAULT_CURRENT_ID;
         }
+        //////
+        refreshValues();
 
-        //GameActivity game = (GameActivity) mContext;
-        //game.runOnUiThread(new Runnable() {
-        //    @Override
-         //   public void run() {
+        // create new PlayerProfile here
+    }
+
+    private void refreshValues() {
+        final GameActivity game = (GameActivity) mContext;
+        game.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
 
                 LayoutInflater inflater = LayoutInflater.from(mContext);
 
                 View view = inflater.inflate(R.layout.gameactivity_layout, null);
-                final TextView coinsText = (TextView)view.findViewById(R.id.coinstext);
-                final TextView armiesText = (TextView)view.findViewById(R.id.armiestext);
-                final TextView nameText = (TextView)view.findViewById(R.id.playerName);
-                ImageView profilePic = (ImageView)view.findViewById(R.id.profilePicture);
+                TextView coinsText = (TextView)game.findViewById(R.id.coinstext);
+                TextView armiesText = (TextView)game.findViewById(R.id.armiestext);
+                TextView nameText = (TextView)game.findViewById(R.id.playerName);
+                ImageView profilePic = (ImageView)game.findViewById(R.id.profilePicture);
 
-                //this.coinsText = coinsText;
-                //this.armiesText = armiesText;
-                //this.nameText = nameText;
-                //this.profilePic = profilePic;
+                Integer currentCoins = PlayerProfile.getGold();
+                Integer currentArmies = PlayerProfile.getArmy();
 
-                final Integer currentCoins = PlayerProfile.getGold();
-                final Integer currentArmies = PlayerProfile.getArmy();
-
-
-                nameText.post(new Runnable() {
-                    public void run() {
-                        nameText.setText(PlayerProfile.getName());
-                    }
-                });
-                coinsText.post(new Runnable() {
-                      public void run() {
-                          coinsText.setText(currentCoins.toString() + "\nCoins");
-                      }
-                  });
-               // coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
-                //armiesText.setText(currentArmies.toString() + "\nArmies"); // Same with armies.
-                armiesText.post(new Runnable() {
-                    public void run() {
-                        armiesText.setText(currentArmies.toString() + "\nArmies");
-                    }
-                });
-                //nameText.setText(PlayerProfile.getName()); // Set player name.
-
-         //   }
-        //});
-        //////
-
-        // create new PlayerProfile here
+                coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
+                armiesText.setText(currentArmies.toString() + "\nArmies"); // Same with armies.
+                nameText.setText(PlayerProfile.getName()); // Set player name.
+            }
+        });
     }
 }

@@ -6,61 +6,61 @@
     android:background="#0099cc"
     tools:context="com.cis350.argame.BuildingDialogActivity">
 
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-
-    <TextView android:id="@+id/title_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:keepScreenOn="true"
-        android:textColor="#33b5e5"
-        android:textStyle="bold"
-        android:textSize="50sp"
-        android:gravity="center"
-        android:text="Capture" />
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <TextView android:id="@+id/building_id_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+        <TextView android:id="@+id/title_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:keepScreenOn="true"
-            android:textColor="#d7e0e5"
+            android:textColor="#33b5e5"
             android:textStyle="bold"
-            android:textSize="25sp"
+            android:textSize="50sp"
             android:gravity="center"
-            android:text="building id" />
+            android:text="Capture" />
 
-        <TextView android:id="@+id/building_army_size_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center"
-            android:keepScreenOn="true"
-            android:textColor="#d7e0e5"
-            android:textStyle="bold"
-            android:textSize="25sp"
-            android:gravity="center"
-            android:text="army size" />
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TextView android:id="@+id/building_id_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:keepScreenOn="true"
+                android:textColor="#d7e0e5"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:text="building id" />
+
+            <TextView android:id="@+id/building_army_size_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"
+                android:keepScreenOn="true"
+                android:textColor="#d7e0e5"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:text="army size" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/buildingImage"
+            android:layout_width="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.00"
+            android:src="@drawable/ic_launcher" />
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/buildingImage"
-        android:layout_width="fill_parent"
-        android:layout_gravity="center_horizontal"
-        android:layout_height="fill_parent"
-        android:layout_weight="1.00"
-        android:src="@drawable/ic_launcher" />
-
-</LinearLayout>
 
 
 </ScrollView>

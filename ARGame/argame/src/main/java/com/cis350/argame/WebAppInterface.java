@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.parse.ParseException;
 
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -502,7 +503,7 @@ public class WebAppInterface {
             TextView coinsText = (TextView)game.findViewById(R.id.coinstext);
             TextView armiesText = (TextView)game.findViewById(R.id.armiestext);
             TextView nameText = (TextView)game.findViewById(R.id.playerName);
-            ImageView profilePic = (ImageView)game.findViewById(R.id.profilePicture);
+            ParseImageView profilePic = (ParseImageView)game.findViewById(R.id.profilePicture);
 
             Integer currentCoins = PlayerProfile.getGold();
             Integer currentArmies = PlayerProfile.getArmy();
@@ -510,6 +511,7 @@ public class WebAppInterface {
             coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
             armiesText.setText(currentArmies.toString() + "\nArmy"); // Same with armies.
             nameText.setText(PlayerProfile.getName()); // Set player name.
+
             }
         });
     }

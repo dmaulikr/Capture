@@ -16,8 +16,11 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.parse.Parse;
 import com.parse.ParseException;
 
+
+import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -497,21 +500,31 @@ public class WebAppInterface {
             @Override
             public void run() {
 
-            LayoutInflater inflater = LayoutInflater.from(mContext);
+                LayoutInflater inflater = LayoutInflater.from(mContext);
 
-            View view = inflater.inflate(R.layout.gameactivity_layout, null);
-            TextView coinsText = (TextView)game.findViewById(R.id.coinstext);
-            TextView armiesText = (TextView)game.findViewById(R.id.armiestext);
-            TextView nameText = (TextView)game.findViewById(R.id.playerName);
-            ParseImageView profilePic = (ParseImageView)game.findViewById(R.id.profilePicture);
+                View view = inflater.inflate(R.layout.gameactivity_layout, null);
+                TextView coinsText = (TextView)game.findViewById(R.id.coinstext);
+                TextView armiesText = (TextView)game.findViewById(R.id.armiestext);
+                TextView nameText = (TextView)game.findViewById(R.id.playerName);
+                ParseImageView profilePic = (ParseImageView)game.findViewById(R.id.profilePicture);
 
-            Integer currentCoins = PlayerProfile.getGold();
-            Integer currentArmies = PlayerProfile.getArmy();
+                Integer currentCoins = PlayerProfile.getGold();
+                Integer currentArmies = PlayerProfile.getArmy();
 
-            coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
-            armiesText.setText(currentArmies.toString() + "\nArmy"); // Same with armies.
-            nameText.setText(PlayerProfile.getName()); // Set player name.
+                coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
+                armiesText.setText(currentArmies.toString() + "\nArmy"); // Same with armies.
+                nameText.setText(PlayerProfile.getName()); // Set player name.
 
+                ParseUser user = ParseManager.getCurrentUser();
+                ParseObject photoObj = (ParseObject) ParseManager.getCurrentUser().get("photo");
+                if(photoObj != null ) {
+                    try {
+                        photoObj.fetchIfNeeded();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    profilePic.setParseFile((ParseFile) photoObj.get("fullSize"));
+                }
             }
         });
     }

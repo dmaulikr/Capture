@@ -4,7 +4,9 @@ import com.cis350.argame.util.SystemUiHider;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseInstallation;
+import com.parse.ParseObject;
 import com.parse.PushService;
 import com.parse.SaveCallback;
 
@@ -30,7 +32,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -359,10 +365,22 @@ public class GameActivity extends Activity {
                     mImageCaptureUri = data.getData();
                     profilePic.setImageURI(mImageCaptureUri);
                     Log.v("CROP_FROM_CAMERA", "Picture set");
-
-                    // Convert photo to bitmap and then upload to Parse
-
-
+                    Bitmap imageBMP = profilePic.getDrawingCache();
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    try {
+                        imageBMP.compress(Bitmap.CompressFormat.PNG, 10, out);
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                    ParseFile image = new ParseFile("userImage.png", out.toByteArray());
+                    final ParseObject imageObject = ParseObject.create("Photo");
+                    imageObject.put("fullSize", image);
+                    imageObject.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            ParseManager.getCurrentUser().put("photo", imageObject);
+                        }
+                    });
                 }
                 File f = new File(mImageCaptureUri.getPath());
                 if (f.exists()) {

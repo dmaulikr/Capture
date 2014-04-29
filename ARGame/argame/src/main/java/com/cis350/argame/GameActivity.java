@@ -379,6 +379,7 @@ public class GameActivity extends Activity {
                         @Override
                         public void done(ParseException e) {
                             ParseManager.getCurrentUser().put("photo", imageObject);
+                            ParseManager.getCurrentUser().saveInBackground();
                         }
                     });
                 }

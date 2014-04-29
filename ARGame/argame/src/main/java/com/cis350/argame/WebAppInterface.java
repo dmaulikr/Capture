@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.parse.ParseException;
 
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -492,6 +494,14 @@ public class WebAppInterface {
 
     private void refreshValues() {
         final GameActivity game = (GameActivity) mContext;
+        ParseImageView profilePic = (ParseImageView)game.findViewById(R.id.profilePicture);
+        ParseObject photoObj = (ParseObject) ParseManager.getCurrentUser().get("photo");
+        try {
+            photoObj.fetchIfNeeded();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        profilePic.setParseFile((ParseFile) photoObj.get("fullSize"));
         game.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -502,7 +512,7 @@ public class WebAppInterface {
             TextView coinsText = (TextView)game.findViewById(R.id.coinstext);
             TextView armiesText = (TextView)game.findViewById(R.id.armiestext);
             TextView nameText = (TextView)game.findViewById(R.id.playerName);
-            ImageView profilePic = (ImageView)game.findViewById(R.id.profilePicture);
+
 
             Integer currentCoins = PlayerProfile.getGold();
             Integer currentArmies = PlayerProfile.getArmy();

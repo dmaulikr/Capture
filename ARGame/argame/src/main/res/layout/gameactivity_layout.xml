@@ -45,7 +45,7 @@
             android:layout_height="fill_parent"
             android:layout_gravity="left|bottom">
 
-            <ImageView
+            <com.parse.ParseImageView
                 android:layout_width="180px"
                 android:layout_height="180px"
                 android:id="@+id/profilePicture"

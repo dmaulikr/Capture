@@ -97,6 +97,8 @@ public class WebAppInterface {
 
             String bounds[] = bbox.split(","); // w s e n
 
+            //Thread.currentThread().setPriority(1);
+
             XMLQueryHandler xmlHandler = new XMLQueryHandler();
             String output = xmlHandler.getXMLDataFromBBox(bounds, httpclient, httppost);
 

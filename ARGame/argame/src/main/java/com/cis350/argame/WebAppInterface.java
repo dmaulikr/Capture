@@ -506,7 +506,7 @@ public class WebAppInterface {
             Integer currentArmies = PlayerProfile.getArmy();
 
             coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
-            armiesText.setText(currentArmies.toString() + "\nArmies"); // Same with armies.
+            armiesText.setText(currentArmies.toString() + "\nArmy"); // Same with armies.
             nameText.setText(PlayerProfile.getName()); // Set player name.
             }
         });

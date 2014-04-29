@@ -272,6 +272,10 @@ public class ParseManager {
 
         ParseUser oldUser;
 
+        if (ParseInstallation.getCurrentInstallation() == null) {
+             return;
+        }
+
         try {
             oldUser = getUserByID(oldId);
         } catch (ParseException e) {

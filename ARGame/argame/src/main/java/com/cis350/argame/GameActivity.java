@@ -1,9 +1,12 @@
 package com.cis350.argame;
 
 import com.cis350.argame.util.SystemUiHider;
+import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.PushService;
+import com.parse.SaveCallback;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -53,7 +56,7 @@ public class GameActivity extends Activity {
     private TextView nameText;
     private ImageView profilePic;
     private int PIC_SQUARE_WIDTH = 180;
-    private boolean PUSH_ENABLE = false; // set to true for Android testing
+    private boolean PUSH_ENABLE = true; // set to true for Android testing
 
     private Uri mImageCaptureUri;
 
@@ -207,13 +210,21 @@ public class GameActivity extends Activity {
         delayedHide(100);
 
         // Set parse installation.
-        ParseInstallation installation = ParseInstallation
-                .getCurrentInstallation();
-        if( PUSH_ENABLE == true ) {
-            ParseManager.enablePush(true);
-            installation.put("user", ParseManager.getCurrentUser());
-            installation.saveInBackground();
-        } else return;
+
+        if (ParseInstallation.getCurrentInstallation() != null) {
+            if (PUSH_ENABLE ) {
+                    ParseInstallation installation = ParseInstallation
+                            .getCurrentInstallation();
+                    ParseManager.enablePush(true);
+                    installation.put("user", ParseManager.getCurrentUser());
+                    installation.saveInBackground();
+                try {
+                    installation.save();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            } else return;
+        }
     }
 
     /**
@@ -265,7 +276,7 @@ public class GameActivity extends Activity {
         Integer currentArmies = PlayerProfile.getArmy();
 
         coinsText.setText(currentCoins.toString() + "\nCoins"); // Set coins to player amt.
-        armiesText.setText(currentArmies.toString() + "\nArmies"); // Same with armies.
+        armiesText.setText(currentArmies.toString() + "\nArmy"); // Same with armies.
         nameText.setText(PlayerProfile.getName()); // Set player name.
     }
 

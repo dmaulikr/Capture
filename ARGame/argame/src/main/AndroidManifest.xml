@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cis350.argame" >
+    package="com.cis350.argame"
+    android:versionCode="1"
+    android:versionName="1">
+
     <uses-sdk android:minSdkVersion="8" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -20,7 +23,7 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission android:protectionLevel="signature"
-                android:name="com.cis350.argame.permission.C2D_MESSAGE" />
+        android:name="com.cis350.argame.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.cis350.argame.permission.C2D_MESSAGE" />
 
     <application
@@ -59,7 +62,7 @@
             </intent-filter>
         </receiver>
         <receiver android:name="com.parse.GcmBroadcastReceiver"
-                  android:permission="com.google.android.c2dm.permission.SEND">
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />

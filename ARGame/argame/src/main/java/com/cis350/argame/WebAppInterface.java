@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 
@@ -523,7 +524,15 @@ public class WebAppInterface {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                    profilePic.setPlaceholder(game.getResources().getDrawable(R.drawable.placeholder));
                     profilePic.setParseFile((ParseFile) photoObj.get("fullSize"));
+                    profilePic.loadInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] data, ParseException e) {
+                            int a  = 0;
+
+                        }
+                    });
                 }
             }
         });

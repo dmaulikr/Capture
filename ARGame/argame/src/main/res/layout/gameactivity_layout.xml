@@ -49,7 +49,6 @@
                 android:layout_width="180px"
                 android:layout_height="180px"
                 android:id="@+id/profilePicture"
-                android:src="@drawable/placeholder"
                 android:onClick="onProfilePictureClick"
                 android:contentDescription="profileImage"
                 android:layout_alignParentBottom="true"

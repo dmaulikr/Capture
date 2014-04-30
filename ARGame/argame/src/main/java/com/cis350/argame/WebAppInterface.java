@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +17,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 
@@ -23,6 +28,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.apache.http.client.ClientProtocolException;
@@ -481,7 +487,7 @@ public class WebAppInterface {
 
             if (player != null) {
                 currentID = playerID;
-                myWebView.loadUrl("javascript:getCurrentId(\""+playerID+"\")");
+                myWebView.loadUrl("javascript:getCurrentId(\"" + playerID + "\")");
             } else {
                 currentID = DEFAULT_CURRENT_ID;
             }
@@ -506,7 +512,8 @@ public class WebAppInterface {
                 TextView coinsText = (TextView)game.findViewById(R.id.coinstext);
                 TextView armiesText = (TextView)game.findViewById(R.id.armiestext);
                 TextView nameText = (TextView)game.findViewById(R.id.playerName);
-                ParseImageView profilePic = (ParseImageView)game.findViewById(R.id.profilePicture);
+                final ParseImageView profilePic = (ParseImageView)game
+                        .findViewById(R.id.profilePicture);
 
                 Integer currentCoins = PlayerProfile.getGold();
                 Integer currentArmies = PlayerProfile.getArmy();
@@ -515,17 +522,27 @@ public class WebAppInterface {
                 armiesText.setText(currentArmies.toString() + "\nArmy"); // Same with armies.
                 nameText.setText(PlayerProfile.getName()); // Set player name.
 
-                ParseUser user = ParseManager.getCurrentUser();
+                profilePic.setPlaceholder(mContext.getResources().getDrawable
+                        (R.drawable.placeholder));
+
                 ParseObject photoObj = (ParseObject) ParseManager.getCurrentUser().get("photo");
                 if(photoObj != null ) {
+                    byte data[] = new byte[0];
                     try {
                         photoObj.fetchIfNeeded();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                        data = photoObj.getParseFile("fullSize").getData();
+                    } catch (Exception e) {
+                        CharSequence message = "Unable to download pic.";
+                        Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
                     }
-                    profilePic.setParseFile((ParseFile) photoObj.get("fullSize"));
+                    // This sets the image on the server, not the imageview
+                    //profilePic.setParseFile((ParseFile) photoObj.get
+                    //        ("fullSize"));
+                    Bitmap bmp = BitmapFactory.decodeByteArray(data, 0,
+                            data.length);
+                    profilePic.setImageBitmap(bmp);
+
                 }
-            }
-        });
+        }});
     }
 }

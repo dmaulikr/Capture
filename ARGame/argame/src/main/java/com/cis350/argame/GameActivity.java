@@ -333,8 +333,8 @@ public class GameActivity extends Activity {
             Integer currentCoins = PlayerProfile.getGold();
             Integer currentArmies = PlayerProfile.getArmy();
 
-            coinsText.setText("Coins:\n " + currentCoins.toString());
-            armiesText.setText("Army:\n " + currentArmies.toString());
+            coinsText.setText(currentCoins.toString() + "\nCoins");
+            armiesText.setText(currentArmies.toString() + "\nArmy");
         }
     }
 

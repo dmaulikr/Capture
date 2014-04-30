@@ -1,12 +1,17 @@
 package com.cis350.argame;
 
 import com.cis350.argame.util.SystemUiHider;
+import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.PushService;
 import com.parse.SaveCallback;
 
@@ -23,6 +28,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -60,7 +66,7 @@ public class GameActivity extends Activity {
     private TextView coinsText;
     private TextView armiesText;
     private TextView nameText;
-    private ImageView profilePic;
+    private ParseImageView profilePic;
     private int PIC_SQUARE_WIDTH = 180;
     private boolean PUSH_ENABLE = true; // set to true for Android testing
 
@@ -113,7 +119,7 @@ public class GameActivity extends Activity {
         TextView coinsText = (TextView)findViewById(R.id.coinstext);
         TextView armiesText = (TextView)findViewById(R.id.armiestext);
         TextView nameText = (TextView)findViewById(R.id.playerName);
-        ImageView profilePic = (ImageView)findViewById(R.id.profilePicture);
+        ParseImageView profilePic = (ParseImageView)findViewById(R.id.profilePicture);
 
         this.coinsText = coinsText;
         this.armiesText = armiesText;
@@ -169,6 +175,35 @@ public class GameActivity extends Activity {
             ParseAnalytics.trackAppOpened(getIntent());
         }
         showMap();
+    }
+
+    private void downloadProfilePicture() {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("user");
+        query.getFirstInBackground(new GetCallback<ParseObject>(){
+            public void done(ParseObject object, ParseException e) {
+                if (object == null) {
+                    Log.v("dpp() : Point 1", "Error");
+                } else {
+                    object.getObjectId();
+                    ParseFile serverPicture = (ParseFile) object.get("photo");
+                    serverPicture.getDataInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] bytes, ParseException e) {
+                            if (e == null) {
+                                // When no error, parse the picture into a
+                                // bitmap.
+                                Bitmap bmp = BitmapFactory.decodeByteArray
+                                        (bytes, 0, bytes.length);
+                                profilePic.setImageBitmap(bmp);
+                            } else {
+                                Log.v("dpp() : Point 2",
+                                        "Error downloading data.");
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     //@Override
@@ -271,12 +306,16 @@ public class GameActivity extends Activity {
         TextView coinsText = (TextView)findViewById(R.id.coinstext);
         TextView armiesText = (TextView)findViewById(R.id.armiestext);
         TextView nameText = (TextView)findViewById(R.id.playerName);
-        ImageView profilePic = (ImageView)findViewById(R.id.profilePicture);
+        ParseImageView profilePic = (ParseImageView)findViewById(R.id
+                .profilePicture);
 
         this.coinsText = coinsText;
         this.armiesText = armiesText;
         this.nameText = nameText;
         this.profilePic = profilePic;
+
+        // Download user photo from Parse, if available.
+        downloadProfilePicture();
 
         Integer currentCoins = PlayerProfile.getGold();
         Integer currentArmies = PlayerProfile.getArmy();
@@ -365,11 +404,12 @@ public class GameActivity extends Activity {
                     mImageCaptureUri = data.getData();
                     profilePic.setImageURI(mImageCaptureUri);
                     Log.v("CROP_FROM_CAMERA", "Picture set");
-                    Bitmap imageBMP = profilePic.getDrawingCache();
+                    //Bitmap imageBMP = profilePic.getDrawingCache();
                     ByteArrayOutputStream out = new ByteArrayOutputStream();
                     try {
+                        Bitmap imageBMP = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageCaptureUri);
                         imageBMP.compress(Bitmap.CompressFormat.PNG, 10, out);
-                    } catch (NullPointerException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     ParseFile image = new ParseFile("userImage.png", out.toByteArray());

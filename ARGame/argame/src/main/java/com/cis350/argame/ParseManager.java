@@ -285,7 +285,6 @@ public class ParseManager {
 
         ParseQuery<ParseInstallation> pQuery = ParseInstallation.getQuery();
         pQuery.whereEqualTo("user", oldUser);
-        // TODO: FIX
         ParsePush.sendMessageInBackground("One of your buildings has been " +
                 "captured by " + getCurrentUser().getUsername() +
                 "!", pQuery);

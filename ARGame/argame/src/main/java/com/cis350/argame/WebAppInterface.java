@@ -475,7 +475,7 @@ public class WebAppInterface {
             ParseUser player = PlayerProfile.createPlayerProfile();
 
             //Log.w("myApp", "current user is "+curr_user+"");
-            String playerID = PlayerProfile.ID;
+            final String playerID = PlayerProfile.ID;
             String playerName = PlayerProfile.NAME;
             int playerArmy = PlayerProfile.ARMY;
             int playerGold = PlayerProfile.GOLD;
@@ -488,7 +488,13 @@ public class WebAppInterface {
 
             if (player != null) {
                 currentID = playerID;
-                myWebView.loadUrl("javascript:getCurrentId(\"" + playerID + "\")");
+                final GameActivity game = (GameActivity) mContext;
+                game.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        myWebView.loadUrl("javascript:getCurrentId(\"" + playerID + "\")");
+                    }
+                });
             } else {
                 currentID = DEFAULT_CURRENT_ID;
             }

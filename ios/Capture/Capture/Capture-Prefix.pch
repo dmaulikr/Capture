@@ -16,8 +16,8 @@
 #endif
 
 #ifndef __PARSE__
-    #import "tbnParseManager.h"
 #endif
+#import "tbnParseManager.h"
 
 #define kWebMapURL @"http://poroawards.net/Geolocation/map.html"
 #define kOverpassAPI @"http://overpass-api.de/api/interpreter"

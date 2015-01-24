@@ -9,29 +9,32 @@
 /* Begin PBXBuildFile section */
 		19027F1A190477A6004EA4D1 /* tbnXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 19027F19190477A6004EA4D1 /* tbnXMLParser.m */; };
 		19027F1D190488F1004EA4D1 /* tbnXMLParserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 19027F1C190488F1004EA4D1 /* tbnXMLParserTest.m */; };
-		191D4E8B1905FDE600751EB7 /* libJSWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 191D4E8A1905FDE600751EB7 /* libJSWebView.a */; };
-		191D4E901905FE0700751EB7 /* easyjs-inject.js in Sources */ = {isa = PBXBuildFile; fileRef = 191D4E8F1905FE0700751EB7 /* easyjs-inject.js */; };
+		1923175E1A744B4B00DECC17 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 192317531A744A2A00DECC17 /* Bolts.framework */; };
+		1923175F1A744B4B00DECC17 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 192317541A744A2A00DECC17 /* Parse.framework */; };
+		192317601A744B4B00DECC17 /* ParseCrashReporting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 192317551A744A2A00DECC17 /* ParseCrashReporting.framework */; };
+		192317611A744B4B00DECC17 /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 192317561A744A2A00DECC17 /* ParseFacebookUtils.framework */; };
+		192317621A744B4B00DECC17 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 192317571A744A2A00DECC17 /* ParseUI.framework */; };
+		192317631A744B7200DECC17 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F11904955200263474 /* Accounts.framework */; };
+		192317641A744B7200DECC17 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F31904955200263474 /* AudioToolbox.framework */; };
+		192317651A744B7200DECC17 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F51904955200263474 /* CoreFoundation.framework */; };
+		192317661A744B7200DECC17 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F61904955200263474 /* CoreGraphics.framework */; };
+		192317671A744B7200DECC17 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547FA1904955200263474 /* MobileCoreServices.framework */; };
+		192317681A744B7200DECC17 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547FC1904955200263474 /* Security.framework */; };
+		192317691A744B7200DECC17 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547FD1904955200263474 /* Social.framework */; };
+		1923176A1A744B7200DECC17 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547FE1904955200263474 /* StoreKit.framework */; };
+		1923176D1A744B7300DECC17 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1923176B1A744B7300DECC17 /* libz.dylib */; };
+		1923176E1A744B7300DECC17 /* MediaToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1923176C1A744B7300DECC17 /* MediaToolbox.framework */; };
+		1923176F1A744BB500DECC17 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F41904955200263474 /* CFNetwork.framework */; };
+		192317711A744BC200DECC17 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 192317701A744BC200DECC17 /* libsqlite3.dylib */; };
+		192317721A744C1600DECC17 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547FF1904955200263474 /* SystemConfiguration.framework */; };
+		192317731A744C1B00DECC17 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547FB1904955200263474 /* QuartzCore.framework */; };
+		192317F61A74508D00DECC17 /* easyjs-inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 192317EF1A74508D00DECC17 /* easyjs-inject.js */; };
+		192317F71A74508D00DECC17 /* EasyJSDataFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 192317F11A74508D00DECC17 /* EasyJSDataFunction.m */; };
+		192317F81A74508D00DECC17 /* EasyJSWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 192317F31A74508D00DECC17 /* EasyJSWebView.m */; };
+		192317F91A74508D00DECC17 /* EasyJSWebViewProxyDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 192317F51A74508D00DECC17 /* EasyJSWebViewProxyDelegate.m */; };
 		19342FD01906CF27002C7522 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19342FCF1906CF27002C7522 /* SettingsViewController.m */; };
 		194B7B4C190317B30010CAAE /* tbnCaptureWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 194B7B4B190317B30010CAAE /* tbnCaptureWebView.m */; };
 		198F4FBD1905A7CC001067D7 /* tbnToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 198F4FBC1905A7CC001067D7 /* tbnToolbarView.m */; };
-		19B548021904955200263474 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F11904955200263474 /* Accounts.framework */; };
-		19B548031904955200263474 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F21904955200263474 /* AdSupport.framework */; };
-		19B548041904955200263474 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F31904955200263474 /* AudioToolbox.framework */; };
-		19B548051904955200263474 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F41904955200263474 /* CFNetwork.framework */; };
-		19B548061904955200263474 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F51904955200263474 /* CoreFoundation.framework */; };
-		19B548071904955200263474 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F61904955200263474 /* CoreGraphics.framework */; };
-		19B548081904955200263474 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F71904955200263474 /* CoreLocation.framework */; };
-		19B548091904955200263474 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F81904955200263474 /* Foundation.framework */; };
-		19B5480A1904955200263474 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547F91904955200263474 /* libz.1.2.5.dylib */; };
-		19B5480B1904955200263474 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547FA1904955200263474 /* MobileCoreServices.framework */; };
-		19B5480C1904955200263474 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547FB1904955200263474 /* QuartzCore.framework */; };
-		19B5480D1904955200263474 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547FC1904955200263474 /* Security.framework */; };
-		19B5480E1904955200263474 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547FD1904955200263474 /* Social.framework */; };
-		19B5480F1904955200263474 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547FE1904955200263474 /* StoreKit.framework */; };
-		19B548101904955200263474 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B547FF1904955200263474 /* SystemConfiguration.framework */; };
-		19B548111904955200263474 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B548001904955200263474 /* Twitter.framework */; };
-		19B548121904955200263474 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B548011904955200263474 /* UIKit.framework */; };
-		19B548141904955C00263474 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B548131904955C00263474 /* Parse.framework */; };
 		19D75AF9190834B800A276FD /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D75AF7190834B800A276FD /* Logo.png */; };
 		19D75AFA190834B800A276FD /* Logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D75AF8190834B800A276FD /* Logo@2x.png */; };
 		19E283D518FC7F80004D49E7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 19E283D318FC7F80004D49E7 /* InfoPlist.strings */; };
@@ -62,11 +65,21 @@
 		19027F19190477A6004EA4D1 /* tbnXMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = tbnXMLParser.m; path = ../tbnXMLParser.m; sourceTree = "<group>"; };
 		19027F1B190488F1004EA4D1 /* tbnXMLParserTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tbnXMLParserTest.h; sourceTree = "<group>"; };
 		19027F1C190488F1004EA4D1 /* tbnXMLParserTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tbnXMLParserTest.m; sourceTree = "<group>"; };
-		191D4E8A1905FDE600751EB7 /* libJSWebView.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libJSWebView.a; path = "../JSWebView/build/JSWebView.build/Debug-universal/libJSWebView.a"; sourceTree = "<group>"; };
-		191D4E8C1905FE0200751EB7 /* EasyJSDataFunction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EasyJSDataFunction.h; path = ../JSWebView/JSWebView/EasyJSDataFunction.h; sourceTree = "<group>"; };
-		191D4E8D1905FE0200751EB7 /* EasyJSWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EasyJSWebView.h; path = ../JSWebView/JSWebView/EasyJSWebView.h; sourceTree = "<group>"; };
-		191D4E8E1905FE0200751EB7 /* EasyJSWebViewProxyDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EasyJSWebViewProxyDelegate.h; path = ../JSWebView/JSWebView/EasyJSWebViewProxyDelegate.h; sourceTree = "<group>"; };
-		191D4E8F1905FE0700751EB7 /* easyjs-inject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "easyjs-inject.js"; path = "../JSWebView/JSWebView/easyjs-inject.js"; sourceTree = "<group>"; };
+		192317531A744A2A00DECC17 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		192317541A744A2A00DECC17 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		192317551A744A2A00DECC17 /* ParseCrashReporting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseCrashReporting.framework; sourceTree = "<group>"; };
+		192317561A744A2A00DECC17 /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
+		192317571A744A2A00DECC17 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
+		1923176B1A744B7300DECC17 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		1923176C1A744B7300DECC17 /* MediaToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaToolbox.framework; path = System/Library/Frameworks/MediaToolbox.framework; sourceTree = SDKROOT; };
+		192317701A744BC200DECC17 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		192317EF1A74508D00DECC17 /* easyjs-inject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "easyjs-inject.js"; sourceTree = "<group>"; };
+		192317F01A74508D00DECC17 /* EasyJSDataFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyJSDataFunction.h; sourceTree = "<group>"; };
+		192317F11A74508D00DECC17 /* EasyJSDataFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyJSDataFunction.m; sourceTree = "<group>"; };
+		192317F21A74508D00DECC17 /* EasyJSWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyJSWebView.h; sourceTree = "<group>"; };
+		192317F31A74508D00DECC17 /* EasyJSWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyJSWebView.m; sourceTree = "<group>"; };
+		192317F41A74508D00DECC17 /* EasyJSWebViewProxyDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyJSWebViewProxyDelegate.h; sourceTree = "<group>"; };
+		192317F51A74508D00DECC17 /* EasyJSWebViewProxyDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyJSWebViewProxyDelegate.m; sourceTree = "<group>"; };
 		19342FCE1906CF26002C7522 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		19342FCF1906CF27002C7522 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		194B7B4A190317B30010CAAE /* tbnCaptureWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tbnCaptureWebView.h; sourceTree = "<group>"; };
@@ -120,25 +133,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19B548021904955200263474 /* Accounts.framework in Frameworks */,
-				19B548031904955200263474 /* AdSupport.framework in Frameworks */,
-				191D4E8B1905FDE600751EB7 /* libJSWebView.a in Frameworks */,
-				19B548041904955200263474 /* AudioToolbox.framework in Frameworks */,
-				19B548051904955200263474 /* CFNetwork.framework in Frameworks */,
-				19B548061904955200263474 /* CoreFoundation.framework in Frameworks */,
-				19B548071904955200263474 /* CoreGraphics.framework in Frameworks */,
-				19B548081904955200263474 /* CoreLocation.framework in Frameworks */,
-				19B548091904955200263474 /* Foundation.framework in Frameworks */,
-				19B5480A1904955200263474 /* libz.1.2.5.dylib in Frameworks */,
-				19B5480B1904955200263474 /* MobileCoreServices.framework in Frameworks */,
-				19B5480C1904955200263474 /* QuartzCore.framework in Frameworks */,
-				19B5480D1904955200263474 /* Security.framework in Frameworks */,
-				19B5480E1904955200263474 /* Social.framework in Frameworks */,
-				19B5480F1904955200263474 /* StoreKit.framework in Frameworks */,
-				19B548101904955200263474 /* SystemConfiguration.framework in Frameworks */,
-				19B548111904955200263474 /* Twitter.framework in Frameworks */,
-				19B548121904955200263474 /* UIKit.framework in Frameworks */,
-				19B548141904955C00263474 /* Parse.framework in Frameworks */,
+				192317711A744BC200DECC17 /* libsqlite3.dylib in Frameworks */,
+				1923176D1A744B7300DECC17 /* libz.dylib in Frameworks */,
+				1923176E1A744B7300DECC17 /* MediaToolbox.framework in Frameworks */,
+				192317631A744B7200DECC17 /* Accounts.framework in Frameworks */,
+				192317641A744B7200DECC17 /* AudioToolbox.framework in Frameworks */,
+				192317651A744B7200DECC17 /* CoreFoundation.framework in Frameworks */,
+				192317661A744B7200DECC17 /* CoreGraphics.framework in Frameworks */,
+				192317671A744B7200DECC17 /* MobileCoreServices.framework in Frameworks */,
+				192317681A744B7200DECC17 /* Security.framework in Frameworks */,
+				192317691A744B7200DECC17 /* Social.framework in Frameworks */,
+				1923176A1A744B7200DECC17 /* StoreKit.framework in Frameworks */,
+				192317721A744C1600DECC17 /* SystemConfiguration.framework in Frameworks */,
+				192317731A744C1B00DECC17 /* QuartzCore.framework in Frameworks */,
+				1923175E1A744B4B00DECC17 /* Bolts.framework in Frameworks */,
+				1923176F1A744BB500DECC17 /* CFNetwork.framework in Frameworks */,
+				1923175F1A744B4B00DECC17 /* Parse.framework in Frameworks */,
+				192317601A744B4B00DECC17 /* ParseCrashReporting.framework in Frameworks */,
+				192317611A744B4B00DECC17 /* ParseFacebookUtils.framework in Frameworks */,
+				192317621A744B4B00DECC17 /* ParseUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,11 +168,13 @@
 		191D4E891905FDCC00751EB7 /* CustomWebView */ = {
 			isa = PBXGroup;
 			children = (
-				191D4E8F1905FE0700751EB7 /* easyjs-inject.js */,
-				191D4E8C1905FE0200751EB7 /* EasyJSDataFunction.h */,
-				191D4E8D1905FE0200751EB7 /* EasyJSWebView.h */,
-				191D4E8E1905FE0200751EB7 /* EasyJSWebViewProxyDelegate.h */,
-				191D4E8A1905FDE600751EB7 /* libJSWebView.a */,
+				192317EF1A74508D00DECC17 /* easyjs-inject.js */,
+				192317F01A74508D00DECC17 /* EasyJSDataFunction.h */,
+				192317F11A74508D00DECC17 /* EasyJSDataFunction.m */,
+				192317F21A74508D00DECC17 /* EasyJSWebView.h */,
+				192317F31A74508D00DECC17 /* EasyJSWebView.m */,
+				192317F41A74508D00DECC17 /* EasyJSWebViewProxyDelegate.h */,
+				192317F51A74508D00DECC17 /* EasyJSWebViewProxyDelegate.m */,
 			);
 			name = CustomWebView;
 			sourceTree = "<group>";
@@ -214,6 +229,14 @@
 		19E283C918FC7F80004D49E7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				192317701A744BC200DECC17 /* libsqlite3.dylib */,
+				1923176B1A744B7300DECC17 /* libz.dylib */,
+				192317531A744A2A00DECC17 /* Bolts.framework */,
+				192317541A744A2A00DECC17 /* Parse.framework */,
+				192317551A744A2A00DECC17 /* ParseCrashReporting.framework */,
+				192317561A744A2A00DECC17 /* ParseFacebookUtils.framework */,
+				192317571A744A2A00DECC17 /* ParseUI.framework */,
+				1923176C1A744B7300DECC17 /* MediaToolbox.framework */,
 				19B548131904955C00263474 /* Parse.framework */,
 				19B547F11904955200263474 /* Accounts.framework */,
 				19B547F21904955200263474 /* AdSupport.framework */,
@@ -368,6 +391,7 @@
 				19E283E118FC7F80004D49E7 /* Main_iPad.storyboard in Resources */,
 				19D75AFA190834B800A276FD /* Logo@2x.png in Resources */,
 				19E283E918FC7F80004D49E7 /* Images.xcassets in Resources */,
+				192317F61A74508D00DECC17 /* easyjs-inject.js in Resources */,
 				19D75AF9190834B800A276FD /* Logo.png in Resources */,
 				19E283DE18FC7F80004D49E7 /* Main_iPhone.storyboard in Resources */,
 				19E283D518FC7F80004D49E7 /* InfoPlist.strings in Resources */,
@@ -389,11 +413,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				192317F71A74508D00DECC17 /* EasyJSDataFunction.m in Sources */,
 				19E283E418FC7F80004D49E7 /* tbnMapViewController.m in Sources */,
+				192317F81A74508D00DECC17 /* EasyJSWebView.m in Sources */,
+				192317F91A74508D00DECC17 /* EasyJSWebViewProxyDelegate.m in Sources */,
 				198F4FBD1905A7CC001067D7 /* tbnToolbarView.m in Sources */,
 				19027F1A190477A6004EA4D1 /* tbnXMLParser.m in Sources */,
 				19E283D718FC7F80004D49E7 /* main.m in Sources */,
-				191D4E901905FE0700751EB7 /* easyjs-inject.js in Sources */,
 				19E283DB18FC7F80004D49E7 /* tbnAppDelegate.m in Sources */,
 				194B7B4C190317B30010CAAE /* tbnCaptureWebView.m in Sources */,
 				19E283E718FC7F80004D49E7 /* tbnBasecampViewController.m in Sources */,
@@ -545,11 +571,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Capture/Capture-Prefix.pch";
 				INFOPLIST_FILE = "Capture/Capture-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"/Volumes/sachabest/Documents/ARGame/ios/JSWebView/build/JSWebView.build/Debug-universal",
+					"/Users/sachabest/Documents/capture/ios/JSWebView/build/JSWebView.build/Debug-universal",
+					"/Users/sachabest/Documents/capture/ios/JSWebView/build/JSWebView.build/Debug-iphoneos",
+					"/Users/sachabest/Documents/capture/ios/JSWebView/build/JSWebView.build/Debug-iphonesimulator",
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -576,11 +605,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Capture/Capture-Prefix.pch";
 				INFOPLIST_FILE = "Capture/Capture-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"/Volumes/sachabest/Documents/ARGame/ios/JSWebView/build/JSWebView.build/Debug-universal",
+					"/Users/sachabest/Documents/capture/ios/JSWebView/build/JSWebView.build/Debug-universal",
+					"/Users/sachabest/Documents/capture/ios/JSWebView/build/JSWebView.build/Debug-iphoneos",
+					"/Users/sachabest/Documents/capture/ios/JSWebView/build/JSWebView.build/Debug-iphonesimulator",
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";

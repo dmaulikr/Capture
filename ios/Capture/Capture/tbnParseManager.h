@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Parse/Parse.h>
+#import <ParseUI/ParseUI.h>
 
 #define __PARSE__
 

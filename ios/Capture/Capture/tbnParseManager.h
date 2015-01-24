@@ -27,6 +27,8 @@ typedef enum LoginResult {
 
 + (BOOL) isLoggedIn;
 + (PFUser *) getCurrentUser;
++ (PFFile *)getUserPhotoFetched;
+
 + (void) capturePoint:(PFObject *)point withNewArmy:(int)army withTarget:(id)target selector:(SEL)selector;
 + (void) capturePointByNodeID:(NSString *)pointID withNewArmy:(int)army withTarget:(id)target selector:(SEL)selector;
 

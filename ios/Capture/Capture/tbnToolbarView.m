@@ -15,7 +15,7 @@
     toReturn.backgroundColor = [UIColor clearColor];
     toReturn.opaque = NO;
     toReturn.userImage = [[PFImageView alloc] initWithFrame:CGRectMake(0, 0, kImageSize, kImageSize)];
-    toReturn.userImage.file = [[tbnParseManager getCurrentUser] objectForKey:@"photo"];
+    toReturn.userImage.file = [tbnParseManager getUserPhotoFetched];
     [toReturn.userImage loadInBackground:^(UIImage *image, NSError *error) {
         toReturn.userImage.frame = CGRectMake(toReturn.userImage.frame.origin.x, toReturn.userImage.frame.origin.y, kImageSize, kImageSize);
     }];

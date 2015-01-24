@@ -15,10 +15,13 @@
     // Override point for customization after application launch.
     [Parse setApplicationId:@"tfq8Gi16KZq2L98xOp5cmlgKjM4rBXaiIlo2gBZx"
                   clientKey:@"88zROkFEksIDYF2XPhqWqOumxocCy7hMVmkystCz"];
-    [application registerForRemoteNotificationTypes:
-     UIRemoteNotificationTypeBadge |
-     UIRemoteNotificationTypeAlert |
-     UIRemoteNotificationTypeSound];
+    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
+                                                    UIUserNotificationTypeBadge |
+                                                    UIUserNotificationTypeSound);
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
+                                                                             categories:nil];
+    [application registerUserNotificationSettings:settings];
+    [application registerForRemoteNotifications];
     return YES;
 }
 

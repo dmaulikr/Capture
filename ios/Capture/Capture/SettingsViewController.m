@@ -17,9 +17,9 @@
     username.delegate = self;
     email = [[UITextField alloc] initWithFrame:CGRectMake(self.view.frame.size.width / 2, (44-17) / 2.0, (self.view.frame.size.width) / 2,  18)];
     email.delegate = self;
-    username.text = [PFUser currentUser].username;
-    email.text = [PFUser currentUser][@"email"];
-    _userPhoto.file = [PFUser currentUser][@"photo"];
+    username.text = [tbnParseManager getCurrentUser].username;
+    email.text = [tbnParseManager getCurrentUser][@"email"];
+    _userPhoto.file = [tbnParseManager getUserPhotoFetched];
     [_userPhoto loadInBackground:^(UIImage *image, NSError *error) {
         _userPhoto.frame = CGRectMake(_userPhoto.frame.origin.x, _userPhoto.frame.origin.y, 200, 200);
         [_userPhoto.layer setCornerRadius:100];

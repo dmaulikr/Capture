@@ -95,6 +95,11 @@
     [[PFUser currentUser] fetchIfNeeded];
     return [PFUser currentUser];
 }
++ (PFFile *)getUserPhotoFetched {
+    PFObject *photo = [tbnParseManager getCurrentUser][@"photo"];
+    [photo fetchIfNeeded];
+    return photo[@"fullSize"];
+}
 + (void)sendPush:(NSString *)userID {
     PFQuery *userToTarget = [PFUser query];
     [userToTarget whereKey:@"objectId" equalTo:userID];
